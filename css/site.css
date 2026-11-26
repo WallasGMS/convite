@@ -196,8 +196,8 @@ section.flush { padding-top: 0; }
 .hero .wrap { position: relative; z-index: 1; }
 .phone-stage { position: relative; }
 .chip { position: absolute; z-index: 3; background: var(--paper); color: var(--ink); font: 700 .85rem/1 var(--body); padding: .6rem .9rem; border-radius: 999px; box-shadow: var(--soft); white-space: nowrap; }
-.chip--a { left: 0; top: 18%; }
-.chip--b { right: 0; bottom: 22%; }
+.chip--a { left: max(0px, calc(50% - 150px - 34px)); top: 18%; } /* anchored to the 300px phone, never past the column */
+.chip--b { right: max(0px, calc(50% - 150px - 34px)); bottom: 22%; }
 @media (max-width: 380px) { .chip { display: none; } }
 section.alt { position: relative; border-top: 0; }
 section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -31px; height: 32px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 32' preserveAspectRatio='none'%3E%3Cpath d='M0 32V16C240 -6 480 -6 720 12S1200 30 1440 8V32z' fill='%23fff'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }

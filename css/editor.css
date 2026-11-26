@@ -91,7 +91,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 /* invite.css turns the card into a floating rounded box on wide viewports; inside the phone and thumbs it must fill. */
 .ed-screen .inv, .ed-thumb .inv { min-height: 100% !important; border-radius: 0; box-shadow: none; }
 .ed-thumb .inv { height: 100%; }
-.ed-screen .inv-brand { position: sticky; bottom: 0; left: 0; right: 0; }
+.ed-screen .inv-brand { position: sticky; bottom: 10px; margin: 0 12px 10px; }
 
 @media (prefers-reduced-motion: no-preference) {
   .ed-event, .ed-theme, .ed-btn { transition: background .15s, box-shadow .15s, border-color .15s; }

@@ -18,7 +18,7 @@ body.inv-page {
   min-height: 100vh; min-height: 100svh;
   display: flex; justify-content: center; align-items: flex-start;
 }
-.inv-root:has(.inv-brand) { padding-bottom: 46px; }
+.inv-root:has(.inv-brand) { padding-bottom: 64px; }
 
 /* ---------- Variables por defecto (= Clásico) ---------- */
 [data-theme] {
@@ -67,7 +67,7 @@ body.inv-page {
   line-height: 1.55;
   text-align: center;
 }
-.inv-root:has(.inv-brand) .inv { min-height: calc(100svh - 46px); }
+.inv-root:has(.inv-brand) .inv { min-height: calc(100svh - 64px); }
 @media (min-width: 520px) {
   .inv-root { padding: 32px 16px; }
   .inv-root:has(.inv-brand) { padding-bottom: 78px; }
@@ -269,10 +269,12 @@ body.inv-page {
 }
 
 /* ---------- Marca de agua (solo gratis) ---------- */
-.inv-brand {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+.inv-brand {   /* floating pill: a full-width strip got its corners cut by rounded phone screens */
+  position: fixed; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 40;
+  max-width: 440px; margin-inline: auto;
   display: flex; align-items: center; justify-content: center;
-  min-height: 42px; padding: 8px 14px calc(8px + env(safe-area-inset-bottom));
+  min-height: 42px; padding: 8px 16px;
+  border-radius: 999px; box-shadow: 0 6px 18px -6px rgba(0, 0, 0, .45);
   background: rgba(24, 22, 20, .9);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   color: #fff; text-decoration: none; text-align: center;
