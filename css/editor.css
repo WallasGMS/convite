@@ -11,7 +11,7 @@ body.ed-page { margin: 0; background: var(--bg); color: var(--ink); font: 400 1r
 .ed-logo { font: 700 1.5rem var(--display); color: var(--ink); text-decoration: none; letter-spacing: -.02em; }
 .ed-top-note { font-size: .8rem; color: var(--mute); text-align: right; }
 
-.ed-layout { display: grid; gap: 1.5rem; max-width: 1180px; margin: 0 auto; padding: 0 1rem 3rem; }
+.ed-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; max-width: 1180px; margin: 0 auto; padding: 0 1rem 3rem; }
 @media (min-width: 900px) {
   .ed-layout { grid-template-columns: minmax(0, 1fr) 360px; gap: 3rem; align-items: start; padding: 0 2rem 4rem; }
   .ed-side { position: sticky; top: 1rem; order: 2; }
@@ -33,7 +33,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 
 /* event cards */
 .ed-events { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
-@media (min-width: 600px) { .ed-events { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 600px) { .ed-events { grid-template-columns: repeat(5, 1fr); } }
 .ed-event {
   font: 600 1rem var(--display); padding: 1.1rem .5rem; min-height: 64px; border-radius: 14px; cursor: pointer;
   background: #f6f9f8; color: var(--ink); border: 1.5px solid var(--line);
@@ -83,9 +83,33 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   transform: translateZ(0); /* contains the fixed watermark inside the phone */
   position: relative; margin: 0; padding: 0;
 }
+.ed-screen .inv > :not(.inv-deco), .ed-thumb .inv > :not(.inv-deco) { animation: none; } /* rebuilt per keystroke */
 .ed-screen.inv-root { display: block; min-height: 0; } /* invite.css makes .inv-root flex: brand would sit beside the card */
 .ed-screen .inv-brand { position: sticky; bottom: 0; left: 0; right: 0; }
 
 @media (prefers-reduced-motion: no-preference) {
   .ed-event, .ed-theme, .ed-btn { transition: background .15s, box-shadow .15s, border-color .15s; }
 }
+
+/* step 2 extras */
+.ed-link { justify-self: start; min-height: 44px; padding: 0 .2rem; background: none; border: 0; font: 600 .95rem var(--body); color: var(--focus); text-decoration: underline; cursor: pointer; }
+.ed-check { display: flex; align-items: center; gap: .7rem; min-height: 44px; cursor: pointer; }
+.ed-check input { width: 1.4rem; height: 1.4rem; min-height: 0; flex: none; accent-color: var(--ink); }
+.ed-sub { display: grid; gap: .9rem; padding: .9rem; border-left: 3px solid var(--gold); background: #f6f9f8; border-radius: 0 10px 10px 0; }
+.ed-sub[hidden] { display: none; }
+.ed-more { border-top: 1px dashed var(--line); padding-top: .4rem; }
+.ed-more summary { min-height: 44px; display: flex; align-items: center; font-weight: 600; cursor: pointer; }
+.ed-more summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.ed-more-in { display: grid; gap: .9rem; padding-top: .5rem; }
+input[aria-invalid="true"] { border-color: #b3261e; }
+.ed-msg:empty { display: none; }
+
+/* guest links */
+.ed-guests { display: grid; gap: .7rem; border-top: 1px dashed var(--gold); padding-top: .9rem; }
+.ed-guests > div { display: grid; gap: .7rem; }
+.ed-guests [hidden] { display: none; }
+.ed-lock-ico { vertical-align: -3px; margin-right: .2rem; }
+.ed-glist { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.ed-gitem { display: grid; gap: .4rem; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .6rem; }
+.ed-gname { font-weight: 600; overflow-wrap: anywhere; }
+@media (min-width: 600px) { .ed-gitem { grid-template-columns: 1fr auto; align-items: center; } }

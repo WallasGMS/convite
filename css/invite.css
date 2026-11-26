@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;800&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;700&family=Quicksand:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Josefin+Sans:wght@300;400;600&family=Bodoni+Moda:ital,wght@0,400;0,600;1,400&family=Baloo+2:wght@500;700&family=Pacifico&family=Fraunces:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;600&family=Lilita+One&family=Poppins:wght@400;500;600&display=swap');
 
 /* ==========================================================================
    Convite · estilos de la invitación
@@ -28,10 +27,13 @@ body.inv-page {
   --muted: #5d6880;
   --accent: #a8844a;
   --accent-d: #7d5f2c;
+  --btn: #8a6a35;                      /* fondo de botón principal (texto blanco >= 4.5:1) */
   --on-accent: #fff;
   --line: rgba(168, 132, 74, .45);
   --f-display: 'Cormorant Garamond', Georgia, serif;
   --f-body: 'Jost', system-ui, sans-serif;
+  --f-msg: var(--f-display);           /* fuente del mensaje; temas decorativos usan la de cuerpo */
+  --msg-style: italic;
   --r-btn: 2px;
   --ts: clamp(2.7rem, 13vw, 3.7rem);   /* tamaño del título */
   --tw: 600;                           /* peso del título */
@@ -85,9 +87,10 @@ body.inv-page {
 /* ---------- Encabezado ---------- */
 .inv-kicker {
   margin: 0 0 .7rem;
-  font-size: .72rem; font-weight: 500;
+  font-size: .76rem; font-weight: 500;
   letter-spacing: .3em; text-transform: uppercase;
   color: var(--accent-d);
+  overflow-wrap: anywhere;
 }
 .inv-title {
   margin: 0 0 .5rem;
@@ -96,13 +99,14 @@ body.inv-page {
   font-size: var(--ts);
   line-height: 1.04;
   color: var(--title-color, var(--ink));
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word; hyphens: auto;
   text-wrap: balance;
 }
 .inv-sub {
   margin: 0;
   font-size: 1rem; letter-spacing: .04em;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 /* ---------- Fecha ---------- */
@@ -130,7 +134,7 @@ body.inv-page {
 /* ---------- Cuenta regresiva ---------- */
 .inv-countdown { display: flex; justify-content: center; gap: 8px; margin: 1.4rem 0 0; }
 .inv-cd-cell {
-  flex: 1 1 0; max-width: 72px;
+  flex: 1 1 0; min-width: 0; max-width: 72px;
   display: flex; flex-direction: column; align-items: center;
   padding: .6rem .2rem .5rem;
   background: var(--cell-bg);
@@ -138,12 +142,12 @@ body.inv-page {
   border-radius: var(--cell-r);
 }
 .inv-cd-num { font-family: var(--f-display); font-weight: var(--tw); font-size: 1.7rem; line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--day-color, var(--ink)); }
-.inv-cd-label { margin-top: .15rem; font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.inv-cd-label { margin-top: .15rem; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
 /* ---------- Mensaje y bloques ---------- */
 .inv-msg {
   margin: 1.9rem auto 0; max-width: 32ch;
-  font-family: var(--f-display); font-style: italic;
+  font-family: var(--f-msg); font-style: var(--msg-style);
   font-size: 1.22rem; line-height: 1.45;
   color: var(--ink);
   white-space: pre-line; overflow-wrap: anywhere; text-wrap: pretty;
@@ -152,17 +156,18 @@ body.inv-page {
 .inv-block-title {
   margin: 0 0 .45rem;
   font-family: var(--f-body); font-weight: 600;
-  font-size: .72rem; letter-spacing: .28em; text-transform: uppercase;
+  font-size: .76rem; letter-spacing: .28em; text-transform: uppercase;
   color: var(--accent-d);
+  overflow-wrap: anywhere;
 }
-.inv-block-text { margin: 0 0 .2rem; overflow-wrap: anywhere; white-space: pre-line; }
-.inv-block-text:first-of-type { font-weight: 500; font-size: 1.06rem; }
+.inv-block-text { margin: 0 0 .2rem; font-size: max(15px, 1rem); overflow-wrap: anywhere; white-space: pre-line; }
+.inv-block-text:first-of-type { font-weight: 500; font-size: max(15px, 1.06rem); }
 .inv-block .inv-btn { margin-top: .9rem; }
 
 /* ---------- Botones ---------- */
 .inv-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  min-height: 46px; padding: .6rem 1.5rem;
+  min-height: 46px; max-width: 100%; padding: .6rem 1.5rem; text-align: center; overflow-wrap: anywhere;
   font: 600 .92rem/1.2 var(--f-body); letter-spacing: .06em;
   color: var(--accent-d); text-decoration: none;
   background: transparent;
@@ -173,19 +178,55 @@ body.inv-page {
 .inv-btn:hover { background: var(--accent); color: var(--on-accent); }
 .inv-btn:active { transform: translateY(1px); }
 .inv-btn:focus-visible, .inv-envelope-btn:focus-visible, .inv-brand:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-.inv-btn--primary { background: var(--accent); color: var(--on-accent); }
-.inv-btn--primary:hover { filter: brightness(1.08); background: var(--accent); }
+.inv-btn--primary { background: var(--btn); border-color: var(--btn); color: var(--on-accent); }
+.inv-btn--primary:hover { filter: brightness(1.08); background: var(--btn); }
 .inv-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 2.2rem auto 0; width: min(100%, 320px); }
 .inv-actions .inv-btn { width: 100%; }
 
-/* ---------- Entrada suave ---------- */
+/* ---------- Pase del invitado (premium): boleto con perforación ---------- */
+.inv-guest {
+  --ph: 3.1rem;                         /* alto de la franja inferior; ahí van las muescas */
+  margin: 1.9rem auto 0; width: min(100%, 300px);
+  display: flex; flex-direction: column;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 1px solid var(--line);
+  border-radius: min(var(--cell-r), 14px);
+  -webkit-mask:
+    radial-gradient(circle 9px at left calc(100% - var(--ph)), #0000 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at right calc(100% - var(--ph)), #0000 97%, #000) right / 51% 100% no-repeat;
+          mask:
+    radial-gradient(circle 9px at left calc(100% - var(--ph)), #0000 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at right calc(100% - var(--ph)), #0000 97%, #000) right / 51% 100% no-repeat;
+}
+.inv-guest-name {
+  margin: 0; padding: 1rem 1.1rem .9rem;
+  font-family: var(--f-display); font-weight: var(--tw);
+  font-size: clamp(1.45rem, 7vw, 1.9rem); line-height: 1.15;
+  color: var(--title-color, var(--ink));
+  overflow-wrap: anywhere; text-wrap: balance;
+}
+.inv-guest-passes {
+  margin: 0; min-height: var(--ph);
+  display: flex; align-items: center; justify-content: center;
+  padding: .45rem 1.4rem;
+  border-top: 1.5px dashed var(--line);
+  font-size: .8rem; line-height: 1.25; font-weight: 600; letter-spacing: .08em;
+  color: var(--accent-d);
+  overflow-wrap: anywhere; text-wrap: balance;
+}
+.inv-guest-name:only-child { padding-bottom: 1rem; }
+
+/* ---------- Entrada suave: solo si el usuario no pidió menos movimiento.
+   Estado base = visible; 'backwards' evita dejar contenido invisible si la animación no corre. ---------- */
 @keyframes inv-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-.inv > :not(.inv-deco) { animation: inv-rise .7s cubic-bezier(.2,.7,.2,1) both; }
-.inv > :nth-child(3) { animation-delay: .08s; }
-.inv > :nth-child(4) { animation-delay: .16s; }
-.inv > :nth-child(5) { animation-delay: .24s; }
-.inv > :nth-child(6) { animation-delay: .32s; }
-.inv > :nth-child(n+7) { animation-delay: .4s; }
+@media (prefers-reduced-motion: no-preference) {
+  .inv > :not(.inv-deco) { animation: inv-rise .7s cubic-bezier(.2,.7,.2,1) backwards; }
+  .inv > :nth-child(3) { animation-delay: .08s; }
+  .inv > :nth-child(4) { animation-delay: .16s; }
+  .inv > :nth-child(5) { animation-delay: .24s; }
+  .inv > :nth-child(6) { animation-delay: .32s; }
+  .inv > :nth-child(n+7) { animation-delay: .4s; }
+}
 
 /* ---------- Marca de agua (solo gratis) ---------- */
 .inv-brand {
@@ -249,20 +290,20 @@ body.inv-page {
 }
 .inv-envelope-to {
   margin: 0; font-family: var(--f-display); font-weight: var(--tw);
-  font-size: clamp(1.8rem, 8vw, 2.5rem); line-height: 1.1; color: var(--title-color, var(--ink));
+  font-size: clamp(1.6rem, 8vw, 2.4rem); line-height: 1.15; color: var(--title-color, var(--ink));
   overflow-wrap: anywhere; text-wrap: balance;
+  max-width: 100%; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden;  /* nombres larguísimos no tapan el sello */
 }
-.inv-envelope-to::before {
-  content: 'Una invitación para ti';
-  display: block; margin-bottom: .6rem;
-  font: 500 .72rem var(--f-body); letter-spacing: .3em; text-transform: uppercase; color: var(--accent-d);
+.inv-envelope-label {
+  position: relative; z-index: 2; margin: 0 0 .6rem;
+  font: 500 .76rem/1.3 var(--f-body); letter-spacing: .3em; text-transform: uppercase; color: var(--accent-d);
 }
 .inv-envelope-btn {
   margin-top: 1.2rem; min-height: 50px; padding: .7rem 2rem; cursor: pointer;
   font: 600 .95rem/1 var(--f-body); letter-spacing: .08em;
-  color: var(--on-accent); background: var(--accent);
+  color: var(--on-accent); background: var(--btn);
   border: 0; border-radius: var(--r-btn);
-  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--accent) 80%, #000);
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--btn) 80%, #000);
 }
 .inv-envelope-btn:hover { filter: brightness(1.08); }
 
@@ -273,13 +314,27 @@ body.inv-page {
 .inv-envelope.is-open { pointer-events: none; animation: inv-env-leave 1.1s ease-in forwards; }
 .inv-envelope.is-open::before { transform: rotateX(180deg); }
 .inv-envelope.is-open .inv-envelope-seal { transform: scale(.4) translateY(-30px); opacity: 0; }
+.inv-envelope.is-open .inv-envelope-label,
 .inv-envelope.is-open .inv-envelope-to,
 .inv-envelope.is-open .inv-envelope-btn { opacity: 0; transition: opacity .3s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .inv > :not(.inv-deco) { animation: none; }
   .inv-btn, .inv-envelope::before, .inv-envelope-seal { transition: none; }
   .inv-envelope.is-open { animation: inv-env-leave .25s linear forwards; }
+}
+
+/* ---------- Impresión: solo la tarjeta, sin sobre, marca ni botones ---------- */
+@media print {
+  @page { margin: 8mm; }
+  body.inv-page { background: #fff !important; min-height: 0; }
+  .inv-root, .inv-root:has(.inv-brand) { display: block; min-height: 0; padding: 0 !important; }
+  .inv-envelope, .inv-brand, .inv-actions, .inv-countdown, .inv-btn { display: none !important; }
+  .inv, .inv-root:has(.inv-brand) .inv {
+    min-height: 0 !important; max-width: 480px; margin: 0 auto; border-radius: 0; box-shadow: none;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    break-inside: avoid; page-break-inside: avoid; zoom: .8;
+  }
+  .inv, .inv * { animation: none !important; }
 }
 
 /* ==========================================================================
@@ -296,16 +351,18 @@ body.inv-page {
   content: ''; position: absolute; inset: 12px; z-index: 1; pointer-events: none;
   border: 1px solid var(--line); outline: 1px solid var(--line); outline-offset: 4px;
 }
+[data-theme="clasico"] .inv-guest { border-radius: 0; background: rgba(168,132,74,.07); }
+[data-theme="clasico"] .inv-guest-name { font-style: italic; }
 .inv[data-theme="clasico"] { padding-inline: calc(var(--px) + 6px); --px: 34px; }
 body.inv-page:has([data-theme="clasico"]) { --page: #e4dccb; }
 
 /* ---------- 2 · Fiesta (gratis): confeti, banderines y color ---------- */
 [data-theme="fiesta"] {
   --bg: #fff8e8; --ink: #3a2a22; --muted: #7a5f50;
-  --accent: #ff5a5f; --accent-d: #d63b46; --on-accent: #fff; --line: #ffc933;
+  --accent: #ff5a5f; --accent-d: #c42f3a; --btn: #d63b46; --on-accent: #fff; --line: #ffc933; --msg-style: normal;
   --f-display: 'Fredoka', system-ui, sans-serif; --f-body: 'Nunito', system-ui, sans-serif;
   --r-btn: 999px; --tw: 700; --cell-r: 16px; --cell-bg: #fff; --cell-bd: #ffd98a;
-  --title-color: #ff5a5f; --day-color: #1c9c91;
+  --title-color: #e0434d; --day-color: #0f7a70;
   --env-flap: #ffd54f;
   --deco-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 160'%3E%3Cpath d='M-10 14Q240 78 490 14' fill='none' stroke='%23553b2a' stroke-width='2'/%3E%3Cpath fill='%23ff5a5f' d='M12 24l36 3-18 36z'/%3E%3Cpath fill='%23ffc933' d='M77 33l36 2-18 36z'/%3E%3Cpath fill='%2319b5a5' d='M142 40l36 1-18 36z'/%3E%3Cpath fill='%23ff8ab8' d='M207 44l36 0-18 36z'/%3E%3Cpath fill='%232d8cff' d='M272 43l36-1-18 36z'/%3E%3Cpath fill='%23ff9f1c' d='M337 38l36-2-18 36z'/%3E%3Cpath fill='%23ff5a5f' d='M402 29l36-3-18 36z'/%3E%3Cpath fill='%2319b5a5' d='M450 19l30-4-12 32z'/%3E%3Cg%3E%3Crect x='40' y='98' width='10' height='5' rx='2' fill='%23ffc933' transform='rotate(30 45 100)'/%3E%3Crect x='120' y='112' width='10' height='5' rx='2' fill='%23ff5a5f' transform='rotate(-40 125 114)'/%3E%3Crect x='200' y='104' width='10' height='5' rx='2' fill='%2319b5a5' transform='rotate(60 205 106)'/%3E%3Crect x='300' y='110' width='10' height='5' rx='2' fill='%23ff8ab8' transform='rotate(-20 305 112)'/%3E%3Crect x='380' y='100' width='10' height='5' rx='2' fill='%232d8cff' transform='rotate(45 385 102)'/%3E%3Crect x='440' y='122' width='10' height='5' rx='2' fill='%23ff9f1c' transform='rotate(-55 445 124)'/%3E%3Ccircle cx='80' cy='128' r='4' fill='%232d8cff'/%3E%3Ccircle cx='165' cy='96' r='3.5' fill='%23ff9f1c'/%3E%3Ccircle cx='250' cy='126' r='4' fill='%23ff5a5f'/%3E%3Ccircle cx='345' cy='128' r='3.5' fill='%23ffc933'/%3E%3Ccircle cx='415' cy='94' r='4' fill='%2319b5a5'/%3E%3Ccircle cx='20' cy='112' r='3.5' fill='%23ff8ab8'/%3E%3C/g%3E%3C/svg%3E");
   --deco-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 120'%3E%3Cg fill='none' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 20c20 30 36-10 52 14s30 20 44 6' stroke='%23ff5a5f'/%3E%3Cpath d='M360 26c18 26 34-6 50 14s28 14 56 0' stroke='%2319b5a5'/%3E%3Cpath d='M150 90c22-26 44 10 66-10s36-6 62 8' stroke='%23ffc933'/%3E%3C/g%3E%3Cg%3E%3Crect x='96' y='64' width='10' height='5' rx='2' fill='%23ff8ab8' transform='rotate(35 101 66)'/%3E%3Crect x='300' y='60' width='10' height='5' rx='2' fill='%232d8cff' transform='rotate(-30 305 62)'/%3E%3Crect x='440' y='86' width='10' height='5' rx='2' fill='%23ff9f1c' transform='rotate(50 445 88)'/%3E%3Crect x='30' y='88' width='10' height='5' rx='2' fill='%23ffc933' transform='rotate(-45 35 90)'/%3E%3Ccircle cx='60' cy='60' r='4' fill='%2319b5a5'/%3E%3Ccircle cx='240' cy='36' r='4' fill='%23ff5a5f'/%3E%3Ccircle cx='330' cy='98' r='3.5' fill='%23ff8ab8'/%3E%3Ccircle cx='410' cy='66' r='4' fill='%23ffc933'/%3E%3Ccircle cx='190' cy='64' r='3.5' fill='%232d8cff'/%3E%3C/g%3E%3C/svg%3E");
@@ -314,12 +371,14 @@ body.inv-page:has([data-theme="clasico"]) { --page: #e4dccb; }
 [data-theme="fiesta"] .inv-btn { border-width: 2.5px; font-weight: 800; box-shadow: 0 4px 0 rgba(214,59,70,.25); }
 [data-theme="fiesta"] .inv-btn--primary { box-shadow: 0 4px 0 #b52f38; }
 [data-theme="fiesta"] .inv-date { border-style: dashed; border-width: 2px; border-color: #ffc933; }
-[data-theme="fiesta"] .inv-kicker, [data-theme="fiesta"] .inv-block-title { color: #1c9c91; }
+[data-theme="fiesta"] .inv-kicker, [data-theme="fiesta"] .inv-block-title { color: #0f7a70; }
+[data-theme="fiesta"] .inv-guest { border: 2px dashed #ffc933; background: #fff; }
+[data-theme="fiesta"] .inv-guest-passes { border-top-color: #ffc933; color: #0f7a70; }
 body.inv-page:has([data-theme="fiesta"]) { --page: #ffe9b8; }
 
 /* ---------- 3 · Minimal (gratis): papel blanco, mucho aire, un punto de color ---------- */
 [data-theme="minimal"] {
-  --bg: #fafaf8; --ink: #141414; --muted: #6b6a66;
+  --bg: #fafaf8; --ink: #141414; --muted: #6b6a66; --btn: #141414;
   --accent: #141414; --accent-d: #141414; --on-accent: #fafaf8; --line: #141414;
   --f-display: 'Instrument Serif', Georgia, serif; --f-body: 'Manrope', system-ui, sans-serif;
   --r-btn: 0; --tw: 400; --ts: clamp(3.2rem, 15vw, 4.4rem);
@@ -333,13 +392,15 @@ body.inv-page:has([data-theme="fiesta"]) { --page: #ffe9b8; }
 [data-theme="minimal"] .inv-date { border-block-width: 0; border-top: 1px solid #141414; width: 100%; }
 [data-theme="minimal"] .inv-btn { border-width: 1px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .76rem; }
 [data-theme="minimal"] .inv-msg { font-style: normal; font-size: 1.12rem; }
+[data-theme="minimal"] .inv-guest { border-color: #141414; background: transparent; border-radius: 0; }
+[data-theme="minimal"] .inv-guest-passes { border-top-color: #141414; text-transform: uppercase; letter-spacing: .16em; font-size: .7rem; }
 .inv[data-theme="minimal"] .inv-deco--top { margin-top: 14px; }
 body.inv-page:has([data-theme="minimal"]) { --page: #ecece8; }
 
 /* ---------- 4 · Cielo (gratis): cielo de día, nubes y sol ---------- */
 [data-theme="cielo"] {
-  --bg: #fff; --ink: #1f4b73; --muted: #4f7396;
-  --accent: #3f8ed0; --accent-d: #1f6fb0; --on-accent: #fff; --line: rgba(63,142,208,.35);
+  --bg: #fff; --ink: #1f4b73; --muted: #3f6488; --msg-style: normal;
+  --accent: #3f8ed0; --accent-d: #1a65a3; --btn: #2a74b8; --on-accent: #fff; --line: rgba(63,142,208,.35);
   --f-display: 'Quicksand', system-ui, sans-serif; --f-body: 'Quicksand', system-ui, sans-serif;
   --r-btn: 999px; --tw: 700; --cell-r: 18px; --cell-bg: rgba(255,255,255,.75); --cell-bd: rgba(63,142,208,.25);
   --env-flap: #cfe7f8;
@@ -347,13 +408,14 @@ body.inv-page:has([data-theme="minimal"]) { --page: #ecece8; }
   --deco-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 120'%3E%3Cdefs%3E%3Cg id='c'%3E%3Ccircle cx='0' cy='0' r='20'/%3E%3Ccircle cx='28' cy='-12' r='28'/%3E%3Ccircle cx='62' cy='-2' r='22'/%3E%3Crect x='-20' y='-2' width='104' height='24' rx='12'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23c' x='20' y='108' fill='%23d3e9f9' transform='scale(1.5)'/%3E%3Cuse href='%23c' x='190' y='112' fill='%23e4f2fc' transform='scale(1.6)'/%3E%3Cuse href='%23c' x='-10' y='98' fill='%23edf6fd' transform='scale(1.4)'/%3E%3Cuse href='%23c' x='230' y='98' fill='%23edf6fd' transform='scale(1.5)'/%3E%3C/svg%3E");
 }
 .inv[data-theme="cielo"] { background: linear-gradient(#bfe0f8 0, #dcEFFC 22%, #f6fbff 55%, #fff 100%); }
+[data-theme="cielo"] .inv-guest { background: rgba(255,255,255,.8); }
 [data-theme="cielo"] .inv-btn--primary { box-shadow: 0 8px 18px -8px rgba(31,111,176,.6); }
 body.inv-page:has([data-theme="cielo"]) { --page: #cfe6f6; }
 
 /* ---------- 5 · Floral (premium): ramo de flores en tonos durazno y rosa ---------- */
 [data-theme="floral"] {
   --bg: #fffaf6; --ink: #4a2a33; --muted: #7d5a62;
-  --accent: #c7757f; --accent-d: #a2505d; --on-accent: #fff; --line: rgba(199,117,127,.4);
+  --accent: #c7757f; --accent-d: #a2505d; --btn: #a95563; --on-accent: #fff; --line: rgba(199,117,127,.4);
   --f-display: 'Playfair Display', Georgia, serif; --f-body: 'Jost', system-ui, sans-serif;
   --r-btn: 999px; --tw: 500; --cell-r: 999px; --cell-bg: #fff; --cell-bd: rgba(199,117,127,.35);
   --title-color: #8e3f55; --env-flap: #f8dcd8;
@@ -363,12 +425,15 @@ body.inv-page:has([data-theme="cielo"]) { --page: #cfe6f6; }
 }
 .inv[data-theme="floral"] { background: radial-gradient(120% 60% at 50% 0, #fff0ec 0, transparent 70%), var(--bg); }
 [data-theme="floral"] .inv-title { font-style: italic; }
+[data-theme="floral"] .inv-guest { background: #fff; }
+[data-theme="floral"] .inv-guest-name { font-style: italic; }
 body.inv-page:has([data-theme="floral"]) { --page: #f3dcd6; }
 
 /* ---------- 6 · Dorado (premium): negro y oro, abanico art decó ---------- */
 [data-theme="dorado"] {
   --bg: #0f0e0c; --ink: #f3e9d0; --muted: #bfae88;
-  --accent: #d4af37; --accent-d: #e2c35a; --on-accent: #17130a; --line: rgba(212,175,55,.5);
+  --accent: #d4af37; --accent-d: #e2c35a; --btn: #d4af37; --on-accent: #17130a; --line: rgba(212,175,55,.5);
+  --f-msg: var(--f-body); --msg-style: normal;
   --f-display: 'Cinzel', 'Times New Roman', serif; --f-body: 'Jost', system-ui, sans-serif;
   --r-btn: 0; --tw: 600; --ts: clamp(2.2rem, 10.5vw, 3rem);
   --day-size: clamp(4rem, 18vw, 5rem);
@@ -391,14 +456,18 @@ body.inv-page:has([data-theme="floral"]) { --page: #f3dcd6; }
 [data-theme="dorado"] .inv-btn { font-weight: 500; text-transform: uppercase; letter-spacing: .2em; font-size: .78rem; }
 [data-theme="dorado"] .inv-btn--primary { background: linear-gradient(100deg, #f1d775, #c79a2c 55%, #efd46b); border-color: #c79a2c; }
 [data-theme="dorado"] .inv-btn:hover { color: #17130a; }
-[data-theme="dorado"] .inv-msg { color: #e8dcc0; }
+[data-theme="dorado"] .inv-msg { color: #e8dcc0; font-size: 1.1rem; line-height: 1.6; }
+.inv[data-theme="dorado"] .inv-guest { background: rgba(212,175,55,.07); border-radius: 0; border-color: rgba(212,175,55,.6); }
+.inv[data-theme="dorado"] .inv-guest-name { background: linear-gradient(100deg, #f8e58b, #c79a2c 45%, #f6e27a 80%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; letter-spacing: .08em; font-size: clamp(1.25rem, 6vw, 1.6rem); }
+[data-theme="dorado"] .inv-guest-passes { text-transform: uppercase; letter-spacing: .18em; font-size: .68rem; font-weight: 500; }
 .inv-envelope[data-theme="dorado"] .inv-envelope-to { background: linear-gradient(100deg, #f8e58b, #c79a2c 50%, #f6e27a); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; letter-spacing: .06em; }
 body.inv-page:has([data-theme="dorado"]) { --page: #050403; }
 
 /* ---------- 7 · Rosa XV (premium): tiara, destellos y rosa empolvado ---------- */
 [data-theme="xv-rosa"] {
-  --bg: #fff1f5; --ink: #5a2540; --muted: #8e5c75;
-  --accent: #d6457e; --accent-d: #b02a63; --on-accent: #fff; --line: rgba(214,69,126,.35);
+  --bg: #fff1f5; --ink: #5a2540; --muted: #84526c;
+  --accent: #d6457e; --accent-d: #b02a63; --btn: #c63675; --on-accent: #fff; --line: rgba(214,69,126,.35);
+  --f-msg: var(--f-body); --msg-style: normal;
   --f-display: 'Great Vibes', cursive; --f-body: 'Josefin Sans', system-ui, sans-serif;
   --r-btn: 999px; --tw: 400; --ts: clamp(3.3rem, 17vw, 4.8rem);
   --day-size: clamp(4.4rem, 20vw, 5.6rem);
@@ -409,13 +478,16 @@ body.inv-page:has([data-theme="dorado"]) { --page: #050403; }
 }
 [data-theme="xv-rosa"] .inv-title { line-height: 1.1; text-shadow: 0 2px 0 rgba(255,255,255,.8); }
 [data-theme="xv-rosa"] .inv-kicker { letter-spacing: .34em; }
+[data-theme="xv-rosa"] .inv-msg { font-size: 1.12rem; line-height: 1.6; }
+[data-theme="xv-rosa"] .inv-guest { background: rgba(255,255,255,.7); }
+[data-theme="xv-rosa"] .inv-guest-name { font-size: clamp(1.9rem, 9vw, 2.5rem); line-height: 1.1; }
 [data-theme="xv-rosa"] .inv-btn--primary { background: linear-gradient(135deg, #e5578c, #c63675); box-shadow: 0 10px 22px -10px #b02a63; }
 .inv[data-theme="xv-rosa"] { background: radial-gradient(110% 50% at 50% 0, #ffe0eb 0, transparent 70%), var(--bg); }
 body.inv-page:has([data-theme="xv-rosa"]) { --page: #f7cddc; }
 
 /* ---------- 8 · Salvia (premium): boda de eucalipto, verde salvia y marfil ---------- */
 [data-theme="boda-salvia"] {
-  --bg: #f7f5ec; --ink: #3a4636; --muted: #6a7664;
+  --bg: #f7f5ec; --ink: #3a4636; --muted: #5f6c59;
   --accent: #6f845f; --accent-d: #526348; --on-accent: #fff; --line: rgba(111,132,95,.45);
   --f-display: 'Bodoni Moda', 'Playfair Display', serif; --f-body: 'Jost', system-ui, sans-serif;
   --r-btn: 999px; --tw: 400; --ts: clamp(2.5rem, 12vw, 3.4rem);
@@ -425,7 +497,9 @@ body.inv-page:has([data-theme="xv-rosa"]) { --page: #f7cddc; }
   --deco-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 120'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cellipse cx='9' cy='-9' rx='13' ry='8' transform='rotate(-42 9 -9)'/%3E%3Cellipse cx='9' cy='9' rx='13' ry='8' transform='rotate(42 9 9)'/%3E%3C/g%3E%3Cg id='b'%3E%3Cpath d='M-10 10C60 10 130 30 200 72' fill='none' stroke='%23697b5a' stroke-width='2'/%3E%3Cg fill='%23a3b394'%3E%3Cuse href='%23p' transform='translate(22 11) rotate(8)'/%3E%3Cuse href='%23p' transform='translate(84 22) rotate(18)' fill='%238a9d7b'/%3E%3Cuse href='%23p' transform='translate(147 44) rotate(30)'/%3E%3C/g%3E%3Cg fill='%238a9d7b'%3E%3Cuse href='%23p' transform='translate(53 15) rotate(12)'/%3E%3Cuse href='%23p' transform='translate(116 32) rotate(24)' fill='%23b5c3a6'/%3E%3C/g%3E%3C/g%3E%3C/defs%3E%3Cg transform='translate(0 120) scale(.95 -.95)'%3E%3Cuse href='%23b'/%3E%3Cuse href='%23b' transform='translate(480 0) scale(-1 1)'/%3E%3C/g%3E%3C/svg%3E");
 }
 [data-theme="boda-salvia"] .inv-title { font-style: italic; letter-spacing: .01em; }
-[data-theme="boda-salvia"] .inv-btn--primary { background: #5a7049; }
+[data-theme="boda-salvia"] { --btn: #5a7049; }
+[data-theme="boda-salvia"] .inv-guest { background: rgba(255,255,255,.6); }
+[data-theme="boda-salvia"] .inv-guest-name { font-style: italic; }
 .inv[data-theme="boda-salvia"]::before {
   content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
   background: radial-gradient(60% 30% at 50% 100%, #e6ebd8, transparent 70%);
@@ -434,32 +508,37 @@ body.inv-page:has([data-theme="boda-salvia"]) { --page: #dfe5d0; }
 
 /* ---------- 9 · Bebé azul (premium): móvil de luna y estrellas ---------- */
 [data-theme="bebe-azul"] {
-  --bg: #eef6fc; --ink: #2f5a82; --muted: #5f86a8;
-  --accent: #5fa3d6; --accent-d: #2f7db8; --on-accent: #fff; --line: rgba(95,163,214,.4);
+  --bg: #eef6fc; --ink: #2f5a82; --muted: #3f668a; --msg-style: normal;
+  --accent: #5fa3d6; --accent-d: #1f6aa3; --btn: #2a72ab; --on-accent: #fff; --line: rgba(95,163,214,.4);
   --f-display: 'Baloo 2', system-ui, sans-serif; --f-body: 'Nunito', system-ui, sans-serif;
   --r-btn: 999px; --tw: 700; --ts: clamp(2.5rem, 12vw, 3.4rem);
   --cell-r: 18px; --cell-bg: #fff; --cell-bd: rgba(95,163,214,.3);
-  --title-color: #2f7db8; --env-flap: #cfe6f6;
+  --title-color: #1f6aa3; --env-flap: #cfe6f6;
   --deco-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 160'%3E%3Cdefs%3E%3Cpath id='t' d='M0-16L4.7-6.5 15.2-4.9 7.6 2.5 9.4 12.9 0 8-9.400 12.900-7.600 2.500-15.200-4.900-4.700-6.500z'/%3E%3Cg id='c'%3E%3Ccircle cx='0' cy='0' r='11'/%3E%3Ccircle cx='16' cy='-7' r='15'/%3E%3Ccircle cx='34' cy='0' r='11'/%3E%3Crect x='-11' y='-1' width='56' height='12' rx='6'/%3E%3C/g%3E%3C/defs%3E%3Cg stroke='%2390bbdf' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath d='M70 0V70M150 0V104M240 0V54M330 0V100M410 0V66'/%3E%3C/g%3E%3Cuse href='%23t' transform='translate(70 86) rotate(-8) scale(1.1)' fill='%23f7d97f' stroke='%23f7d97f' stroke-width='3' stroke-linejoin='round'/%3E%3Cuse href='%23c' x='132' y='112' fill='%23fff' stroke='%23b5d5ee' stroke-width='1.5'/%3E%3Cpath d='M250 54a30 30 0 1 0 14 50 24 24 0 1 1-14-50z' fill='%23f7d97f' stroke='%23f2c85a' stroke-width='1.5' stroke-linejoin='round' transform='translate(-12 0)'/%3E%3Cuse href='%23c' x='312' y='108' fill='%23fff' stroke='%23b5d5ee' stroke-width='1.5'/%3E%3Cuse href='%23t' transform='translate(410 82) rotate(10) scale(1.2)' fill='%23f7d97f' stroke='%23f7d97f' stroke-width='3' stroke-linejoin='round'/%3E%3Cg fill='%23a9cdea'%3E%3Ccircle cx='28' cy='60' r='3'/%3E%3Ccircle cx='196' cy='40' r='2.4'/%3E%3Ccircle cx='286' cy='30' r='3'/%3E%3Ccircle cx='456' cy='44' r='2.6'/%3E%3Ccircle cx='370' cy='132' r='2.4'/%3E%3C/g%3E%3C/svg%3E");
   --deco-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 120'%3E%3Cdefs%3E%3Cg id='c'%3E%3Ccircle cx='0' cy='0' r='20'/%3E%3Ccircle cx='28' cy='-12' r='28'/%3E%3Ccircle cx='62' cy='-2' r='22'/%3E%3Crect x='-20' y='-2' width='104' height='24' rx='12'/%3E%3C/g%3E%3Cpath id='t' d='M0-9L2.700-3.700 8.600-2.800 4.300 1.400 5.300 7.300 0 4.500-5.300 7.300-4.300 1.400-8.600-2.800-2.700-3.700z'/%3E%3C/defs%3E%3Cuse href='%23c' x='-8' y='116' fill='%23d4e8f7' transform='scale(1.4)'/%3E%3Cuse href='%23c' x='170' y='122' fill='%23e3f0fa' transform='scale(1.5)'/%3E%3Cuse href='%23c' x='260' y='112' fill='%23d4e8f7' transform='scale(1.4)'/%3E%3Cuse href='%23c' x='40' y='108' fill='%23fff' transform='scale(1.3)'/%3E%3Cuse href='%23c' x='190' y='112' fill='%23fff' transform='scale(1.2)'/%3E%3Cg fill='%23f7d97f' stroke='%23f7d97f' stroke-width='2' stroke-linejoin='round'%3E%3Cuse href='%23t' transform='translate(100 30)'/%3E%3Cuse href='%23t' transform='translate(250 18) scale(1.3)'/%3E%3Cuse href='%23t' transform='translate(390 40) scale(.9)'/%3E%3C/g%3E%3C/svg%3E");
 }
 .inv[data-theme="bebe-azul"] { background: linear-gradient(#dcecf9 0, var(--bg) 40%); }
 [data-theme="bebe-azul"] .inv-btn--primary { box-shadow: 0 8px 18px -8px #2f7db8; }
+[data-theme="bebe-azul"] .inv-guest { background: #fff; }
 body.inv-page:has([data-theme="bebe-azul"]) { --page: #cfe3f3; }
 
 /* ---------- 10 · Bebé rosa (premium): globos, corazones y moño ---------- */
 [data-theme="bebe-rosa"] {
-  --bg: #fff3f4; --ink: #6a3447; --muted: #99677a;
-  --accent: #ee7d9c; --accent-d: #c5496f; --on-accent: #fff; --line: rgba(238,125,156,.4);
+  --bg: #fff3f4; --ink: #6a3447; --muted: #86566a;
+  --accent: #ee7d9c; --accent-d: #b83e64; --btn: #bd4068; --on-accent: #fff; --line: rgba(238,125,156,.4);
   --f-display: 'Pacifico', cursive; --f-body: 'Nunito', system-ui, sans-serif;
   --r-btn: 999px; --tw: 400; --ts: clamp(2.2rem, 10.5vw, 3rem);
   --day-size: clamp(3.8rem, 17vw, 4.8rem);
   --cell-r: 18px; --cell-bg: #fff; --cell-bd: rgba(238,125,156,.3);
-  --title-color: #d35b82; --env-flap: #ffd9e0;
+  --title-color: #be4470; --env-flap: #ffd9e0;
+  --f-msg: var(--f-body); --msg-style: normal;
   --deco-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 160'%3E%3Cdefs%3E%3Cpath id='h' d='M0 5C-14-5-8-16 0-8 8-16 14-5 0 5z'/%3E%3C/defs%3E%3Cg fill='none' stroke='%23c9a0aa' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath d='M205 76C208 108 232 124 240 138'/%3E%3Cpath d='M240 62C240 96 240 118 240 138'/%3E%3Cpath d='M275 76C272 108 248 124 240 138'/%3E%3C/g%3E%3Cellipse cx='205' cy='50' rx='25' ry='29' fill='%23f6a9bd'/%3E%3Cellipse cx='275' cy='50' rx='25' ry='29' fill='%23ffd0da'/%3E%3Cellipse cx='240' cy='36' rx='25' ry='29' fill='%23ec7596'/%3E%3Cpath d='M200 77l5 7 5-7zM270 77l5 7 5-7z' fill='%23f6a9bd'/%3E%3Cpath d='M235 63l5 7 5-7z' fill='%23ec7596'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' opacity='.75'%3E%3Cpath d='M192 40c2-6 6-10 11-11M262 40c2-6 6-10 11-11M227 26c2-6 6-10 11-11'/%3E%3C/g%3E%3Cpath d='M240 138c-16-14-26-4-18 4 8 6 18-2 18-4zM240 138c16-14 26-4 18 4-8 6-18-2-18-4z' fill='%23ee7d9c'/%3E%3Ccircle cx='240' cy='138' r='4' fill='%23c5496f'/%3E%3Cuse href='%23h' transform='translate(80 70) rotate(-14) scale(1.6)' fill='%23f6a9bd'/%3E%3Cuse href='%23h' transform='translate(130 110) rotate(10)' fill='%23ec7596'/%3E%3Cuse href='%23h' transform='translate(46 128) scale(.9) rotate(-10)' fill='%23ffd0da'/%3E%3Cuse href='%23h' transform='translate(400 66) rotate(12) scale(1.6)' fill='%23ec7596'/%3E%3Cuse href='%23h' transform='translate(350 114) rotate(-10)' fill='%23f6a9bd'/%3E%3Cuse href='%23h' transform='translate(438 120) scale(.9) rotate(12)' fill='%23ffd0da'/%3E%3C/svg%3E");
   --deco-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 120'%3E%3Cdefs%3E%3Cpath id='h' d='M0 6C-15-5-9-17 0-8 9-17 15-5 0 6z'/%3E%3C/defs%3E%3Cpath d='M-10 20Q240 84 490 20' fill='none' stroke='%23c9a0aa' stroke-width='1.4'/%3E%3Cuse href='%23h' transform='translate(30 36)' fill='%23ee7d9c'/%3E%3Cuse href='%23h' transform='translate(90 52) scale(1.1)' fill='%23ffc2d0'/%3E%3Cuse href='%23h' transform='translate(150 62)' fill='%23ee7d9c'/%3E%3Cuse href='%23h' transform='translate(210 66) scale(1.1)' fill='%23ffc2d0'/%3E%3Cuse href='%23h' transform='translate(270 66)' fill='%23ee7d9c'/%3E%3Cuse href='%23h' transform='translate(330 62) scale(1.1)' fill='%23ffc2d0'/%3E%3Cuse href='%23h' transform='translate(390 52)' fill='%23ee7d9c'/%3E%3Cuse href='%23h' transform='translate(450 36) scale(1.1)' fill='%23ffc2d0'/%3E%3C/svg%3E");
 }
 [data-theme="bebe-rosa"] .inv-title { line-height: 1.25; }
+[data-theme="bebe-rosa"] .inv-msg { font-size: 1.1rem; line-height: 1.6; }
+[data-theme="bebe-rosa"] .inv-guest { background: #fff; }
+[data-theme="bebe-rosa"] .inv-guest-name { font-size: clamp(1.3rem, 6.5vw, 1.7rem); line-height: 1.4; }
 [data-theme="bebe-rosa"] .inv-btn--primary { box-shadow: 0 8px 18px -8px #c5496f; }
 .inv[data-theme="bebe-rosa"] { background: linear-gradient(#ffe5ea 0, var(--bg) 38%); }
 body.inv-page:has([data-theme="bebe-rosa"]) { --page: #fbd8df; }
@@ -467,7 +546,7 @@ body.inv-page:has([data-theme="bebe-rosa"]) { --page: #fbd8df; }
 /* ---------- 11 · Noche (premium): cielo estrellado y luna ---------- */
 [data-theme="noche"] {
   --bg: #0d1233; --ink: #ecebfa; --muted: #aeb2d6;
-  --accent: #f2d388; --accent-d: #f2d388; --on-accent: #1a1740; --line: rgba(242,211,136,.35);
+  --accent: #f2d388; --accent-d: #f2d388; --btn: #f2d388; --on-accent: #1a1740; --line: rgba(242,211,136,.35);
   --f-display: 'Fraunces', Georgia, serif; --f-body: 'Outfit', system-ui, sans-serif;
   --r-btn: 999px; --tw: 400; --ts: clamp(2.6rem, 12.5vw, 3.6rem);
   --cell-r: 12px; --cell-bg: rgba(255,255,255,.06); --cell-bd: rgba(242,211,136,.3);
@@ -477,6 +556,8 @@ body.inv-page:has([data-theme="bebe-rosa"]) { --page: #fbd8df; }
 }
 .inv[data-theme="noche"] { background: radial-gradient(90% 40% at 80% 0, #2a2f7a 0, transparent 70%), linear-gradient(#0d1233, #131846 60%, #0d1233); }
 [data-theme="noche"] .inv-title { font-style: italic; }
+[data-theme="noche"] .inv-guest { background: rgba(255,255,255,.06); }
+[data-theme="noche"] .inv-guest-name { font-style: italic; }
 [data-theme="noche"] .inv-btn:hover { color: #1a1740; }
 @keyframes inv-twinkle { 50% { opacity: .55; } }
 .inv[data-theme="noche"] .inv-deco--top { animation: inv-twinkle 4s ease-in-out infinite; }
@@ -485,18 +566,22 @@ body.inv-page:has([data-theme="noche"]) { --page: #04061a; }
 
 /* ---------- 12 · Tropical (premium): palmas, hibiscos y verano ---------- */
 [data-theme="tropical"] {
-  --bg: #fffbe9; --ink: #0f4a39; --muted: #4f7a6a;
-  --accent: #ff4f8b; --accent-d: #d92a6a; --on-accent: #fff; --line: rgba(15,107,79,.3);
+  --bg: #fffbe9; --ink: #0f4a39; --muted: #3f6c5c;
+  --accent: #ff4f8b; --accent-d: #c4235f; --btn: #d92a6a;
+  --f-msg: var(--f-body); --msg-style: normal; --on-accent: #fff; --line: rgba(15,107,79,.3);
   --f-display: 'Lilita One', system-ui, sans-serif; --f-body: 'Poppins', system-ui, sans-serif;
   --r-btn: 999px; --tw: 400; --ts: clamp(2.6rem, 12.5vw, 3.5rem);
   --cell-r: 14px; --cell-bg: #fff; --cell-bd: rgba(15,107,79,.3);
-  --title-color: #0f7a58; --day-color: #ff4f8b; --env-flap: #a6dcb8;
+  --title-color: #0f7a58; --day-color: #d92a6a; --env-flap: #a6dcb8;
   --deco-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 160'%3E%3Cdefs%3E%3Cg id='lf'%3E%3Cpath d='M0 0C24-16 84-16 128 0 84 16 24 16 0 0z'/%3E%3Cpath d='M6 0H120' stroke='%23fffbe9' stroke-opacity='.45' stroke-width='1.4' fill='none'/%3E%3C/g%3E%3Cg id='fan'%3E%3Cuse href='%23lf' transform='rotate(4) scale(1.1)' fill='%230f7a58'/%3E%3Cuse href='%23lf' transform='rotate(28) scale(1.25)' fill='%2312916a'/%3E%3Cuse href='%23lf' transform='rotate(52) scale(1.2)' fill='%230f7a58'/%3E%3Cuse href='%23lf' transform='rotate(76) scale(1)' fill='%2312916a'/%3E%3Cuse href='%23lf' transform='rotate(98) scale(.8)' fill='%230f7a58'/%3E%3C/g%3E%3Cg id='hb'%3E%3Cg fill='%23ff4f8b'%3E%3Cpath d='M0 0C-14-8-16-28 0-36 16-28 14-8 0 0z'/%3E%3Cpath d='M0 0C-14-8-16-28 0-36 16-28 14-8 0 0z' transform='rotate(72)'/%3E%3Cpath d='M0 0C-14-8-16-28 0-36 16-28 14-8 0 0z' transform='rotate(144)'/%3E%3Cpath d='M0 0C-14-8-16-28 0-36 16-28 14-8 0 0z' transform='rotate(216)'/%3E%3Cpath d='M0 0C-14-8-16-28 0-36 16-28 14-8 0 0z' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='7' fill='%23c2185b'/%3E%3Cpath d='M0 0L4-26' stroke='%23ffc93c' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='4' cy='-27' r='3' fill='%23ffc93c'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23fan' transform='translate(-6 -6)'/%3E%3Cuse href='%23fan' transform='translate(486 -6) scale(-1 1)'/%3E%3Cuse href='%23hb' transform='translate(70 96) scale(.95) rotate(-12)'/%3E%3Cuse href='%23hb' transform='translate(420 84) scale(.75) rotate(14)'/%3E%3Cg fill='%23ffc93c'%3E%3Ccircle cx='236' cy='20' r='4'/%3E%3Ccircle cx='254' cy='36' r='3'/%3E%3Ccircle cx='222' cy='42' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
   --deco-bottom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 120'%3E%3Cdefs%3E%3Cg id='lf'%3E%3Cpath d='M0 0C24-16 84-16 128 0 84 16 24 16 0 0z'/%3E%3Cpath d='M6 0H120' stroke='%23fffbe9' stroke-opacity='.45' stroke-width='1.4' fill='none'/%3E%3C/g%3E%3Cg id='fan'%3E%3Cuse href='%23lf' transform='rotate(4) scale(1.1)' fill='%230f7a58'/%3E%3Cuse href='%23lf' transform='rotate(28) scale(1.25)' fill='%2312916a'/%3E%3Cuse href='%23lf' transform='rotate(52) scale(1.2)' fill='%230f7a58'/%3E%3Cuse href='%23lf' transform='rotate(76) scale(1)' fill='%2312916a'/%3E%3C/g%3E%3C/defs%3E%3Cg transform='translate(0 126) scale(1 -1)'%3E%3Cuse href='%23fan' transform='translate(-6 0) scale(.9)'/%3E%3Cuse href='%23fan' transform='translate(486 0) scale(-.9 .9)'/%3E%3C/g%3E%3Cg fill='%23ffc93c'%3E%3Ccircle cx='240' cy='80' r='5'/%3E%3Ccircle cx='222' cy='92' r='3'/%3E%3Ccircle cx='258' cy='92' r='3'/%3E%3C/g%3E%3Cpath d='M170 90q18-12 36 0M274 90q18-12 36 0' stroke='%23ff4f8b' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 .inv[data-theme="tropical"] .inv-title { text-shadow: 2px 2px 0 #ffc93c; letter-spacing: .01em; }
 [data-theme="tropical"] .inv-date { border: 2px solid #0f7a58; border-radius: 18px; }
 [data-theme="tropical"] .inv-btn { font-weight: 600; border-width: 2px; }
+[data-theme="tropical"] .inv-guest { background: #fff; border: 2px solid #0f7a58; border-radius: 18px; }
+[data-theme="tropical"] .inv-guest-passes { border-top: 2px dashed #ff4f8b; color: #c4235f; }
+[data-theme="tropical"] .inv-msg { font-size: 1.1rem; line-height: 1.6; }
 [data-theme="tropical"] .inv-btn--primary { box-shadow: 0 4px 0 #b01c55; }
 .inv[data-theme="tropical"] { background: linear-gradient(#fff2c4 0, var(--bg) 35%); }
 body.inv-page:has([data-theme="tropical"]) { --page: #bfe6cf; }

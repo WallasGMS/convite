@@ -23,9 +23,10 @@ comparten por WhatsApp. El invitado abre el link, ve la invitación y confirma a
 ## Contratos (ya hechos, NO modificar)
 | Archivo | Qué expone |
 |---|---|
-| `js/codec.js` | `EVENTS` (tipos de evento), `normalize(obj)`, `encode(obj)→Promise<string>`, `decode(str)→Promise<obj>` |
-| `js/themes.js` | `THEMES` [{id,name,premium}], `themeById(id)` |
-| `js/render.js` | `render(rootEl, data, {premium, preview})` |
+| `js/codec.js` | `EVENTS` (tipos de evento), `normalize(obj)`, `guestFrom(search)`, `encode(obj)→Promise<string>`, `decode(str)→Promise<obj>` |
+| `js/themes.js` | `THEMES` [{id,name,premium,fonts}], `themeById(id)`, `loadThemeFonts(theme)` |
+| `js/render.js` | `render(rootEl, data, {premium, preview, guest})` |
+| `tools/test_core.mjs` | `node tools/test_core.mjs` debe imprimir `ok` |
 | `js/premium.js` | `isPremium(code)→Promise<bool>` |
 | `i.html` | Visor de invitación |
 | `tools/gen_codes.py` | Genera códigos premium (`private/` nunca se publica) |
@@ -33,21 +34,30 @@ comparten por WhatsApp. El invitado abre el link, ve la invitación y confirma a
 Datos de una invitación (claves cortas para links cortos):
 `t` tema, `e` evento, `h` nombre(s) protagonista, `s` subtítulo, `d` fecha `YYYY-MM-DDTHH:MM`,
 `l` lugar, `a` dirección, `m` link de Google Maps (https), `x` mensaje, `c` vestimenta,
-`g` mesa de regalos, `w` WhatsApp del anfitrión (solo dígitos con código de país, ej. 50212345678), `k` código premium.
+`g` mesa de regalos, `w` WhatsApp del anfitrión (solo dígitos con código de país, ej. 50212345678), `k` código premium,
+`f` “Con la bendición de” (padres/padrinos), `n` nombre del lugar de recepción, `b` dirección de la recepción, `o` hora de la recepción `HH:MM`.
+
+Invitado personalizado (premium): va en el query, no en el hash: `i.html?para=Familia%20Pérez&pases=4#<datos>`.
+`guestFrom(location.search)` en `js/codec.js` → `{name, passes}` o `null`; se pasa a `render(..., {guest})`.
+
+Eventos (`EVENTS`): cumple, xv, boda, baby, revelacion, bautizo, comunion, graduacion, aniversario, otro.
+Fuentes: cada tema declara su query de Google Fonts en `themes.js`; `render()` la carga sola (`loadThemeFonts`). Prohibido `@import` de fuentes en CSS.
 
 Marcado que produce `render()` (para estilos):
 ```
 .inv[data-theme][data-event]
   .inv-deco.inv-deco--top
   header.inv-head > .inv-kicker, h1.inv-title, .inv-sub
+  .inv-guest > p.inv-guest-name, p.inv-guest-passes                (solo premium con ?para/&pases)
   .inv-date > .inv-weekday, .inv-day, .inv-month, .inv-time
   .inv-countdown > .inv-cd-cell > .inv-cd-num, .inv-cd-label      (solo premium)
   p.inv-msg
+  section.inv-block  (en orden: “Con la bendición de”, “Lugar” o “Ceremonia”, “Recepción”, vestimenta, regalos)
   section.inv-block > h2.inv-block-title, p.inv-block-text, a.inv-btn
   .inv-actions > a.inv-btn.inv-btn--primary, a.inv-btn
   .inv-deco.inv-deco--bottom
 a.inv-brand                                   (marca de agua, solo gratis, hermano de .inv)
-.inv-envelope[data-theme] > .inv-envelope-seal, .inv-envelope-to, button.inv-envelope-btn
+.inv-envelope[data-theme] > .inv-envelope-seal, p.inv-envelope-label, p.inv-envelope-to, button.inv-envelope-btn
    al hacer clic recibe .is-open → debe tener una animation que termine (luego se elimina)
 .inv-error                                    (link inválido)
 body.inv-page > main.inv-root

@@ -14,18 +14,19 @@
 <body class="inv-page">
   <main id="app" class="inv-root"></main>
   <script type="module">
-    import { decode } from './js/codec.js';
+    import { decode, guestFrom } from './js/codec.js';
     import { render } from './js/render.js';
     import { isPremium } from './js/premium.js';
 
     addEventListener('hashchange', () => location.reload()); // same-tab link to another invitation
     const app = document.getElementById('app');
-    try {
+    // No top-level await: it breaks iOS 14, still common among guests.
+    (async () => {
       const data = await decode(location.hash.slice(1));
       if (!data.h) throw new Error('empty');
-      render(app, data, { premium: await isPremium(data.k) });
+      render(app, data, { premium: await isPremium(data.k, { allowDemo: true }), guest: guestFrom(location.search) });
       document.title = [data.s, data.h].filter(Boolean).join(' · ') + ' 💌';
-    } catch {
+    })().catch(() => {
       const p = document.createElement('p');
       p.className = 'inv-error';
       p.textContent = 'Este enlace de invitación no es válido o está incompleto. ';
@@ -34,7 +35,9 @@
       a.textContent = 'Crea una invitación';
       p.append(a);
       app.replaceChildren(p);
-    }
+    });
   </script>
+  <script nomodule>document.getElementById('app').innerHTML = '<p class="inv-error">Tu navegador es muy antiguo para abrir esta invitación. Actualízalo o ábrela en Chrome.</p>';</script>
+  <noscript><p class="inv-error">Activa JavaScript para ver esta invitación.</p></noscript>
 </body>
 </html>

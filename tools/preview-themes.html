@@ -16,11 +16,24 @@
     .pv > b span { margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: #4a453f; font-weight: 400; font-size: .72rem; }
     .pv > b span.premium { background: #d4af37; color: #1a1408; }
     .pv .inv { min-height: 0; border-radius: 18px; --px: 24px; }
+    .pv .stress { width: 320px; max-width: 100%; margin-top: 14px; }
+    .pv .stress .inv { --px: 28px; }
+    .pv small { display: block; margin: 14px 0 6px; color: #b8b2a8; font-size: .75rem; }
+    .pv .ok { color: #7fd99a; } .pv .bad { color: #ff8a80; font-weight: 700; }
+    .env-host .inv, .env-host .inv-brand { display: none; }
+    .bar { flex-wrap: wrap; display: flex; gap: 10px; align-items: center; margin: 0 0 20px; font-size: .9rem; }
+    .bar select, .bar button { font: inherit; padding: 6px 12px; border-radius: 8px; border: 1px solid #5a554e; background: #3a3631; color: #eee; cursor: pointer; }
   </style>
 </head>
 <body>
   <h1>Temas de Convite</h1>
-  <p class="lead">12 temas con datos de ejemplo (modo vista previa: con cuenta regresiva, sin sobre ni marca de agua).</p>
+  <p class="lead">12 temas con datos de ejemplo: pase de invitado (Familia Pérez, 4 pases), recepción y una tarjeta de texto largo a 320 px con revisión de desbordamiento.</p>
+  <div class="bar">
+    <label for="envTheme">Sobre animado:</label>
+    <select id="envTheme"></select>
+    <button id="envBtn" type="button">Mostrar sobre</button>
+    <span>(se cierra al abrirlo o con Esc)</span>
+  </div>
   <div class="grid" id="grid"></div>
   <script type="module">
     import { THEMES } from '../js/themes.js';
@@ -40,23 +53,66 @@
     const extra = {
       d: '2027-03-20T19:00', l: 'Salón Los Jardines', a: '5a avenida 10-20, zona 10, Ciudad de Guatemala',
       c: 'Formal', g: 'Liverpool y Amazon', w: '50212345678',
+      f: 'Sus padres Rosa Méndez y Luis Pérez',
+      n: 'Hacienda Santa Lucía', b: 'Km 14.5 Carretera a El Salvador', o: '21:30',
     };
+    const guest = { name: 'Familia Pérez', passes: 4 };
+    const long = 'María de los Ángeles Hernández Castillo y José Fernando Rodríguez';
+    const msg400 = ('Queremos compartir contigo un día que nunca olvidaremos, rodeados de la gente que más queremos. '
+      + 'Tu presencia es el mejor regalo y nos haría muy felices verte allí celebrando con nosotros. ').repeat(2).slice(0, 400);
+    const stress = {
+      h: long, s: 'Celebración de nuestro compromiso y bienvenida a la familia', x: msg400,
+      d: '2027-03-20T19:00', w: '50212345678', c: 'Formal elegante, colores claros, sin jeans',
+      l: 'Salón de Eventos Los Jardines de la Hacienda Santa Magdalena de las Flores',
+      a: 'Kilómetro 14.5 Carretera a El Salvador, Condominio Residencial Las Orquídeas, Santa Catarina Pinula',
+      f: long, n: 'Restaurante y Terraza Panorámica Vista Hermosa del Volcán de Agua', b: 'Diagonal 6, 12-42 Zona 10, Edificio Design Center, Nivel 12',
+      o: '21:30', g: 'Mesa de regalos en Liverpool, Amazon y transferencia bancaria ' + 'x'.repeat(40),
+    };
+    const stressGuest = { name: 'Familia Hernández Castillo de los Ángeles', passes: 12 };
 
     const grid = document.getElementById('grid');
+    const sel = document.getElementById('envTheme');
+    const mk = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; };
+
     for (const t of THEMES) {
-      const cell = document.createElement('div');
-      cell.className = 'pv';
-      const label = document.createElement('b');
-      label.textContent = `${t.id} · ${t.name}`;
-      const tag = document.createElement('span');
-      tag.textContent = t.premium ? 'premium' : 'gratis';
-      if (t.premium) tag.className = 'premium';
+      sel.append(new Option(`${t.id} · ${t.name}`, t.id));
+      const cell = mk('div', 'pv');
+      const label = mk('b', '', `${t.id} · ${t.name}`);
+      const tag = mk('span', t.premium ? 'premium' : '', t.premium ? 'premium' : 'gratis');
       label.append(tag);
-      const holder = document.createElement('div');
-      cell.append(label, holder);
+      const holder = mk('div');
+      const sHold = mk('div', 'stress');
+      const status = mk('small', '', 'Texto largo a 320px');
+      cell.append(label, holder, status, sHold);
       grid.append(cell);
-      render(holder, { ...base[byTheme[t.id]], ...extra, t: t.id }, { premium: true, preview: true });
+      const d = { ...base[byTheme[t.id]], ...extra, t: t.id };
+      render(holder, d, { premium: true, preview: true, guest });
+      render(sHold, { ...stress, e: d.e, t: t.id }, { premium: true, preview: true, guest: stressGuest });
+      // Revisa desbordamiento horizontal cuando carguen las fuentes
+      document.fonts.ready.then(() => setTimeout(() => {
+        const card = sHold.querySelector('.inv');
+        const wide = [card, ...card.querySelectorAll('*')].filter((n) => n.scrollWidth > n.clientWidth + 1 && getComputedStyle(n).display !== 'inline');
+        const out = card.scrollWidth > card.clientWidth + 1 || wide.length;
+        status.textContent = out ? 'Texto largo a 320px: DESBORDA (' + (wide[0]?.className || 'inv') + ')' : 'Texto largo a 320px: sin desbordamiento';
+        status.className = out ? 'bad' : 'ok';
+      }, 400));
     }
+
+    // Sobre animado del tema elegido
+    let envHost;
+    const showEnvelope = () => {
+      envHost?.remove();
+      envHost = mk('div', 'env-host');
+      document.body.append(envHost);
+      const t = sel.value;
+      const d = { ...base[byTheme[t]], ...extra, t };
+      render(envHost, d, { premium: true, preview: false, guest });
+    };
+    document.getElementById('envBtn').addEventListener('click', showEnvelope);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelector('.inv-envelope')?.remove(); });
+    // ?env=<tema> abre el sobre directo (útil para capturas)
+    const q = new URLSearchParams(location.search).get('env');
+    if (q) { sel.value = q; showEnvelope(); }
   </script>
 </body>
 </html>

@@ -6,8 +6,8 @@ Guía práctica para vender las primeras invitaciones. Todo lo que está aquí s
 
 | Qué | Precio | Qué incluye |
 |---|---|---|
-| Gratis | Q0 | 4 temas, marca de agua "Hecha con Convite" |
-| Premium (autoservicio) | Q35 por invitación | 12 temas, sin marca, cuenta regresiva, sobre animado. Se activa con un código `CNV-XXXX-XXXX` |
+| Gratis | Q0 | 4 temas, marca de agua "Hecha con Convite", ceremonia y recepción en lugares distintos, línea "Con la bendición de" (padres o padrinos), tipos de evento nuevos: primera comunión, revelación de género y aniversario |
+| Premium (autoservicio) | Q35 por invitación | 12 temas, sin marca, cuenta regresiva, sobre animado y **pases personalizados por invitado**: cada familia tiene su link con su nombre y cuántas personas pueden venir ("Familia Pérez · Pase válido para 4 personas"). Se activa con un código `CNV-XXXX-XXXX`. **Un código por evento cubre todos los links de invitados** (hasta 300) |
 | Te la hago yo | Q75 | Lo hacemos juntos por WhatsApp: tú me das los datos y yo la armo y te la entrego lista |
 
 Link para compartir: https://wallasgms.github.io/convite/ (editor directo: https://wallasgms.github.io/convite/crear.html)
@@ -23,7 +23,7 @@ Objetivo: primera venta antes de que termine el día. Son pasos concretos, en or
 - [ ] Abre https://wallasgms.github.io/convite/crear.html y crea una invitación de prueba de cualquier evento. Cronometra cuánto tardas: si pasa de 5 minutos, revisa el paso que te frena.
 - [ ] Abre el link generado en tu iPhone y en un Android. Revisa que el texto se lea, que la fecha esté bien y que el botón de WhatsApp funcione. No vendas algo que no has probado.
 - [ ] Escribe a 5 personas de tu círculo que tengan evento en los próximos 60 días (XV, boda, bautizo, cumpleaños, graduación). Pregunta: "¿Ya tienes la invitación?" Esa es tu primera lista de prospectos.
-- [ ] Publica 2 de los 10 mensajes de la sección 2 en grupos donde esté permitido (lee primero las reglas del grupo). Un mensaje por grupo, nunca el mismo texto en varios grupos el mismo minuto.
+- [ ] Publica 2 de los 13 mensajes de la sección 2 en grupos donde esté permitido (lee primero las reglas del grupo). Un mensaje por grupo, nunca el mismo texto en varios grupos el mismo minuto.
 - [ ] Graba un video de 20 segundos siguiendo el guion 1 o el guion 2 de la sección 3. Publícalo en TikTok, Reels o Facebook.
 - [ ] Abre `private/codes.csv` y cuenta cuántas filas tienen `vendido_a` vacío. Si quedan menos de 10, genera más (sección 5) y republica el sitio antes de vender.
 - [ ] Define cómo te van a pagar (transferencia, depósito o pasarela cuando esté lista) y deja el dato listo para copiar.
@@ -34,7 +34,7 @@ Objetivo: primera venta antes de que termine el día. Son pasos concretos, en or
 
 ---
 
-## 2. Diez mensajes para grupos (Facebook y WhatsApp)
+## 2. Trece mensajes para grupos (Facebook y WhatsApp)
 
 Reemplaza `[LINK]` por https://wallasgms.github.io/convite/crear.html. Ajusta el saludo si el grupo es de otra ciudad. Varios grupos no permiten publicidad: si el admin lo prohíbe, pide permiso antes de publicar.
 
@@ -68,9 +68,18 @@ Graduación a la vista? Una invitación digital para compartir con familia y ami
 **10. Varios eventos**
 Si organizas un evento y quieres una invitación rápida para mandar por WhatsApp, hice una herramienta para eso: eliges el tipo de evento, escribes los datos y compartes el link. Gratis para empezar: [LINK]
 
+**11. Bodas: control de invitados**
+Para las parejas que ya tienen su lista de invitados: con las invitaciones premium, cada familia recibe su propio link con su nombre y cuántas personas pueden venir, por ejemplo "Familia Pérez · Pase válido para 4 personas". Cuando confirman por WhatsApp, la respuesta llega con el nombre de la familia y sus pases. Así el cupo de la boda queda claro desde el inicio. Los pases personalizados son parte del premium; puedes crear tu invitación gratis y ver cómo queda: [LINK]
+
+**12. Primera comunión**
+Para las familias que preparan la primera comunión: una invitación digital con la ceremonia en la iglesia y la recepción en otro lugar, cada una con su dirección y hora. Puede llevar la línea "Con la bendición de" con los nombres de papás y padrinos. Se hace desde el celular y se comparte por WhatsApp con un solo link. Pruébala gratis: [LINK]
+
+**13. Revelación de género**
+¿Preparan la revelación de género? Avisa a familia y amigos con una invitación digital: fecha, lugar y hora, con un mensaje divertido para la sorpresa. Se crea en minutos y se manda por WhatsApp. Gratis para empezar: [LINK]
+
 ---
 
-## 3. Cinco guiones para TikTok y Reels (15 a 30 segundos)
+## 3. Seis guiones para TikTok y Reels (15 a 30 segundos)
 
 Formato de cada guion: gancho (primeros 2 segundos), guion hablado o texto en pantalla, y plano a plano. Graba la pantalla del celular con el editor real. No uses testimonios falsos ni cifras que no tengas.
 
@@ -123,6 +132,16 @@ Formato de cada guion: gancho (primeros 2 segundos), guion hablado o texto en pa
   4. 18-25 s: captura de la página de la invitación con el botón de confirmar asistencia.
   5. 25-30 s: tú, cierre con texto: "Gratis para empezar: [LINK]".
 
+### Guion 6: "Un pase para cada familia" (20 s)
+- **Gancho (texto en pantalla):** "Así sabes cuántos llegan a la boda"
+- **Voz o texto:** "Cada familia tiene su propio link. Dice su nombre y cuántas personas pueden venir. Y cuando confirman por WhatsApp, te llega con ese nombre."
+- **Plano a plano:**
+  1. 0-3 s: tú a cámara, con texto en pantalla: "¿Cuántos van a llegar?"
+  2. 3-8 s: captura del editor creando el link de una familia. Antes de grabar, verifica que el campo de invitado ya esté en tu versión.
+  3. 8-14 s: captura de la invitación abierta en el celular, mostrando "Familia Pérez · Pase válido para 4 personas".
+  4. 14-18 s: captura de la confirmación por WhatsApp con el nombre y los pases.
+  5. 18-20 s: texto final: "Un pase para cada familia · Premium: [LINK]".
+
 **Consejos para grabar:** vertical 9:16, buena luz, sube el video con subtítulos (muchos lo ven sin sonido) y responde los comentarios del día de la publicación.
 
 ---
@@ -141,13 +160,19 @@ Sí, antes de compartirla puedes cambiarla todas las veces que quieras. Ojo: la 
 **"¿Funciona en iPhone?"**
 Sí. Es una página web normal: se abre en Safari o en cualquier navegador del celular, sin instalar nada. Antes de vender, prueba tú mismo el link en tu iPhone (paso 2 del plan del día 1).
 
+**"¿Puedo mandar una invitación distinta a cada familia?"**
+Sí, con el premium. Cada familia recibe su propio link con su nombre y su pase, por ejemplo "Familia Pérez · Pase válido para 4 personas". La invitación es la misma; solo cambian el nombre y la cantidad de pases. Si no necesitas eso, la gratis sirve con un solo link para todos.
+
+**"¿Cómo sé cuántos van a llegar?"**
+Con los pases personalizados, cada familia tiene un máximo de personas escrito en su invitación. Cuando confirman por WhatsApp, la respuesta llega con su nombre y sus pases, así ves quién respondió. El pase marca el máximo por familia; el número final lo confirmas tú con cada una.
+
 **"¿Por qué no Canva?"**
 Canva sirve si quieres diseñar desde cero y tienes tiempo para eso. Convite es para tener la invitación lista en minutos, sin diseñar, y para que los invitados la abran directo desde WhatsApp y confirmen asistencia con un botón. Si te gusta diseñar, usa Canva; si quieres avisar rápido, usa Convite.
 
 **Otras que pueden salir:**
 - **"¿Cómo pago?"** Con transferencia o depósito. Te paso el dato y, en cuanto lo recibo, te mando el código.
 - **"¿Se puede pagar después de hacerla?"** La marca de agua se quita con el código premium. Hazla gratis primero, y cuando te guste, compras el código.
-- **"¿Cuántos invitados puedo tener?"** Puedes compartir el link con todos los invitados que quieras: cualquiera que tenga el link lo puede abrir.
+- **"¿Cuántos invitados puedo tener?"** Puedes compartir el link con todos los invitados que quieras: cualquiera que tenga el link lo puede abrir. Si quieres fijar cuántas personas trae cada familia, eso se hace con los pases personalizados del premium.
 
 ---
 

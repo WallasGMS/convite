@@ -28,14 +28,17 @@
 
       <section class="ed-step">
         <h2><span class="ed-n">2</span> Cuéntanos los detalles</h2>
+        <button type="button" id="sample" class="ed-link">Llenar con un ejemplo</button>
         <label>Nombre de quien celebra
-          <input id="h" maxlength="60" placeholder="Ej. Valeria">
+          <input id="h" maxlength="60" placeholder="Ej. Valeria" aria-describedby="err-h">
+          <span id="err-h" class="ed-msg ed-msg--err" aria-live="polite"></span>
         </label>
         <label>Subtítulo
           <input id="s" maxlength="60">
         </label>
         <label>Fecha y hora
-          <input id="d" type="datetime-local">
+          <input id="d" type="datetime-local" aria-describedby="err-d">
+          <span id="err-d" class="ed-msg ed-msg--err" aria-live="polite"></span>
         </label>
         <label>Nombre del lugar
           <input id="l" maxlength="80" placeholder="Ej. Salón Los Arcos">
@@ -43,25 +46,46 @@
         <label>Dirección
           <input id="a" maxlength="160" placeholder="Calle, zona, ciudad">
         </label>
-        <label>Enlace de Google Maps <small>(opcional)</small>
-          <input id="m" type="url" maxlength="500" placeholder="https://maps.app.goo.gl/...">
-        </label>
+        <label class="ed-check"><input id="rec" type="checkbox"> <span>La recepción es en otro lugar</span></label>
+        <div id="rec-box" class="ed-sub" hidden>
+          <label>Nombre del lugar de la recepción
+            <input id="n" maxlength="80" placeholder="Ej. Hacienda San Jerónimo">
+          </label>
+          <label>Dirección de la recepción
+            <input id="b" maxlength="160" placeholder="Calle, zona, ciudad">
+          </label>
+          <label>Hora de la recepción
+            <input id="o" type="time">
+          </label>
+        </div>
         <label>Mensaje para tus invitados
           <textarea id="x" rows="3" maxlength="400" placeholder="Ej. Será una noche inolvidable y quiero compartirla contigo."></textarea>
         </label>
-        <label>Código de vestimenta <small>(opcional)</small>
-          <input id="c" maxlength="80" placeholder="Ej. Formal, tonos pastel">
-        </label>
-        <label>Mesa de regalos <small>(opcional)</small>
-          <input id="g" maxlength="200" placeholder="Ej. Lluvia de sobres, o enlace a tu lista">
-        </label>
         <div class="ed-field">
-          <span class="ed-label">Tu WhatsApp para recibir confirmaciones</span>
+          <label for="wn" class="ed-label">Tu WhatsApp para recibir confirmaciones</label>
           <div class="ed-wa">
             <select id="cc" aria-label="País"></select>
-            <input id="wn" type="tel" inputmode="numeric" maxlength="14" placeholder="1234 5678" aria-label="Número de WhatsApp">
+            <input id="wn" type="tel" inputmode="numeric" maxlength="14" placeholder="1234 5678" aria-describedby="err-wn">
           </div>
+          <p id="err-wn" class="ed-msg ed-msg--err" aria-live="polite"></p>
         </div>
+        <details id="more" class="ed-more">
+          <summary>Más detalles (opcional)</summary>
+          <div class="ed-more-in">
+            <label>Con la bendición de
+              <textarea id="f" rows="2" maxlength="200" placeholder="Mis padres: Ana Gómez y Luis López · Padrinos: ..."></textarea>
+            </label>
+            <label>Código de vestimenta
+              <input id="c" maxlength="80" placeholder="Ej. Formal, tonos pastel">
+            </label>
+            <label>Mesa de regalos
+              <input id="g" maxlength="200" placeholder="Ej. Lluvia de sobres, o enlace a tu lista">
+            </label>
+            <label>Enlace de Google Maps
+              <input id="m" type="url" maxlength="500" placeholder="https://maps.app.goo.gl/...">
+            </label>
+          </div>
+        </details>
       </section>
 
       <section class="ed-step">
@@ -79,7 +103,11 @@
 
       <section class="ed-step ed-final">
         <button type="submit" class="ed-btn ed-btn--main">Generar invitación</button>
-        <p id="err" class="ed-msg ed-msg--err" role="alert"></p>
+
+        <div id="warn" class="ed-card" hidden>
+          <p id="warn-text" role="status" aria-live="polite"></p>
+          <button type="button" id="force" class="ed-btn">Generar de todos modos</button>
+        </div>
 
         <div id="buy" class="ed-card" hidden>
           <h3>Este diseño es premium</h3>
@@ -95,6 +123,24 @@
             <a id="share-wa" class="ed-btn ed-btn--main" target="_blank" rel="noopener">Compartir por WhatsApp</a>
             <a id="open" class="ed-btn" target="_blank" rel="noopener">Abrir</a>
             <button type="button" id="share" class="ed-btn" hidden>Más opciones</button>
+          </div>
+
+          <div class="ed-guests">
+            <h3>Pases personalizados por invitado</h3>
+            <div id="guests-lock" hidden>
+              <p><svg class="ed-lock-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M7 10V8a5 5 0 0 1 10 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2 0h6V8a3 3 0 0 0-6 0z"/></svg>
+              Crea un enlace distinto para cada familia, con su nombre y número de pases (“Familia Pérez · Pase para 4 personas”). Cada quien confirma con su nombre. Es parte del diseño premium.</p>
+              <a id="guests-buy" class="ed-btn ed-btn--main" target="_blank" rel="noopener">Pedir mi código por WhatsApp</a>
+            </div>
+            <div id="guests-on" hidden>
+              <label>Un invitado por línea, con pases opcionales
+                <textarea id="gl" rows="5" placeholder="Familia Pérez, 4&#10;Tía Carmen, 2&#10;Don Luis"></textarea>
+              </label>
+              <button type="button" id="gmake" class="ed-btn">Crear enlaces</button>
+              <p id="gmsg" class="ed-msg" aria-live="polite"></p>
+              <ul id="glist" class="ed-glist"></ul>
+              <button type="button" id="gcopy" class="ed-btn" hidden>Copiar todos</button>
+            </div>
           </div>
         </div>
       </section>
