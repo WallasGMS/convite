@@ -6,7 +6,7 @@ comparten por WhatsApp. El invitado abre el link, ve la invitación y confirma a
 
 - **Sin servidor.** Todos los datos van dentro del link (`i.html#<datos comprimidos>`). Hosting gratis, escala infinita.
 - **Crecimiento viral.** Cada invitación gratis lleva “Hecha con Convite · Crea la tuya gratis”. 1 cliente = 50-200 invitados que lo ven.
-- **Cobro.** Gratis: 4 temas + marca de agua. Premium (Q35 / USD 4.99 por invitación): 12 temas, sin marca,
+- **Cobro.** Gratis: 6 temas + marca de agua. Premium (Q35 / USD 4.99 por invitación): 24 temas, personalizador (color, letra, adorno), sin marca,
   cuenta regresiva, sobre animado al abrir. Se desbloquea con un código `CNV-XXXX-XXXX`.
 - **Día 1:** el dueño vende códigos a mano (transferencia / WhatsApp) o cobra Q75 por hacer la invitación él mismo.
 - **Pasarela de pago:** al final (Lemon Squeezy o Gumroad, que pagan a PayPal y funcionan desde Guatemala).

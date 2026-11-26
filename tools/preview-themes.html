@@ -27,7 +27,7 @@
 </head>
 <body>
   <h1>Temas de Convite</h1>
-  <p class="lead">12 temas con datos de ejemplo: pase de invitado (Familia Pérez, 4 pases), recepción y una tarjeta de texto largo a 320 px con revisión de desbordamiento.</p>
+  <p class="lead">24 temas con datos de ejemplo: pase de invitado (Familia Pérez, 4 pases), recepción y una tarjeta de texto largo a 320 px con revisión de desbordamiento.</p>
   <div class="bar">
     <label for="envTheme">Sobre animado:</label>
     <select id="envTheme"></select>
@@ -49,6 +49,8 @@
       clasico: 'boda', fiesta: 'cumple', minimal: 'cumple', cielo: 'baby',
       floral: 'boda', dorado: 'boda', 'xv-rosa': 'xv', 'boda-salvia': 'boda',
       'bebe-azul': 'baby', 'bebe-rosa': 'baby', noche: 'xv', tropical: 'cumple',
+      globos: 'cumple', deportivo: 'cumple', rustico: 'boda', boho: 'boda', vintage: 'boda', 'negro-oro': 'boda',
+      religioso: 'baby', playa: 'cumple', mexicana: 'xv', princesa: 'xv', graduacion: 'cumple', acuarela: 'boda',
     };
     const extra = {
       d: '2027-03-20T19:00', l: 'Salón Los Jardines', a: '5a avenida 10-20, zona 10, Ciudad de Guatemala',
@@ -97,6 +99,10 @@
         status.className = out ? 'bad' : 'ok';
       }, 400));
     }
+
+    // ?orn=<flores|hojas|estrellas|mariposas|corazones|ninguno> pone data-orn en todas las tarjetas
+    const orn = new URLSearchParams(location.search).get('orn');
+    if (orn) document.querySelectorAll('.inv').forEach((n) => n.setAttribute('data-orn', orn));
 
     // Sobre animado del tema elegido
     let envHost;

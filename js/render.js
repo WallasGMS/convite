@@ -1,5 +1,5 @@
 import { EVENTS } from './codec.js';
-import { themeById, loadThemeFonts } from './themes.js';
+import { themeById, loadThemeFonts, FONTS, ORNAMENTS } from './themes.js';
 
 // Data comes from a URL anyone can craft: build DOM with textContent only, never innerHTML.
 function el(tag, cls, text) {
@@ -25,6 +25,22 @@ function block(title, ...lines) {
 const mapsSearch = (...parts) =>
   'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(parts.filter(Boolean).join(', '));
 
+// Directions: a confirmed pin ("lat,lng") gives Waze and Maps the exact spot; an address alone is searched;
+// a venue name alone gets no button (it would send guests to the wrong place).
+function navButtons(name, address, pin, mapsUrl) {
+  const box = el('div', 'inv-nav');
+  if (pin) {
+    box.append(link('inv-btn inv-btn--waze', 'Ir con Waze', `https://waze.com/ul?ll=${pin}&navigate=yes`),
+      link('inv-btn', 'Google Maps', 'https://www.google.com/maps/search/?api=1&query=' + pin));
+  } else if (address) {
+    box.append(link('inv-btn inv-btn--waze', 'Ir con Waze', 'https://waze.com/ul?navigate=yes&q=' + encodeURIComponent([address, name].filter(Boolean).join(', '))),
+      link('inv-btn', 'Google Maps', mapsUrl || mapsSearch(name, address)));
+  } else if (mapsUrl) {
+    box.append(link('inv-btn', 'Ver ubicación', mapsUrl));
+  }
+  return box.children.length ? box : null;
+}
+
 const pad = (n) => String(n).padStart(2, '0');
 const stamp = (d) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
 const isApple = () => /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
@@ -49,6 +65,55 @@ function calendarLink(data, date) {
   return { href: URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })), download: 'evento.ics' };
 }
 
+// ---------- premium customizer: user accent color, title font, ornament ----------
+const hex2rgb = (h) => (h.length === 3 ? [...h].map((c) => c + c) : h.match(/../g)).map((x) => parseInt(x, 16));
+const rgb2hex = (c) => '#' + c.map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
+const lum = (c) => {
+  const [r, g, b] = c.map((v) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+// Push `c` toward black (light bg) or white (dark bg) until it reaches `min` contrast: any picked color stays readable.
+function readable(c, bg, min) {
+  const to = lum(bg) > 0.4 ? [0, 0, 0] : [255, 255, 255];
+  for (let t = 0; t <= 1; t += 0.05) { const m = mix(c, to, t); if (contrast(m, bg) >= min) return m; }
+  return to;
+}
+function themeBg(node) {
+  const v = getComputedStyle(node).getPropertyValue('--bg').trim();
+  const m = v.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  return m ? hex2rgb(m[1]) : [255, 255, 255];
+}
+
+// CSS variables to set on the card and its envelope (both carry data-theme).
+function customVars(data, node) {
+  const vars = {};
+  if (data.y) {
+    const c = hex2rgb(data.y), bg = themeBg(node), white = [255, 255, 255], dark = [26, 26, 26];
+    let btn = c, on = '#fff';
+    if (contrast(c, white) < 4.5) {
+      if (contrast(c, dark) >= 4.5) on = '#1a1a1a';
+      else btn = readable(c, white, 4.5);
+    }
+    Object.assign(vars, {
+      '--accent': '#' + data.y, '--accent-d': rgb2hex(readable(c, bg, 4.5)),
+      '--btn': rgb2hex(btn), '--on-accent': on,
+      '--line': `#${data.y}73`, '--cell-bd': `#${data.y}73`,
+      '--title-color': rgb2hex(readable(c, bg, 3)), '--day-color': rgb2hex(readable(c, bg, 3)),
+      '--env-flap': rgb2hex(mix(c, bg, 0.7)),
+    });
+  }
+  const font = FONTS.find((f) => f.id === data.z);
+  if (font) {
+    loadThemeFonts(font);
+    Object.assign(vars, { '--f-display': font.css, '--tw': font.w });
+    if (font.script) Object.assign(vars, { '--f-msg': 'var(--f-body)', '--msg-style': 'normal' });
+  }
+  return vars;
+}
+const applyVars = (node, vars) => { for (const [k, v] of Object.entries(vars)) node.style.setProperty(k, v); };
+
 function countdown(date) {
   const box = el('div', 'inv-countdown');
   const units = [['días', 86400e3], ['horas', 3600e3], ['min', 60e3], ['seg', 1e3]];
@@ -70,7 +135,8 @@ function countdown(date) {
 
 /**
  * Render an invitation into `root` (replaces its content).
- * opts.premium: unlocks premium themes, removes watermark, enables countdown, envelope intro and guest passes.
+ * opts.premium: unlocks premium themes, removes watermark, enables countdown, envelope intro, guest passes
+ *   and the customizer (data.y color, data.z font, data.u ornament).
  * opts.preview: editor preview (no envelope intro, links still work).
  * opts.guest: {name, passes} from guestFrom(location.search); shown only when premium.
  */
@@ -117,7 +183,8 @@ export function render(root, data, { premium = false, preview = false, guest = n
   const second = data.n || data.b;
   if (data.l || data.a) {
     const place = block(second ? 'Ceremonia' : 'Lugar', data.l, data.a);
-    place.append(link('inv-btn', 'Ver ubicación', data.m || mapsSearch(data.l, data.a)));
+    const nav = navButtons(data.l, data.a, data.p, data.m);
+    if (nav) place.append(nav);
     inv.append(place);
   }
   if (second) {
@@ -127,7 +194,8 @@ export function render(root, data, { premium = false, preview = false, guest = n
       time = new Date(2000, 0, 1, hh, mm).toLocaleTimeString('es', { hour: 'numeric', minute: '2-digit', hour12: true });
     }
     const rec = block('Recepción', data.n, data.b, time && 'A las ' + time);
-    rec.append(link('inv-btn', 'Ver ubicación', mapsSearch(data.n, data.b)));
+    const nav = navButtons(data.n, data.b, data.q);
+    if (nav) rec.append(nav);
     inv.append(rec);
   }
   if (data.c) inv.append(block('Código de vestimenta', data.c));
@@ -151,6 +219,13 @@ export function render(root, data, { premium = false, preview = false, guest = n
 
   root.replaceChildren(inv);
 
+  let custom = {};
+  if (premium) {
+    custom = customVars(data, inv); // after insertion: reads the theme's computed --bg
+    applyVars(inv, custom);
+    if (ORNAMENTS.some((o) => o.id === data.u)) inv.dataset.orn = data.u;
+  }
+
   if (!premium) {
     const brand = el('a', 'inv-brand', 'Hecha con Convite · Crea la tuya gratis');
     brand.href = new URL('crear.html', document.baseURI).href;
@@ -164,6 +239,7 @@ export function render(root, data, { premium = false, preview = false, guest = n
     env.setAttribute('aria-label', 'Invitación cerrada');
     inv.inert = true;
     env.dataset.theme = theme.id;
+    applyVars(env, custom);
     const btn = el('button', 'inv-envelope-btn', 'Abrir invitación');
     btn.type = 'button';
     env.append(

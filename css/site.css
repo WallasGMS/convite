@@ -185,3 +185,4 @@ section.flush { padding-top: 0; }
   .btn:hover { transform: none; }
 }
 .lost .lead { margin-inline: auto; }
+.service + .service { margin-top: 1.25rem; }

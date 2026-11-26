@@ -19,6 +19,10 @@
   </header>
 
   <div class="ed-layout">
+    <aside class="ed-side" aria-label="Vista previa">
+      <p class="ed-side-label">Así la verán tus invitados</p>
+      <div class="ed-phone"><div id="preview" class="ed-screen inv-root"></div></div>
+    </aside>
     <form id="form" class="ed-form" autocomplete="off" novalidate>
 
       <section class="ed-step">
@@ -46,6 +50,12 @@
         <label>Dirección
           <input id="a" maxlength="160" placeholder="Calle, zona, ciudad">
         </label>
+        <div class="ed-pin">
+          <button type="button" class="ed-btn ed-pin-btn" id="pin-p" data-pin="p">Marcar en el mapa para Waze</button>
+          <p id="pin-p-msg" class="ed-msg" aria-live="polite"></p>
+          <button type="button" class="ed-link" id="pin-p-clear" data-clear="p" hidden>Quitar ubicación del mapa</button>
+          <input type="hidden" id="p">
+        </div>
         <label class="ed-check"><input id="rec" type="checkbox"> <span>La recepción es en otro lugar</span></label>
         <div id="rec-box" class="ed-sub" hidden>
           <label>Nombre del lugar de la recepción
@@ -54,6 +64,12 @@
           <label>Dirección de la recepción
             <input id="b" maxlength="160" placeholder="Calle, zona, ciudad">
           </label>
+          <div class="ed-pin">
+            <button type="button" class="ed-btn ed-pin-btn" id="pin-q" data-pin="q">Marcar en el mapa para Waze</button>
+            <p id="pin-q-msg" class="ed-msg" aria-live="polite"></p>
+            <button type="button" class="ed-link" id="pin-q-clear" data-clear="q" hidden>Quitar ubicación del mapa</button>
+            <input type="hidden" id="q">
+          </div>
           <label>Hora de la recepción
             <input id="o" type="time">
           </label>
@@ -91,8 +107,21 @@
       <section class="ed-step">
         <h2><span class="ed-n">3</span> Elige el diseño</h2>
         <div id="themes" class="ed-themes" role="radiogroup" aria-label="Diseño"></div>
+        <fieldset class="ed-custom">
+          <legend>Hazlo tuyo <span class="ed-lock ed-lock--inline">Premium</span></legend>
+          <label class="ed-check"><input id="ycus" type="checkbox"> <span>Usar mi propio color</span></label>
+          <label id="y-box" class="ed-color" hidden>Color principal
+            <input id="y" type="color" value="#8e5bd0">
+          </label>
+          <label>Letra del nombre
+            <select id="z"><option value="">La del diseño</option></select>
+          </label>
+          <label>Adorno
+            <select id="u"><option value="">El del diseño</option></select>
+          </label>
+        </fieldset>
         <div class="ed-code">
-          <label for="k">Código premium <small>(desbloquea los 12 diseños, sin marca, cuenta regresiva y sobre animado)</small></label>
+          <label for="k">Código premium <small>(desbloquea todos los diseños, tu color, letra y adorno, sin marca, cuenta regresiva y sobre animado)</small></label>
           <div class="ed-code-row">
             <input id="k" maxlength="24" placeholder="CNV-XXXX-XXXX" autocapitalize="characters">
             <button type="button" id="apply" class="ed-btn">Aplicar</button>
@@ -110,8 +139,8 @@
         </div>
 
         <div id="buy" class="ed-card" hidden>
-          <h3>Este diseño es premium</h3>
-          <p>Escribe tu código arriba y toca Aplicar, o consigue uno por Q35 (USD 4.99) por invitación. Mientras tanto puedes elegir un diseño gratis.</p>
+          <h3 id="buy-title">Este diseño es premium</h3>
+          <p>Escribe tu código en el paso 3 y toca Aplicar, o consigue uno por Q35 (USD 4.99) por invitación. Si prefieres la versión gratis, elige un diseño sin la etiqueta Premium y deja el color, la letra y el adorno como vienen.</p>
           <a id="buy-wa" class="ed-btn" target="_blank" rel="noopener">Pedir mi código por WhatsApp</a>
         </div>
 
@@ -146,11 +175,23 @@
       </section>
     </form>
 
-    <aside class="ed-side" aria-label="Vista previa">
-      <p class="ed-side-label">Así la verán tus invitados</p>
-      <div class="ed-phone"><div id="preview" class="ed-screen inv-root"></div></div>
-    </aside>
   </div>
+
+  <dialog id="map-dlg" class="ed-map-dlg" aria-labelledby="map-title">
+    <h3 id="map-title">¿Dónde es exactamente?</h3>
+    <p class="ed-map-help">Busca la dirección y toca el mapa o arrastra el pin hasta la entrada del lugar. Así Waze y Google Maps llevan a tus invitados al punto exacto.</p>
+    <div class="ed-code-row">
+      <input id="map-q" maxlength="160" placeholder="Dirección o nombre del lugar" aria-label="Buscar dirección">
+      <button type="button" id="map-find" class="ed-btn">Buscar</button>
+    </div>
+    <p id="map-msg" class="ed-msg" role="status"></p>
+    <div id="map" class="ed-map"></div>
+    <div class="ed-map-actions">
+      <button type="button" id="map-me" class="ed-link">Usar mi ubicación actual</button>
+      <button type="button" id="map-cancel" class="ed-btn">Cancelar</button>
+      <button type="button" id="map-ok" class="ed-btn ed-btn--main">Confirmar ubicación</button>
+    </div>
+  </dialog>
 
   <script type="module" src="js/editor.js"></script>
 </body>

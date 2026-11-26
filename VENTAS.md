@@ -6,9 +6,10 @@ Guía práctica para vender las primeras invitaciones. Todo lo que está aquí s
 
 | Qué | Precio | Qué incluye |
 |---|---|---|
-| Gratis | Q0 | 4 temas, marca de agua "Hecha con Convite", ceremonia y recepción en lugares distintos, línea "Con la bendición de" (padres o padrinos), tipos de evento nuevos: primera comunión, revelación de género y aniversario |
-| Premium (autoservicio) | Q35 por invitación | 12 temas, sin marca, cuenta regresiva, sobre animado y **pases personalizados por invitado**: cada familia tiene su link con su nombre y cuántas personas pueden venir ("Familia Pérez · Pase válido para 4 personas"). Se activa con un código `CNV-XXXX-XXXX`. **Un código por evento cubre todos los links de invitados** (hasta 300) |
+| Gratis | Q0 | 6 diseños, marca de agua "Hecha con Convite", ceremonia y recepción en lugares distintos, línea "Con la bendición de" (padres o padrinos), tipos de evento nuevos: primera comunión, revelación de género y aniversario |
+| Premium (autoservicio) | Q35 por invitación | 24 diseños, **su propio color, letra del nombre y adorno** (flores, hojas, estrellas, mariposas, corazones), sin marca, cuenta regresiva, sobre animado y **pases personalizados por invitado**: cada familia tiene su link con su nombre y cuántas personas pueden venir ("Familia Pérez · Pase válido para 4 personas"). Se activa con un código `CNV-XXXX-XXXX`. **Un código por evento cubre todos los links de invitados** (hasta 300) |
 | Te la hago yo | Q75 | Lo hacemos juntos por WhatsApp: tú me das los datos y yo la armo y te la entrego lista |
+| Diseño exclusivo | Q200 | Un diseño hecho solo para el cliente a partir de una foto de referencia. No aparece en el catálogo. Incluye premium y pases. Ver sección 5b |
 
 Link para compartir: https://wallasgms.github.io/convite/ (editor directo: https://wallasgms.github.io/convite/crear.html)
 
@@ -205,6 +206,25 @@ python tools/gen_codes.py 50
 Eso agrega 50 códigos nuevos a `private/codes.csv` (con `vendido_a` vacío) y actualiza `js/codes.js` con las huellas de todos los códigos. Ese archivo sí se publica.
 
 **Importante:** después de generar códigos, hay que **republicar el sitio** (subir los cambios a GitHub Pages). Hasta que se republique, los códigos nuevos no funcionan en la página. Pásale el código al cliente solo después de republicar.
+
+---
+
+## 5b. Cómo hacer un diseño exclusivo (Q200)
+
+Antes de cobrar, pregunta: ¿el personalizador premium (color, letra, adorno) ya le resuelve? Si sí, véndele el premium de Q35 y ahórrate trabajo. El exclusivo es para quien quiere algo que no existe en el catálogo.
+
+1. Cobra el 50% por adelantado. Pide: foto(s) de referencia, colores, tipo de evento y nombre.
+2. Abre Claude Code en la carpeta del proyecto y pega esto (cambia lo que está entre corchetes):
+
+   > Crea un tema exclusivo para Convite con id `ex-[apellido]-[mmdd]` (máximo 20 caracteres), `premium: true, hidden: true`, en `js/themes.js` y `css/invite.css`, siguiendo la estructura de los temas existentes. Estilo: [descripción + adjunta la imagen de referencia]. Colores: [...]. Decoraciones SVG planas, no realistas. Contraste AA. Corre `node tools/test_core.mjs`, revísalo en `tools/preview-themes.html`, haz commit y push.
+
+3. Cuando esté publicado (1 a 2 minutos después del push), manda al cliente su link de editor:
+   `https://wallasgms.github.io/convite/crear.html?t=ex-[apellido]-[mmdd]`
+   Solo con ese link aparece su diseño. Cobra el resto, mándale un código premium (sección 5) y que llene sus datos. O llénalos tú si también pagó "Te la hago yo".
+4. Anota en `private/codes.csv`, junto al código, `exclusivo ex-[apellido]-[mmdd]`.
+
+### Plantilla de WhatsApp
+> ¡Listo [NOMBRE]! Tu diseño exclusivo ya está creado. Ábrelo aquí para llenar tus datos: [LINK]. Tu código premium es **[CÓDIGO]**: pégalo en el paso 3 y toca "Aplicar". Este diseño es solo tuyo, no aparece en el catálogo.
 
 ---
 

@@ -1,7 +1,7 @@
 const SELLER_WA = '50230801909';
 
 import { EVENTS, encode } from './codec.js';
-import { THEMES } from './themes.js';
+import { THEMES, FONTS, ORNAMENTS } from './themes.js';
 import { render } from './render.js';
 import { isPremium } from './premium.js';
 
@@ -10,7 +10,7 @@ const COUNTRIES = [
   ['506', 'CR +506'], ['507', 'PA +507'], ['57', 'CO +57'], ['1', 'US +1'],
 ];
 const DRAFT = 'convite:draft';
-const TEXT_FIELDS = ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'wn', 'k', 'f', 'n', 'b', 'o', 'gl'];
+const TEXT_FIELDS = ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'wn', 'k', 'f', 'n', 'b', 'o', 'gl', 'y', 'z', 'u', 'p', 'q'];
 const MAX_GUESTS = 300;
 // Digits required after the country code.
 const WA_DIGITS = { 502: 8, 503: 8, 504: 8, 505: 8, 506: 8, 507: 8, 52: 10, 57: 10, 1: 10 };
@@ -49,8 +49,13 @@ for (const [id, ev] of Object.entries(EVENTS)) {
   eventsBox.append(b);
 }
 
+$('z').append(...FONTS.map((f) => new Option(f.name, f.id)));
+$('u').append(...ORNAMENTS.map((o) => new Option(o.name, o.id)));
+
+// Exclusive (hidden) designs only show up when the seller sends crear.html?t=<id>.
+const qt = new URLSearchParams(location.search).get('t');
 const themesBox = $('themes');
-for (const th of THEMES) {
+for (const th of THEMES.filter((t) => !t.hidden || t.id === qt)) {
   const b = mk('button', 'ed-theme');
   b.type = 'button'; b.dataset.id = th.id; b.setAttribute('role', 'radio');
   const thumb = mk('div', 'ed-thumb');
@@ -76,12 +81,16 @@ function setEvent(id) {
 }
 
 const themeIsPremium = () => THEMES.find((t) => t.id === st.t)?.premium;
+const customized = () => $('ycus').checked || !!$('z').value || !!$('u').value;
+const needsCode = () => themeIsPremium() || customized();
 
 function data() {
   const w = $('wn').value.replace(/\D/g, '').replace(/^0+/, '');
   const o = { t: st.t, e: st.e, w: w ? st.cc + w : '' };
-  for (const k of ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'f']) o[k] = $(k).value;
-  if ($('rec').checked) for (const k of ['n', 'b', 'o']) o[k] = $(k).value;
+  for (const k of ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'f', 'p']) o[k] = $(k).value;
+  if ($('rec').checked) for (const k of ['n', 'b', 'o', 'q']) o[k] = $(k).value;
+  if ($('ycus').checked) o.y = $('y').value.slice(1);
+  o.z = $('z').value; o.u = $('u').value;
   if (st.unlocked) o.k = $('k').value.trim().toUpperCase();
   // People paste maps.app.goo.gl/... or http://...: codec only keeps https links.
   if (o.m) o.m = o.m.trim().replace(/^http:\/\//i, 'https://').replace(/^(?!https:\/\/)/i, 'https://');
@@ -95,6 +104,8 @@ function sync() {
     b.classList.toggle('is-locked', THEMES.find((t) => t.id === b.dataset.id).premium && !st.unlocked);
   }
   $('cc').value = st.cc;
+  $('y-box').hidden = !$('ycus').checked;
+  pinUi('p', 'a'); pinUi('q', 'b');
   $('buy').hidden = true;
   $('warn').hidden = true;
   $('result').hidden = true;
@@ -108,8 +119,8 @@ function refresh() {
   // Preview shows a premium theme even without a code; the code gate is at "Generar".
   // With a valid code and the result visible, the first listed guest personalizes the preview.
   const guest = st.unlocked && !$('result').hidden ? guestLines()[0] : null;
-  render($('preview'), data(), { premium: st.unlocked || !!themeIsPremium(), preview: true, guest });
-  const d = { e: st.e, t: st.t, cc: st.cc, rec: $('rec').checked };
+  render($('preview'), data(), { premium: st.unlocked || !!needsCode(), preview: true, guest });
+  const d = { e: st.e, t: st.t, cc: st.cc, rec: $('rec').checked, ycus: $('ycus').checked };
   for (const k of TEXT_FIELDS) d[k] = $(k).value;
   try { localStorage.setItem(DRAFT, JSON.stringify(d)); } catch { /* private mode: no draft */ }
 }
@@ -190,7 +201,8 @@ $('form').addEventListener('submit', async (e) => {
   const bad = validate();
   if (bad.length) { $(bad[0]).focus(); return; }
   if ($('k').value.trim() && !st.unlocked) await applyCode();
-  if (themeIsPremium() && !st.unlocked) {
+  if (needsCode() && !st.unlocked) {
+    $('buy-title').textContent = themeIsPremium() ? 'Este diseño es premium' : 'Personalizar color, letra y adorno es premium';
     $('buy-wa').href = `https://wa.me/${SELLER_WA}?text=` + encodeURIComponent(
       `¡Hola! Quiero un código premium de Convite para mi invitación (diseño ${THEMES.find((t) => t.id === st.t).name}).`);
     $('buy').hidden = false; $('result').hidden = true;
@@ -225,6 +237,98 @@ async function generate() {
   refresh();
   $('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+
+// ---------- map pin for Waze / Google Maps ----------
+// Leaflet + OpenStreetMap: free, no API key. Loaded only when someone opens the map.
+const CENTER = { 502: [14.6349, -90.5069], 503: [13.6929, -89.2182], 504: [14.0723, -87.1921], 505: [12.1364, -86.2514],
+  506: [9.9281, -84.0907], 507: [8.9824, -79.5199], 52: [19.4326, -99.1332], 57: [4.711, -74.0721], 1: [38.9072, -77.0369] };
+const ISO = { 502: 'gt', 503: 'sv', 504: 'hn', 505: 'ni', 506: 'cr', 507: 'pa', 52: 'mx', 57: 'co', 1: 'us' };
+const LEAFLET = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet';
+let map, marker, pinFor;
+
+function pinUi(k, addr) {
+  const set = !!$(k).value;
+  $('pin-' + k).textContent = set ? 'Cambiar el punto en el mapa' : 'Marcar en el mapa para Waze';
+  $('pin-' + k + '-clear').hidden = !set;
+  const msg = $('pin-' + k + '-msg');
+  msg.className = 'ed-msg' + (set ? ' ed-msg--ok' : '');
+  msg.textContent = set ? '✓ Ubicación confirmada: tus invitados tendrán botones de Waze y Google Maps.'
+    : $(addr).value.trim() ? 'Marca el punto en el mapa para que Waze lleve a tus invitados a la entrada exacta.' : '';
+}
+
+function loadLeaflet() {
+  if (window.L) return Promise.resolve(window.L);
+  const css = document.createElement('link');
+  Object.assign(css, { rel: 'stylesheet', href: LEAFLET + '.css', integrity: 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=', crossOrigin: '' });
+  document.head.append(css);
+  return new Promise((resolve, reject) => {
+    const js = document.createElement('script');
+    Object.assign(js, { src: LEAFLET + '.js', integrity: 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=', crossOrigin: '' });
+    js.onload = () => resolve(window.L); js.onerror = reject;
+    document.head.append(js);
+  });
+}
+
+// ponytail: public Nominatim (1 request/s, button-triggered only). Swap for a paid geocoder if volume grows.
+async function geocode(q) {
+  if (!q.trim()) return null;
+  const u = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams({ format: 'jsonv2', limit: '1', 'accept-language': 'es', countrycodes: ISO[st.cc] || '', q });
+  try { const [hit] = await (await fetch(u)).json(); return hit ? [+hit.lat, +hit.lon] : null; } catch { return null; }
+}
+
+const mapMsg = (t) => { $('map-msg').textContent = t; };
+function placePin(ll, zoom) { marker.setLatLng(ll); map.setView(ll, zoom ?? Math.max(map.getZoom(), 17)); }
+
+async function openMap(k) {
+  pinFor = k;
+  const [addr, name] = k === 'p' ? ['a', 'l'] : ['b', 'n'];
+  $('map-q').value = [$(addr).value, $(name).value].map((v) => v.trim()).filter(Boolean).join(', ');
+  mapMsg('Cargando mapa…');
+  $('map-dlg').showModal();
+  let L;
+  try { L = await loadLeaflet(); } catch { mapMsg('No se pudo cargar el mapa. Revisa tu conexión e inténtalo otra vez.'); return; }
+  if (!map) {
+    map = L.map('map', { zoomControl: true }).setView(CENTER[st.cc] || CENTER[502], 12);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
+    const icon = L.divIcon({ className: 'ed-pin-icon', iconSize: [36, 46], iconAnchor: [18, 44],
+      html: '<svg viewBox="0 0 24 30" width="36" height="46" aria-hidden="true"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.4 12 30 12 30s12-9.6 12-18.3C24 5.2 18.6 0 12 0z" fill="#d6336c"/><circle cx="12" cy="11.5" r="4.6" fill="#fff"/></svg>' });
+    marker = L.marker(map.getCenter(), { draggable: true, icon, keyboard: true, title: 'Lugar del evento' }).addTo(map);
+    map.on('click', (e) => marker.setLatLng(e.latlng));
+  }
+  map.invalidateSize();
+  const saved = $(k).value;
+  if (saved) { placePin(saved.split(',').map(Number), 17); mapMsg(''); return; }
+  await findOnMap();
+}
+
+async function findOnMap() {
+  mapMsg('Buscando…');
+  const q = $('map-q').value;
+  const hit = await geocode(q) || await geocode(q.split(',').slice(-2).join(','));
+  if (hit) { placePin(hit, 17); mapMsg('Revisa que el pin esté en la entrada. Si no, toca el lugar correcto o arrastra el pin.'); }
+  else { placePin(CENTER[st.cc] || CENTER[502], 12); mapMsg('No encontramos esa dirección exacta. Acerca el mapa y toca el lugar del evento.'); }
+}
+
+document.querySelectorAll('[data-pin]').forEach((b) => { b.onclick = () => openMap(b.dataset.pin); });
+document.querySelectorAll('[data-clear]').forEach((b) => { b.onclick = () => { $(b.dataset.clear).value = ''; sync(); }; });
+$('map-find').onclick = findOnMap;
+$('map-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); findOnMap(); } });
+$('map-cancel').onclick = () => $('map-dlg').close();
+$('map-ok').onclick = () => {
+  if (!marker) return;
+  const { lat, lng } = marker.getLatLng();
+  $(pinFor).value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+  $('map-dlg').close();
+  sync();
+};
+$('map-me').onclick = () => {
+  if (!navigator.geolocation) { mapMsg('Tu navegador no permite usar tu ubicación.'); return; }
+  mapMsg('Buscando tu ubicación…');
+  navigator.geolocation.getCurrentPosition(
+    (p) => { placePin([p.coords.latitude, p.coords.longitude], 18); mapMsg('Listo. Ajusta el pin si hace falta.'); },
+    () => mapMsg('No pudimos obtener tu ubicación. Toca el lugar en el mapa.'),
+    { enableHighAccuracy: true, timeout: 10000 });
+};
 
 // ---------- guest links (premium) ----------
 // One line per guest: "Familia Pérez, 4" (passes optional).
@@ -291,15 +395,19 @@ try {
   const d = JSON.parse(localStorage.getItem(DRAFT) || 'null');
   if (d) {
     if (EVENTS[d.e]) st.e = d.e;
-    if (THEMES.some((t) => t.id === d.t)) st.t = d.t;
+    if (THEMES.some((t) => t.id === d.t && (!t.hidden || t.id === qt))) st.t = d.t;
     if (COUNTRIES.some((c) => c[0] === d.cc)) st.cc = d.cc;
     for (const k of TEXT_FIELDS) if (typeof d[k] === 'string') $(k).value = d[k];
     $('rec').checked = d.rec === true;
+    $('ycus').checked = d.ycus === true;
+    if (!FONTS.some((f) => f.id === $('z').value)) $('z').value = '';
+    if (!ORNAMENTS.some((o) => o.id === $('u').value)) $('u').value = '';
     if (['f', 'c', 'g', 'm'].some((k) => $(k).value)) $('more').open = true;
   }
 } catch { /* corrupt draft: start clean */ }
 
 prevSub = EVENTS[st.e].sub; // a subtitle the user edited stays; the untouched default follows the event
+if (qt && THEMES.some((t) => t.id === qt)) st.t = qt;
 const qe = new URLSearchParams(location.search).get('e');
 setEvent(qe && EVENTS[qe] ? qe : st.e);
 if ($('k').value) applyCode(true);

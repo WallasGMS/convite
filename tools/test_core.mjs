@@ -23,6 +23,13 @@ assert.match(enc, /^[A-Za-z0-9_-]+$/, 'hash must be URL-safe');
 const bad = normalize({ h: 'x'.repeat(999), m: 'javascript:alert(1)', e: 'hack', d: 'nope', o: '25:99:00', evil: 1, w: 'abc', x: 42 });
 assert.equal(bad.h.length, 60);
 for (const k of ['m', 'e', 'd', 'o', 'evil', 'w', 'x']) assert.ok(!(k in bad), k + ' should be dropped');
+// customizer: color must be 6 hex digits, font/ornament ids are length-limited strings
+assert.equal(normalize({ y: '8E5BD0' }).y, '8E5BD0');
+for (const y of ['#8e5bd0', 'red', 'zzzzzz', '8e5']) assert.ok(!('y' in normalize({ y })), 'bad color kept: ' + y);
+assert.deepEqual([back.y, back.z, back.u], [undefined, undefined, undefined]);
+// map pins for Waze: "lat,lng" only, in range
+assert.equal(normalize({ p: '14.634900,-90.506900' }).p, '14.634900,-90.506900');
+for (const p of ['91.1,10.1', '14.6,-190.5', '14,-90', 'javascript:1', '14.6,-90.5&x=1']) assert.ok(!('p' in normalize({ p })), 'bad pin kept: ' + p);
 assert.deepEqual(normalize(null), {});
 assert.deepEqual(normalize('str'), {});
 await assert.rejects(decode('%%%'));          // garbage link -> error page, not a crash
