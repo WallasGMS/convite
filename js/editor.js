@@ -41,9 +41,17 @@ let prevSub = '';
 // ---------- controls ----------
 $('cc').append(...COUNTRIES.map(([v, l]) => new Option(l, v)));
 
+const ICONS = { cumple: '🎂', xv: '👑', boda: '💍', baby: '🍼', revelacion: '🎈', bautizo: '🕊️', comunion: '✝️', graduacion: '🎓', aniversario: '💞', otro: '✨' };
+let toastT;
+function toast(t) {
+  const n = $('toast'); n.textContent = t; n.classList.add('is-on');
+  clearTimeout(toastT); toastT = setTimeout(() => n.classList.remove('is-on'), 2000);
+}
 const eventsBox = $('events');
 for (const [id, ev] of Object.entries(EVENTS)) {
-  const b = mk('button', 'ed-event', ev.label);
+  const b = mk('button', 'ed-event');
+  b.append(mk('span', 'ed-ev-ico', ICONS[id] || '✨'), mk('span', '', ev.label));
+  b.firstChild.setAttribute('aria-hidden', 'true');
   b.type = 'button'; b.dataset.id = id; b.setAttribute('role', 'radio');
   b.onclick = () => setEvent(id);
   eventsBox.append(b);
@@ -393,7 +401,7 @@ $('copy').onclick = async () => {
   const b = $('copy');
   try { await navigator.clipboard.writeText($('link').value); }
   catch { $('link').select(); document.execCommand('copy'); }
-  b.textContent = 'Enlace copiado';
+  b.textContent = 'Enlace copiado'; toast('Enlace copiado');
   setTimeout(() => (b.textContent = 'Copiar enlace'), 2000);
 };
 $('share').onclick = () => navigator.share({ title: 'Mi invitación', url: $('link').value }).catch(() => {});

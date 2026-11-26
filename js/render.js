@@ -97,7 +97,7 @@ function customVars(data, node) {
       else btn = readable(c, white, 4.5);
     }
     Object.assign(vars, {
-      '--accent': '#' + data.y, '--accent-d': rgb2hex(readable(c, bg, 4.5)),
+      '--accent': '#' + data.y, '--accent-d': rgb2hex(readable(c, mix(bg, c, 0.1), 4.5)),
       '--btn': rgb2hex(btn), '--on-accent': on,
       '--line': `#${data.y}73`, '--cell-bd': `#${data.y}73`,
       '--title-color': rgb2hex(readable(c, bg, 3)), '--day-color': rgb2hex(readable(c, bg, 3)),
@@ -114,7 +114,7 @@ function customVars(data, node) {
 }
 const applyVars = (node, vars) => { for (const [k, v] of Object.entries(vars)) node.style.setProperty(k, v); };
 
-function countdown(date) {
+function countdown(date, animate) {
   const box = el('div', 'inv-countdown');
   const units = [['días', 86400e3], ['horas', 3600e3], ['min', 60e3], ['seg', 1e3]];
   const cells = units.map(([label]) => {
@@ -124,13 +124,88 @@ function countdown(date) {
     box.append(c);
     return n;
   });
-  const tick = () => {
+  const tick = (first) => {
     let left = Math.max(0, date - Date.now());
-    units.forEach(([, ms], i) => { cells[i].textContent = Math.floor(left / ms); left %= ms; });
+    units.forEach(([, ms], i) => {
+      const v = String(Math.floor(left / ms)); left %= ms;
+      const n = cells[i];
+      if (n.textContent === v) return; // only touch cells whose value changed
+      n.textContent = v;
+      if (animate && !first) { n.classList.remove('is-flip'); void n.offsetWidth; n.classList.add('is-flip'); }
+    });
   };
-  tick();
+  tick(true);
   const id = setInterval(() => (box.isConnected ? tick() : clearInterval(id)), 1000);
   return box;
+}
+
+const reduceMotion = () => !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+// Scroll reveal. CSS only hides `.rv` under `.inv--rv`, a class added here, so without JS / IntersectionObserver
+// / with reduced motion everything stays visible. Siblings entering together are staggered.
+function reveal(inv) {
+  const items = [...inv.querySelectorAll('.inv-head, .inv-guest, .inv-date, .inv-countdown, .inv-msg, .inv-block, .inv-actions')];
+  if (!items.length || !('IntersectionObserver' in window) || reduceMotion()) return () => {};
+  items.forEach((n) => n.classList.add('rv'));
+  inv.classList.add('inv--rv');
+  let left = items.length;
+  const io = new IntersectionObserver((entries) => {
+    let i = 0;
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.style.transitionDelay = i++ * 110 + 'ms';
+      e.target.classList.add('rv-in');
+      io.unobserve(e.target);
+      if (!--left) io.disconnect();
+    }
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  return () => items.forEach((n) => io.observe(n)); // call once the card is actually visible
+}
+
+// One-time themed particle burst from (x, y); theme picks the shape via `--burst` (default confetti). < 2 s, self-removing.
+function burst(host, x, y) {
+  if (reduceMotion()) return;
+  const cs = getComputedStyle(host);
+  const kind = cs.getPropertyValue('--burst').trim() || 'confetti';
+  const cols = ['--accent', '--accent-d', '--btn', '--title-color', '--day-color'].map((k) => cs.getPropertyValue(k).trim()).filter(Boolean);
+  const cv = el('canvas'), ctx = cv.getContext && cv.getContext('2d');
+  if (!ctx) return;
+  const W = innerWidth, H = innerHeight, dpr = Math.min(devicePixelRatio || 1, 1.5);
+  cv.width = W * dpr; cv.height = H * dpr;
+  cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:80;pointer-events:none';
+  ctx.scale(dpr, dpr);
+  document.body.append(cv);
+  const slow = kind === 'petals' || kind === 'hearts';
+  const ps = Array.from({ length: 56 }, () => {
+    const a = -Math.PI / 2 + (Math.random() - 0.5) * 2.4, v = 5 + Math.random() * (slow ? 6 : 9);
+    return { x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.3,
+      s: 5 + Math.random() * 6, c: cols[(Math.random() * cols.length) | 0] || '#d4af37', ph: Math.random() * 6 };
+  });
+  const shape = (p, t) => {
+    const s = p.s;
+    if (kind === 'petals') { ctx.beginPath(); ctx.ellipse(0, 0, s * 0.55, s * 1.1, 0, 0, 7); ctx.fill(); }
+    else if (kind === 'stars') {
+      const k = s * (0.8 + 0.35 * Math.sin(t * 0.012 + p.ph)); ctx.beginPath();
+      for (let i = 0; i < 8; i++) { const R = i % 2 ? k * 0.28 : k * 1.2, a = i * Math.PI / 4; ctx.lineTo(Math.sin(a) * R, -Math.cos(a) * R); }
+      ctx.fill();
+    } else if (kind === 'hearts') {
+      ctx.beginPath(); ctx.moveTo(0, s * 0.45); ctx.bezierCurveTo(-s * 1.1, -s * 0.2, -s * 0.5, -s * 0.95, 0, -s * 0.4);
+      ctx.bezierCurveTo(s * 0.5, -s * 0.95, s * 1.1, -s * 0.2, 0, s * 0.45); ctx.fill();
+    } else ctx.fillRect(-s / 2, -s / 3, s, s * 0.6);
+  };
+  const t0 = performance.now();
+  const frame = (t) => {
+    const k = t - t0;
+    if (k > 1800 || !cv.isConnected) return cv.remove();
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalAlpha = Math.min(1, (1800 - k) / 500);
+    for (const p of ps) {
+      p.vy += slow ? 0.12 : 0.28; p.vx *= 0.985; p.x += p.vx + (slow ? Math.sin(k * 0.006 + p.ph) * 0.8 : 0); p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; shape(p, k); ctx.restore();
+    }
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
 }
 
 /**
@@ -174,7 +249,7 @@ export function render(root, data, { premium = false, preview = false, guest = n
       el('span', 'inv-time', date.toLocaleTimeString('es', { hour: 'numeric', minute: '2-digit', hour12: true })),
     );
     inv.append(d);
-    if (premium) inv.append(countdown(date));
+    if (premium) inv.append(countdown(date, !preview));
   }
 
   if (data.x) inv.append(el('p', 'inv-msg', data.x));
@@ -232,6 +307,8 @@ export function render(root, data, { premium = false, preview = false, guest = n
     root.append(brand);
   }
 
+  const startReveal = preview ? () => {} : reveal(inv);
+
   if (premium && !preview) {
     const env = el('div', 'inv-envelope');
     env.setAttribute('role', 'dialog');
@@ -242,19 +319,27 @@ export function render(root, data, { premium = false, preview = false, guest = n
     applyVars(env, custom);
     const btn = el('button', 'inv-envelope-btn', 'Abrir invitación');
     btn.type = 'button';
+    const seal = el('div', 'inv-envelope-seal');
     env.append(
-      el('div', 'inv-envelope-seal'),
+      seal,
       el('p', 'inv-envelope-label', guest?.name ? 'Una invitación para' : 'Una invitación de'),
       el('p', 'inv-envelope-to', guest?.name || data.h || ''),
       btn,
     );
     btn.addEventListener('click', () => {
+      const r = seal.getBoundingClientRect();
       env.classList.add('is-open');
       inv.inert = false;
-      env.addEventListener('animationend', () => env.remove(), { once: true });
-      setTimeout(() => env.remove(), 1500); // fallback if no animation defined
+      inv.classList.add('inv--rise');
+      setTimeout(() => burst(env, r.left + r.width / 2, r.top + r.height / 2), 220);
+      setTimeout(startReveal, 450);
+      // animationend also bubbles up from the seal and ring: only the envelope's own counts
+      env.addEventListener('animationend', (e) => { if (e.target === env) env.remove(); });
+      setTimeout(() => env.remove(), 1900); // fallback if no animation defined
     });
     root.append(env);
     btn.focus({ preventScroll: true });
+  } else {
+    startReveal();
   }
 }

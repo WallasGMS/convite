@@ -14,7 +14,7 @@
 </head>
 <body class="ed-page">
   <header class="ed-top">
-    <a class="ed-logo" href="index.html">Convite</a>
+    <a class="ed-logo" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0f5a4e"/><path d="M5 11l11 8 11-8v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#f5b318"/><path d="M5 11a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2l-11 8z" fill="#e23d5e"/></svg>Convite</a>
     <span class="ed-top-note">Sin registro. Tus datos se quedan en tu teléfono.</span>
   </header>
 
@@ -22,6 +22,7 @@
     <aside class="ed-side" aria-label="Vista previa">
       <p class="ed-side-label">Así la verán tus invitados</p>
       <div class="ed-phone"><div id="preview" class="ed-screen inv-root"></div></div>
+      <p class="ed-hint" aria-hidden="true">Llena tus datos abajo ↓</p>
     </aside>
     <form id="form" class="ed-form" autocomplete="off" novalidate>
 
@@ -193,6 +194,7 @@
     </div>
   </dialog>
 
+  <div id="toast" class="ed-toast" role="status" aria-live="polite"></div>
   <script type="module" src="js/editor.js"></script>
 </body>
 </html>
