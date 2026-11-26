@@ -1,9 +1,7 @@
 # Cobros: cómo entra el dinero
 
 ## Fase 1: hoy (sin pasarela)
-1. Pon tu número de WhatsApp (con código de país, solo dígitos, ej. `50212345678`) en:
-   - `js/editor.js` línea 1 → `SELLER_WA`
-   - `index.html` → botón "Te la hacemos" (busca `50200000000`)
+1. Número de ventas: `50230801909`, en `js/editor.js` línea 1 (`SELLER_WA`) y en el botón "Te la hacemos" de `index.html`.
 2. El cliente te escribe → te paga por transferencia/depósito/Tigo Money → le mandas un código de `private/codes.csv`
    y anotas su nombre en la columna `vendido_a`. Plantilla en `VENTAS.md` sección 5.
 3. Quedan 100 códigos. Para más: `python tools/gen_codes.py 50` y vuelve a publicar.

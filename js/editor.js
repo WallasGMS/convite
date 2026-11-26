@@ -1,4 +1,4 @@
-const SELLER_WA = '50200000000'; // TODO: número del vendedor
+const SELLER_WA = '50230801909';
 
 import { EVENTS, encode } from './codec.js';
 import { THEMES } from './themes.js';
