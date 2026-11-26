@@ -33,7 +33,8 @@ input, select, textarea {
 }
 textarea { resize: vertical; }
 input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-.ed-wa { display: grid; grid-template-columns: 7.5rem 1fr; gap: .5rem; }
+.ed-wa { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .5rem; } /* country column as wide as "GT +502" needs */
+.ed-wa select { width: auto; padding-right: 2rem; }
 
 /* event cards */
 .ed-events { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 112px), 1fr)); gap: .6rem; } /* columns fit the space: fixed 5 x 1fr overflowed narrow form columns */
@@ -197,7 +198,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--focus); backgrou
   .ed-hint { display: block; margin: .6rem 0 0; text-align: center; font-weight: 600; color: var(--ink); font-size: .92rem; }
   .ed-top-note { display: none; }
 }
-@media (max-width: 380px) { .ed-wa { grid-template-columns: 6.5rem 1fr; } .ed-code-row { flex-wrap: wrap; } .ed-code-row input { flex: 1 1 100%; } }
+.ed-code-row input { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 330px) { .ed-code-row { flex-wrap: wrap; } .ed-code-row input, .ed-code-row .ed-btn { flex: 1 1 100%; } }
 
 @media (prefers-reduced-motion: no-preference) {
   .ed-event, .ed-theme, .ed-btn { transition: background .15s, box-shadow .2s, border-color .15s, transform .2s; }
