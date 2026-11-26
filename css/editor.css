@@ -36,8 +36,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .ed-wa { display: grid; grid-template-columns: 7.5rem 1fr; gap: .5rem; }
 
 /* event cards */
-.ed-events { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; }
-@media (min-width: 600px) { .ed-events { grid-template-columns: repeat(5, 1fr); } }
+.ed-events { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 112px), 1fr)); gap: .6rem; } /* columns fit the space: fixed 5 x 1fr overflowed narrow form columns */
 .ed-event {
   font: 600 1rem var(--display); padding: 1.1rem .5rem; min-height: 64px; border-radius: 14px; cursor: pointer;
   background: #f6f9f8; color: var(--ink); border: 1.5px solid var(--line);
@@ -45,8 +44,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .ed-event[aria-checked="true"] { background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: 0 3px 0 var(--gold); }
 
 /* themes */
-.ed-themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; }
-@media (min-width: 600px) { .ed-themes { grid-template-columns: repeat(4, 1fr); } }
+.ed-themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 88px), 1fr)); gap: .7rem; }
 .ed-theme { position: relative; display: grid; gap: .3rem; padding: .35rem; border-radius: 12px; border: 2px solid transparent; background: none; cursor: pointer; font: inherit; color: var(--ink); text-align: center; }
 .ed-theme[aria-checked="true"] { border-color: var(--ink); background: #f6f9f8; }
 .ed-thumb { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 8px; border: 1px solid var(--line); position: relative; pointer-events: none; }
