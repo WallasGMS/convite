@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tienes una invitación 💌</title>
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="Tienes una invitación 💌">
+  <meta property="og:description" content="Ábrela para ver los detalles y confirmar tu asistencia.">
+  <meta property="og:image" content="https://wallasgms.github.io/convite/og.png">
+  <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="css/invite.css">
+</head>
+<body class="inv-page">
+  <main id="app" class="inv-root"></main>
+  <script type="module">
+    import { decode } from './js/codec.js';
+    import { render } from './js/render.js';
+    import { isPremium } from './js/premium.js';
+
+    addEventListener('hashchange', () => location.reload()); // same-tab link to another invitation
+    const app = document.getElementById('app');
+    try {
+      const data = await decode(location.hash.slice(1));
+      if (!data.h) throw new Error('empty');
+      render(app, data, { premium: await isPremium(data.k) });
+      document.title = [data.s, data.h].filter(Boolean).join(' · ') + ' 💌';
+    } catch {
+      const p = document.createElement('p');
+      p.className = 'inv-error';
+      p.textContent = 'Este enlace de invitación no es válido o está incompleto. ';
+      const a = document.createElement('a');
+      a.href = 'crear.html';
+      a.textContent = 'Crea una invitación';
+      p.append(a);
+      app.replaceChildren(p);
+    }
+  </script>
+</body>
+</html>

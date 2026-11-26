@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crea tu invitación digital · Convite</title>
+  <meta name="description" content="Crea tu invitación digital en minutos y compártela por WhatsApp. Gratis, sin registro.">
+  <link rel="icon" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/invite.css">
+  <link rel="stylesheet" href="css/editor.css">
+</head>
+<body class="ed-page">
+  <header class="ed-top">
+    <a class="ed-logo" href="index.html">Convite</a>
+    <span class="ed-top-note">Sin registro. Tus datos se quedan en tu teléfono.</span>
+  </header>
+
+  <div class="ed-layout">
+    <form id="form" class="ed-form" autocomplete="off" novalidate>
+
+      <section class="ed-step">
+        <h2><span class="ed-n">1</span> ¿Qué vas a celebrar?</h2>
+        <div id="events" class="ed-events" role="radiogroup" aria-label="Tipo de evento"></div>
+      </section>
+
+      <section class="ed-step">
+        <h2><span class="ed-n">2</span> Cuéntanos los detalles</h2>
+        <label>Nombre de quien celebra
+          <input id="h" maxlength="60" placeholder="Ej. Valeria">
+        </label>
+        <label>Subtítulo
+          <input id="s" maxlength="60">
+        </label>
+        <label>Fecha y hora
+          <input id="d" type="datetime-local">
+        </label>
+        <label>Nombre del lugar
+          <input id="l" maxlength="80" placeholder="Ej. Salón Los Arcos">
+        </label>
+        <label>Dirección
+          <input id="a" maxlength="160" placeholder="Calle, zona, ciudad">
+        </label>
+        <label>Enlace de Google Maps <small>(opcional)</small>
+          <input id="m" type="url" maxlength="500" placeholder="https://maps.app.goo.gl/...">
+        </label>
+        <label>Mensaje para tus invitados
+          <textarea id="x" rows="3" maxlength="400" placeholder="Ej. Será una noche inolvidable y quiero compartirla contigo."></textarea>
+        </label>
+        <label>Código de vestimenta <small>(opcional)</small>
+          <input id="c" maxlength="80" placeholder="Ej. Formal, tonos pastel">
+        </label>
+        <label>Mesa de regalos <small>(opcional)</small>
+          <input id="g" maxlength="200" placeholder="Ej. Lluvia de sobres, o enlace a tu lista">
+        </label>
+        <div class="ed-field">
+          <span class="ed-label">Tu WhatsApp para recibir confirmaciones</span>
+          <div class="ed-wa">
+            <select id="cc" aria-label="País"></select>
+            <input id="wn" type="tel" inputmode="numeric" maxlength="14" placeholder="1234 5678" aria-label="Número de WhatsApp">
+          </div>
+        </div>
+      </section>
+
+      <section class="ed-step">
+        <h2><span class="ed-n">3</span> Elige el diseño</h2>
+        <div id="themes" class="ed-themes" role="radiogroup" aria-label="Diseño"></div>
+        <div class="ed-code">
+          <label for="k">Código premium <small>(desbloquea los 12 diseños, sin marca, cuenta regresiva y sobre animado)</small></label>
+          <div class="ed-code-row">
+            <input id="k" maxlength="24" placeholder="CNV-XXXX-XXXX" autocapitalize="characters">
+            <button type="button" id="apply" class="ed-btn">Aplicar</button>
+          </div>
+          <p id="code-msg" class="ed-msg" role="status"></p>
+        </div>
+      </section>
+
+      <section class="ed-step ed-final">
+        <button type="submit" class="ed-btn ed-btn--main">Generar invitación</button>
+        <p id="err" class="ed-msg ed-msg--err" role="alert"></p>
+
+        <div id="buy" class="ed-card" hidden>
+          <h3>Este diseño es premium</h3>
+          <p>Escribe tu código arriba y toca Aplicar, o consigue uno por Q35 (USD 4.99) por invitación. Mientras tanto puedes elegir un diseño gratis.</p>
+          <a id="buy-wa" class="ed-btn" target="_blank" rel="noopener">Pedir mi código por WhatsApp</a>
+        </div>
+
+        <div id="result" class="ed-card" hidden>
+          <h3>¡Tu invitación está lista!</h3>
+          <input id="link" readonly aria-label="Enlace de tu invitación">
+          <div class="ed-actions">
+            <button type="button" id="copy" class="ed-btn">Copiar enlace</button>
+            <a id="share-wa" class="ed-btn ed-btn--main" target="_blank" rel="noopener">Compartir por WhatsApp</a>
+            <a id="open" class="ed-btn" target="_blank" rel="noopener">Abrir</a>
+            <button type="button" id="share" class="ed-btn" hidden>Más opciones</button>
+          </div>
+        </div>
+      </section>
+    </form>
+
+    <aside class="ed-side" aria-label="Vista previa">
+      <p class="ed-side-label">Así la verán tus invitados</p>
+      <div class="ed-phone"><div id="preview" class="ed-screen inv-root"></div></div>
+    </aside>
+  </div>
+
+  <script type="module" src="js/editor.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vista previa de temas · Convite</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/invite.css">
+  <style>
+    body { margin: 0; padding: 24px 16px 48px; background: #2a2724; font-family: system-ui, sans-serif; color: #eee; }
+    h1 { margin: 0 0 4px; font-size: 1.2rem; }
+    p.lead { margin: 0 0 20px; color: #b8b2a8; font-size: .9rem; }
+    .grid { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+    .pv { width: 390px; max-width: 100%; }
+    .pv > b { display: block; margin: 0 0 8px; font-size: .85rem; letter-spacing: .04em; }
+    .pv > b span { margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: #4a453f; font-weight: 400; font-size: .72rem; }
+    .pv > b span.premium { background: #d4af37; color: #1a1408; }
+    .pv .inv { min-height: 0; border-radius: 18px; --px: 24px; }
+  </style>
+</head>
+<body>
+  <h1>Temas de Convite</h1>
+  <p class="lead">12 temas con datos de ejemplo (modo vista previa: con cuenta regresiva, sin sobre ni marca de agua).</p>
+  <div class="grid" id="grid"></div>
+  <script type="module">
+    import { THEMES } from '../js/themes.js';
+    import { render } from '../js/render.js';
+
+    const base = {
+      cumple:  { e: 'cumple',  h: 'Sofía Morales', s: 'Mis 30 años', x: 'Ven a celebrar conmigo una noche de música, risas y buena comida.' },
+      xv:      { e: 'xv',      h: 'Valentina', s: 'Mis XV años', x: 'Quiero compartir contigo el día más especial de mi vida.' },
+      boda:    { e: 'boda',    h: 'Ana & Carlos', s: 'Nuestra boda', x: 'Con la bendición de nuestras familias, queremos compartir nuestra alegría contigo.' },
+      baby:    { e: 'baby',    h: 'Baby Mateo', s: 'Baby shower', x: 'Una pequeña sorpresa viene en camino. ¡Acompáñanos a recibirla!' },
+    };
+    const byTheme = {
+      clasico: 'boda', fiesta: 'cumple', minimal: 'cumple', cielo: 'baby',
+      floral: 'boda', dorado: 'boda', 'xv-rosa': 'xv', 'boda-salvia': 'boda',
+      'bebe-azul': 'baby', 'bebe-rosa': 'baby', noche: 'xv', tropical: 'cumple',
+    };
+    const extra = {
+      d: '2027-03-20T19:00', l: 'Salón Los Jardines', a: '5a avenida 10-20, zona 10, Ciudad de Guatemala',
+      c: 'Formal', g: 'Liverpool y Amazon', w: '50212345678',
+    };
+
+    const grid = document.getElementById('grid');
+    for (const t of THEMES) {
+      const cell = document.createElement('div');
+      cell.className = 'pv';
+      const label = document.createElement('b');
+      label.textContent = `${t.id} · ${t.name}`;
+      const tag = document.createElement('span');
+      tag.textContent = t.premium ? 'premium' : 'gratis';
+      if (t.premium) tag.className = 'premium';
+      label.append(tag);
+      const holder = document.createElement('div');
+      cell.append(label, holder);
+      grid.append(cell);
+      render(holder, { ...base[byTheme[t.id]], ...extra, t: t.id }, { premium: true, preview: true });
+    }
+  </script>
+</body>
+</html>
