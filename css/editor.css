@@ -141,7 +141,9 @@ input[aria-invalid="true"] { border-color: #b3261e; }
 .ed-map-dlg[open] { display: grid; gap: .7rem; }
 .ed-map-dlg h3 { margin: 0; font: 700 1.3rem var(--display); }
 .ed-map-help { margin: 0; font-size: .92rem; color: var(--mute); }
-.ed-map { height: min(52svh, 420px); border-radius: 14px; border: 1.5px solid var(--line); z-index: 0; }
-.ed-map-actions { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: flex-end; align-items: center; }
-.ed-map-actions .ed-link { margin-right: auto; }
+.ed-map-dlg { overflow-y: auto; }
+.ed-map { height: min(42svh, 420px); border-radius: 14px; border: 1.5px solid var(--line); z-index: 0; }
+.ed-map-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; align-items: center; }
+.ed-map-actions .ed-link { grid-column: 1 / -1; justify-self: start; }
+@media (min-width: 600px) { .ed-map { height: min(52svh, 420px); } .ed-map-actions { grid-template-columns: 1fr auto auto; } .ed-map-actions .ed-link { grid-column: auto; } }
 .ed-pin-icon { background: none; border: 0; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .35)); }

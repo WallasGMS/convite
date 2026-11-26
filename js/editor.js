@@ -244,7 +244,7 @@ const CENTER = { 502: [14.6349, -90.5069], 503: [13.6929, -89.2182], 504: [14.07
   506: [9.9281, -84.0907], 507: [8.9824, -79.5199], 52: [19.4326, -99.1332], 57: [4.711, -74.0721], 1: [38.9072, -77.0369] };
 const ISO = { 502: 'gt', 503: 'sv', 504: 'hn', 505: 'ni', 506: 'cr', 507: 'pa', 52: 'mx', 57: 'co', 1: 'us' };
 const LEAFLET = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet';
-let map, marker, pinFor;
+let map, marker, pinFor, mapName = '';
 
 function pinUi(k, addr) {
   const set = !!$(k).value;
@@ -282,7 +282,8 @@ function placePin(ll, zoom) { marker.setLatLng(ll); map.setView(ll, zoom ?? Math
 async function openMap(k) {
   pinFor = k;
   const [addr, name] = k === 'p' ? ['a', 'l'] : ['b', 'n'];
-  $('map-q').value = [$(addr).value, $(name).value].map((v) => v.trim()).filter(Boolean).join(', ');
+  $('map-q').value = $(addr).value.trim() || $(name).value.trim();
+  mapName = $(name).value.trim();
   mapMsg('Cargando mapa…');
   $('map-dlg').showModal();
   let L;
@@ -303,8 +304,15 @@ async function openMap(k) {
 
 async function findOnMap() {
   mapMsg('Buscando…');
-  const q = $('map-q').value;
-  const hit = await geocode(q) || await geocode(q.split(',').slice(-2).join(','));
+  // Full address first, then drop the most specific part ("6a avenida 12-30, zona 10, Guatemala" -> "zona 10, Guatemala"),
+  // then the venue name. Max 4 lookups, 1 per second (Nominatim policy).
+  const parts = $('map-q').value.split(',').map((x) => x.trim()).filter(Boolean);
+  const tries = [...new Set([...parts.map((_, i) => parts.slice(i).join(', ')), mapName].filter(Boolean))].slice(0, 4);
+  let hit = null;
+  for (const [i, q] of tries.entries()) {
+    if (i) await new Promise((r) => setTimeout(r, 1100));
+    if ((hit = await geocode(q))) break;
+  }
   if (hit) { placePin(hit, 17); mapMsg('Revisa que el pin esté en la entrada. Si no, toca el lugar correcto o arrastra el pin.'); }
   else { placePin(CENTER[st.cc] || CENTER[502], 12); mapMsg('No encontramos esa dirección exacta. Acerca el mapa y toca el lugar del evento.'); }
 }
