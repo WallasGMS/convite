@@ -26,13 +26,19 @@
     </aside>
     <form id="form" class="ed-form" autocomplete="off" novalidate>
 
-      <section class="ed-step">
-        <h2><span class="ed-n">1</span> ¿Qué vas a celebrar?</h2>
+      <nav class="ed-prog" aria-label="Pasos">
+        <button type="button" data-go="1" aria-current="step"><span class="ed-pn">1</span>Evento</button>
+        <button type="button" data-go="2"><span class="ed-pn">2</span>Detalles</button>
+        <button type="button" data-go="3"><span class="ed-pn">3</span>Diseño</button>
+      </nav>
+
+      <section class="ed-step" data-step="1">
+        <h2 tabindex="-1"><span class="ed-n">1</span> ¿Qué vas a celebrar?</h2>
         <div id="events" class="ed-events" role="radiogroup" aria-label="Tipo de evento"></div>
       </section>
 
-      <section class="ed-step">
-        <h2><span class="ed-n">2</span> Cuéntanos los detalles</h2>
+      <section class="ed-step" data-step="2" hidden>
+        <h2 tabindex="-1"><span class="ed-n">2</span> Cuéntanos los detalles</h2>
         <button type="button" id="sample" class="ed-link">Llenar con un ejemplo</button>
         <label>Nombre de quien celebra
           <input id="h" maxlength="60" placeholder="Ej. Valeria" aria-describedby="err-h">
@@ -105,8 +111,8 @@
         </details>
       </section>
 
-      <section class="ed-step">
-        <h2><span class="ed-n">3</span> Elige el diseño</h2>
+      <section class="ed-step" data-step="3" hidden>
+        <h2 tabindex="-1"><span class="ed-n">3</span> Elige el diseño</h2>
         <div id="themes" class="ed-themes" role="radiogroup" aria-label="Diseño"></div>
         <fieldset class="ed-custom">
           <legend>Hazlo tuyo <span class="ed-lock ed-lock--inline">Premium</span></legend>
@@ -131,9 +137,13 @@
         </div>
       </section>
 
-      <section class="ed-step ed-final">
-        <button type="submit" class="ed-btn ed-btn--main">Generar invitación</button>
+      <div class="ed-nav">
+        <button type="button" id="back" class="ed-btn" hidden>Atrás</button>
+        <button type="button" id="next" class="ed-btn ed-btn--main">Siguiente</button>
+        <button type="submit" id="gen" class="ed-btn ed-btn--main" hidden>Generar invitación</button>
+      </div>
 
+      <section class="ed-step ed-final">
         <div id="warn" class="ed-card" hidden>
           <p id="warn-text" role="status" aria-live="polite"></p>
           <button type="button" id="force" class="ed-btn">Generar de todos modos</button>
@@ -141,8 +151,24 @@
 
         <div id="buy" class="ed-card" hidden>
           <h3 id="buy-title">Este diseño es premium</h3>
-          <p>Escribe tu código en el paso 3 y toca Aplicar, o consigue uno por Q35 (USD 4.99) por invitación. Si prefieres la versión gratis, elige un diseño sin la etiqueta Premium y deja el color, la letra y el adorno como vienen.</p>
-          <a id="buy-wa" class="ed-btn" target="_blank" rel="noopener">Pedir mi código por WhatsApp</a>
+          <p>Con un código premium (Q35, USD 4.99, por invitación) desbloqueas todo esto:</p>
+          <table class="ed-cmp">
+            <caption>Gratis o Premium</caption>
+            <thead><tr><th scope="col"><span class="ed-sr">Qué incluye</span></th><th scope="col">Gratis</th><th scope="col">Premium Q35</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Diseños</th><td>6</td><td>24</td></tr>
+              <tr><th scope="row">Tu color, letra y adorno</th><td><span aria-hidden="true">—</span><span class="ed-sr">No incluido</span></td><td><span aria-hidden="true">✓</span><span class="ed-sr">Incluido</span></td></tr>
+              <tr><th scope="row">Sin marca de Convite</th><td><span aria-hidden="true">—</span><span class="ed-sr">No incluido</span></td><td><span aria-hidden="true">✓</span><span class="ed-sr">Incluido</span></td></tr>
+              <tr><th scope="row">Cuenta regresiva</th><td><span aria-hidden="true">—</span><span class="ed-sr">No incluido</span></td><td><span aria-hidden="true">✓</span><span class="ed-sr">Incluido</span></td></tr>
+              <tr><th scope="row">Sobre animado</th><td><span aria-hidden="true">—</span><span class="ed-sr">No incluido</span></td><td><span aria-hidden="true">✓</span><span class="ed-sr">Incluido</span></td></tr>
+              <tr><th scope="row">Pases por invitado (“Familia Pérez · 4”)</th><td><span aria-hidden="true">—</span><span class="ed-sr">No incluido</span></td><td><span aria-hidden="true">✓</span><span class="ed-sr">Incluido</span></td></tr>
+            </tbody>
+          </table>
+          <p class="ed-msg">¿Ya tienes código? Escríbelo en el paso 3 y toca Aplicar.</p>
+          <div class="ed-buy-actions">
+            <a id="buy-wa" class="ed-btn ed-btn--main" target="_blank" rel="noopener">Pedir mi código por WhatsApp</a>
+            <button type="button" id="free" class="ed-btn">Seguir con la versión gratis</button>
+          </div>
         </div>
 
         <div id="result" class="ed-card" hidden>

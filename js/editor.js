@@ -53,7 +53,7 @@ for (const [id, ev] of Object.entries(EVENTS)) {
   b.append(mk('span', 'ed-ev-ico', ICONS[id] || '✨'), mk('span', '', ev.label));
   b.firstChild.setAttribute('aria-hidden', 'true');
   b.type = 'button'; b.dataset.id = id; b.setAttribute('role', 'radio');
-  b.onclick = () => setEvent(id);
+  b.onclick = () => { setEvent(id); setTimeout(() => { if (step === 1) goTo(2); }, 250); };
   eventsBox.append(b);
 }
 
@@ -203,30 +203,81 @@ $('sample').onclick = () => {
   sync();
 };
 
+// ---------- wizard ----------
+let step = 1;
+const stepEls = [...document.querySelectorAll('[data-step]')];
+const smooth = () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
+
+// field: focus this input (it lives in the step being shown); otherwise the step heading.
+function show(n, field, quiet) {
+  step = n;
+  stepEls.forEach((el) => { el.hidden = +el.dataset.step !== n; });
+  document.querySelectorAll('[data-go]').forEach((b) => {
+    const k = +b.dataset.go;
+    b.classList.toggle('is-done', k < n);
+    if (k === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+  });
+  $('back').hidden = n === 1; $('next').hidden = n === 3; $('gen').hidden = n !== 3;
+  if (quiet) return;
+  if (field) { $(field).focus(); return; }
+  stepEls[n - 1].querySelector('h2').focus({ preventScroll: true });
+  // Phones: back to the top so the preview (first on the page) shows the change; desktop keeps the preview sticky.
+  if (matchMedia('(min-width: 900px)').matches) $('form').scrollIntoView({ behavior: smooth(), block: 'start' });
+  else scrollTo({ top: 0, behavior: smooth() });
+}
+
+// Going forward past step 2 needs a valid step 2; otherwise land on step 2 with the errors showing.
+function goTo(n) {
+  if (n === step || n < 1 || n > 3) return;
+  if (n >= 3 && step < 3) {
+    const bad = validate();
+    if (bad.length) { show(2, bad[0]); return; }
+  }
+  show(n);
+}
+$('next').onclick = () => goTo(step + 1);
+$('back').onclick = () => goTo(step - 1);
+document.querySelectorAll('[data-go]').forEach((b) => { b.onclick = () => goTo(+b.dataset.go); });
+
+// ---------- generate ----------
 $('form').addEventListener('submit', async (e) => {
   e.preventDefault();
+  if (step < 3) { goTo(step + 1); return; } // Enter inside a field = "Siguiente"
   $('warn').hidden = true;
   const bad = validate();
-  if (bad.length) { $(bad[0]).focus(); return; }
+  if (bad.length) { show(2, bad[0]); return; }
   if ($('k').value.trim() && !st.unlocked) await applyCode();
   if (needsCode() && !st.unlocked) {
     $('buy-title').textContent = themeIsPremium() ? 'Este diseño es premium' : 'Personalizar color, letra y adorno es premium';
     $('buy-wa').href = `https://wa.me/${SELLER_WA}?text=` + encodeURIComponent(
       `¡Hola! Quiero un código premium de Convite para mi invitación (diseño ${THEMES.find((t) => t.id === st.t).name}).`);
     $('buy').hidden = false; $('result').hidden = true;
-    $('buy').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('buy').scrollIntoView({ behavior: smooth(), block: 'center' });
     return;
   }
+  proceed();
+});
+
+// After the premium check: soft warnings, then generate.
+function proceed() {
   $('buy').hidden = true;
   const soft = softWarnings();
   if (soft.length) {
     $('warn-text').textContent = soft.join(' ');
     $('warn').hidden = false;
-    $('warn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('warn').scrollIntoView({ behavior: smooth(), block: 'center' });
     return;
   }
   generate();
-});
+}
+
+// "Seguir con la versión gratis": first free theme, no customizer, then the normal path.
+$('free').onclick = () => {
+  if (themeIsPremium()) st.t = THEMES.find((t) => !t.premium && !t.hidden).id;
+  $('ycus').checked = false; $('z').value = ''; $('u').value = '';
+  sync(); // re-syncs the preview and hides #buy
+  proceed();
+};
 $('force').onclick = () => { $('warn').hidden = true; generate(); };
 
 async function generate() {
@@ -243,7 +294,7 @@ async function generate() {
   $('glist').replaceChildren(); $('gcopy').hidden = true; $('gmsg').textContent = '';
   $('result').hidden = false;
   refresh();
-  $('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  $('result').scrollIntoView({ behavior: smooth(), block: 'center' });
 }
 
 // ---------- map pin for Waze / Google Maps ----------
@@ -426,4 +477,5 @@ prevSub = EVENTS[st.e].sub; // a subtitle the user edited stays; the untouched d
 if (qt && THEMES.some((t) => t.id === qt)) st.t = qt;
 const qe = new URLSearchParams(location.search).get('e');
 setEvent(qe && EVENTS[qe] ? qe : st.e);
+show(qe && EVENTS[qe] || $('h').value.trim() ? 2 : 1, null, true);
 if ($('k').value) applyCode(true);
