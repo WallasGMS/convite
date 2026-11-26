@@ -278,8 +278,8 @@ body.inv-page {
   background: rgba(24, 22, 20, .9);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   color: #fff; text-decoration: none; text-align: center;
-  font: 500 .8rem/1.2 system-ui, -apple-system, 'Segoe UI', sans-serif;
-  letter-spacing: .02em;
+  font: 500 clamp(.66rem, 3.4vw, .8rem)/1.2 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  letter-spacing: .02em; white-space: nowrap; /* one line even in narrow mockups */
 }
 .inv-brand:hover { background: rgba(24, 22, 20, .97); text-decoration: underline; }
 
