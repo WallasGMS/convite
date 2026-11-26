@@ -279,3 +279,10 @@ section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -
   footer.foot ul { grid-template-columns: 1fr 1fr; column-gap: 1rem; }
   footer.foot .cols { gap: 1.25rem; }
 }
+
+/* Convite icon set (img/icons.svg) */
+.ico { width: 1.3em; height: 1.3em; flex: none; vertical-align: -.3em; color: var(--ink); --ico-accent: var(--sol); }
+.more a .ico { margin-right: .45em; }
+.chip { display: inline-flex; align-items: center; gap: .45em; }
+.chip .ico { width: 1.25em; height: 1.25em; }
+.chip--b .ico { color: #fff; --ico-accent: var(--verde, #1c8a5a); }

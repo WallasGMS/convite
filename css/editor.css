@@ -168,7 +168,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--focus); backgrou
 
 /* event cards with icon + check */
 .ed-event { position: relative; display: grid; justify-items: center; align-content: center; gap: .25rem; border-radius: 18px; padding: .8rem .4rem; min-height: 84px; line-height: 1.15; }
-.ed-ev-ico { font-size: 1.7rem; line-height: 1; }
+.ed-ev-ico { width: 30px; height: 30px; color: var(--ink); --ico-accent: var(--gold); }
+.ed-event[aria-checked="true"] .ed-ev-ico { color: #fff; }
 .ed-event[aria-checked="true"] { background: linear-gradient(160deg, var(--ink), var(--ink2)); box-shadow: 0 8px 18px -6px rgba(20,48,44,.55), 0 0 0 3px var(--gold); }
 .ed-event[aria-checked="true"]::after { content: "✓"; position: absolute; top: -8px; right: -8px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); color: var(--ink); font: 700 .8rem/22px var(--body); text-align: center; }
 

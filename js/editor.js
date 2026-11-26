@@ -41,7 +41,15 @@ let prevSub = '';
 // ---------- controls ----------
 $('cc').append(...COUNTRIES.map(([v, l]) => new Option(l, v)));
 
-const ICONS = { cumple: '🎂', xv: '👑', boda: '💍', baby: '🍼', revelacion: '🎈', bautizo: '🕊️', comunion: '✝️', graduacion: '🎓', aniversario: '💞', otro: '✨' };
+// Event icons live in img/icons.svg (#ev-<id>), shared with the home page.
+const SVG = 'http://www.w3.org/2000/svg';
+function evIcon(id) {
+  const svg = document.createElementNS(SVG, 'svg'), use = document.createElementNS(SVG, 'use');
+  svg.setAttribute('class', 'ed-ev-ico'); svg.setAttribute('aria-hidden', 'true');
+  use.setAttribute('href', 'img/icons.svg#ev-' + id);
+  svg.append(use);
+  return svg;
+}
 let toastT;
 function toast(t) {
   const n = $('toast'); n.textContent = t; n.classList.add('is-on');
@@ -50,8 +58,7 @@ function toast(t) {
 const eventsBox = $('events');
 for (const [id, ev] of Object.entries(EVENTS)) {
   const b = mk('button', 'ed-event');
-  b.append(mk('span', 'ed-ev-ico', ICONS[id] || '✨'), mk('span', '', ev.label));
-  b.firstChild.setAttribute('aria-hidden', 'true');
+  b.append(evIcon(id), mk('span', '', ev.label));
   b.type = 'button'; b.dataset.id = id; b.setAttribute('role', 'radio');
   b.onclick = () => { setEvent(id); setTimeout(() => { if (step === 1) goTo(2); }, 250); };
   eventsBox.append(b);
