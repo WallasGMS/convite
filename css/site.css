@@ -232,3 +232,10 @@ section.alt .faq details { background: var(--bg); }
 }
 @keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
 @keyframes faqin { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* design review: compact "Cómo funciona" on phones (badge beside the title, not above it) */
+@media (max-width: 799px) {
+  .steps li { display: grid; grid-template-columns: auto 1fr; column-gap: .9rem; align-items: center; padding: 1.1rem 1.2rem; }
+  .steps li::before { grid-row: span 2; align-self: start; margin-bottom: 0; }
+  .steps h3 { margin: 0 0 .25rem; }
+}
