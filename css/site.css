@@ -1,4 +1,4 @@
-/* Convite · landing y páginas SEO. Signature: el papel picado sobre la portada. */
+﻿/* Convite Â· landing y pÃ¡ginas SEO. Signature: el papel picado sobre la portada. */
 :root {
   --bg: #f2f6f3;
   --paper: #ffffff;
@@ -24,7 +24,7 @@ a:hover { color: var(--flor); }
 .skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: #fff; padding: .6rem 1rem; z-index: 99; }
 .skip:focus { left: 0; }
 
-/* Tipografía */
+/* TipografÃ­a */
 h1, h2, h3 { font-family: var(--display); line-height: 1.08; letter-spacing: -.02em; margin: 0 0 .6em; font-weight: 800; text-wrap: balance; }
 h1 { font-size: clamp(2.4rem, 7.5vw, 4.4rem); }
 h2 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); }
@@ -72,12 +72,6 @@ section.block { padding: 4.5rem 0; }
 section.alt { background: var(--paper); border-block: 1px solid var(--line); }
 .head { max-width: 40rem; margin-bottom: 2.5rem; }
 
-/* Pasos (secuencia real) */
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; counter-reset: s; }
-@media (min-width: 800px) { .steps { grid-template-columns: repeat(3, 1fr); } }
-.steps li { counter-increment: s; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; position: relative; }
-.steps li::before { content: counter(s); display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--sol); color: var(--ink); font: 800 1.2rem/1 var(--display); margin-bottom: 1rem; }
-.steps p { color: var(--muted); margin: 0; }
 
 /* Precios */
 .plans { display: grid; gap: 1.25rem; }
@@ -115,7 +109,7 @@ section.alt { background: var(--paper); border-block: 1px solid var(--line); }
 .faq summary { cursor: pointer; min-height: 44px; font: 700 1.1rem/1.35 var(--display); list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; font-size: 1.5rem; line-height: 1; color: var(--flor); }
-.faq details[open] summary::after { content: "–"; }
+.faq details[open] summary::after { content: "â€“"; }
 .faq details p { margin: .8rem 0 0; color: var(--muted); }
 
 /* Cierre y pie */
@@ -131,7 +125,7 @@ footer.foot ul a { display: inline-flex; align-items: center; min-height: 44px; 
 footer.foot .logo { color: #fff; margin-bottom: .8rem; }
 .fine { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid #2c423c; font-size: .85rem; }
 
-/* Páginas SEO */
+/* PÃ¡ginas SEO */
 .crumbs { font-size: .9rem; color: var(--muted); padding-top: 1rem; }
 .crumbs a { color: var(--muted); display: inline-block; padding-block: .75rem; }
 .crumbs { padding-top: .4rem; }
@@ -197,9 +191,7 @@ footer.foot .logo { color: #fff; margin-bottom: .8rem; }
 @media (max-width: 380px) { .chip { display: none; } }
 section.alt { position: relative; border-top: 0; }
 section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -31px; height: 32px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 32' preserveAspectRatio='none'%3E%3Cpath d='M0 32V16C240 -6 480 -6 720 12S1200 30 1440 8V32z' fill='%23fff'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
-.steps li, .plan, .pass-card { box-shadow: var(--soft); }
-.steps li { border-radius: 22px; background: var(--paper); }
-.steps li::before { box-shadow: 0 6px 14px -4px rgba(245,179,24,.7); }
+.plan, .pass-card { box-shadow: var(--soft); }
 .plan { border-radius: 28px; }
 .plan--pro { background: linear-gradient(155deg, #11705f, var(--jade) 60%, #0a403a); box-shadow: 0 24px 44px -18px rgba(15,90,78,.6); }
 .service { border-radius: 28px; background: linear-gradient(150deg, #1a3a34, var(--ink)); }
@@ -217,8 +209,8 @@ section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -
   .hero .phone { animation: float 6s ease-in-out infinite; }
   .chip--a { animation: float 5s ease-in-out infinite; }
   .chip--b { animation: float 7s ease-in-out -2s infinite; }
-  .steps li, .plan, .pass-card { transition: transform .25s, box-shadow .25s; }
-  .steps li:hover, .plan:hover { transform: translateY(-6px); }
+  .plan, .pass-card { transition: transform .25s, box-shadow .25s; }
+  .plan:hover { transform: translateY(-6px); }
   .more a:hover { transform: translateY(-2px); }
   .faq details[open] p { animation: faqin .3s ease-out; }
   .faq summary::after { transition: rotate .25s; }
@@ -228,14 +220,8 @@ section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -
 @keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
 @keyframes faqin { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
-/* design review: compact "Cómo funciona" on phones (badge beside the title, not above it) */
-@media (max-width: 799px) {
-  .steps li { display: grid; grid-template-columns: auto 1fr; column-gap: .9rem; align-items: center; padding: 1.1rem 1.2rem; }
-  .steps li::before { grid-row: span 2; align-self: start; margin-bottom: 0; }
-  .steps h3 { margin: 0 0 .25rem; }
-}
 
-/* design review: home más corta en celulares */
+/* design review: home mÃ¡s corta en celulares */
 .plans { align-items: stretch; }
 .plan--pro { position: relative; }
 @media (max-width: 799px) {
@@ -254,10 +240,6 @@ section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -
   section.block { padding: 2rem 0; }
   .hero .phone { width: 250px; }
   .hero .phone-cap { margin-top: 1rem; }
-  .steps { gap: .7rem; }
-  .steps li { padding: .8rem 1rem; }
-  .steps li::before { width: 2rem; height: 2rem; font-size: 1.05rem; }
-  .steps h3 { font-size: 1.1rem; margin-bottom: .1rem; }
   .faq details { padding: .1rem 1rem; margin-bottom: .5rem; }
   .faq summary { font-size: 1rem; }
   .faq details p { margin-top: .3rem; }
@@ -286,3 +268,56 @@ section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -
 .chip { display: inline-flex; align-items: center; gap: .45em; }
 .chip .ico { width: 1.25em; height: 1.25em; }
 .chip--b .ico { color: #fff; --ico-accent: var(--verde, #1c8a5a); }
+
+/* CÃ³mo funciona: notas de papel con nÃºmero a mano, no tarjetas en fila */
+.scribble { position: relative; white-space: nowrap; isolation: isolate; }
+.scribble::after { content: ""; position: absolute; left: -2%; right: -2%; bottom: -.18em; height: .32em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9c30-6 62-7 96-4 30 3 62 2 98-4' fill='none' stroke='%23f5b318' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; z-index: -1; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.2rem 2.4rem; counter-reset: s; }
+@media (min-width: 800px) { .steps { grid-template-columns: repeat(3, 1fr); align-items: start; } .steps li:nth-child(2) { margin-top: 2.2rem; } }
+.steps li { counter-increment: s; position: relative; background: #fffdf8; border-radius: 6px 18px 8px 20px; padding: 1.3rem 1.4rem 1.4rem 1.4rem; box-shadow: 0 1px 0 rgba(17,35,31,.08), 0 18px 30px -22px rgba(17,35,31,.45); rotate: -1.4deg; }
+.steps li:nth-child(2) { rotate: 1.2deg; }
+.steps li:nth-child(3) { rotate: -.6deg; }
+.steps li::before { content: counter(s); position: absolute; top: -1.5rem; right: 1rem; font: 700 3.6rem/1 "Caveat", "Segoe Print", cursive; color: var(--flor); }
+.steps li::after { content: ""; position: absolute; top: -9px; left: 50%; width: 74px; height: 20px; translate: -50% 0; rotate: -3deg; background: rgba(245,179,24,.55); border-radius: 2px; }
+.steps li:nth-child(2)::after { background: rgba(127,182,217,.6); rotate: 4deg; }
+.steps li:nth-child(3)::after { background: rgba(226,61,94,.4); }
+.steps h3 { margin: 0 0 .35rem; }
+.steps p { color: var(--muted); margin: 0; }
+.st-art { margin: .4rem 0 1.1rem; min-height: 86px; display: grid; align-content: center; }
+.st-form { gap: .45rem; }
+.st-form span { display: grid; background: #fff; border: 1.5px solid var(--line); border-radius: 10px; padding: .35rem .7rem; font-size: .92rem; font-weight: 600; }
+.st-form b { font: 600 .68rem/1.2 var(--body); color: var(--muted); }
+.st-swatch { grid-auto-flow: column; justify-content: start; gap: .2rem; }
+.st-swatch i { width: 44px; height: 44px; border-radius: 50%; background: var(--c); border: 3px solid #fffdf8; margin-left: -10px; box-shadow: 0 4px 10px -4px rgba(0,0,0,.35); }
+.st-swatch i:first-child { margin-left: 0; }
+.st-chat { gap: .4rem; justify-items: start; background: #e9e2d6; border-radius: 12px; padding: .6rem; }
+.st-chat .in { background: #fff; border-radius: 2px 12px 12px 12px; padding: .35rem .7rem; font-size: .9rem; box-shadow: 0 1px 1px rgba(0,0,0,.12); }
+.st-chat .in--2 { justify-self: end; background: #d8fdd2; border-radius: 12px 2px 12px 12px; }
+@media (prefers-reduced-motion: no-preference) {
+  .steps li { transition: rotate .3s, transform .3s; }
+  .steps li:hover { rotate: 0deg; transform: translateY(-4px); }
+}
+@media (max-width: 640px) {
+  .steps { gap: 2rem; }
+  .steps li { padding: 1.1rem 1.1rem 1.2rem; }
+  .st-art { min-height: 0; margin-bottom: .8rem; }
+  .steps li::before { font-size: 3rem; top: -1.2rem; }
+}
+
+/* Eventos con ilustraciones */
+.ev-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+.ev-cards a { display: grid; gap: .35rem; justify-items: center; padding: .6rem .6rem .9rem; background: #fbf6ec; border-radius: 20px; text-decoration: none; color: var(--ink); font-weight: 700; text-align: center; line-height: 1.2; }
+.ev-cards img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 14px; }
+.ev-cards a:hover { color: var(--flor); }
+@media (prefers-reduced-motion: no-preference) {
+  .ev-cards a { transition: transform .2s, box-shadow .2s; }
+  .ev-cards a:hover { transform: translateY(-4px) rotate(-1deg); box-shadow: var(--soft); }
+}
+@media (max-width: 640px) {
+  .ev-cards { grid-auto-flow: column; grid-auto-columns: 42%; grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: .6rem; margin-inline: -1.25rem; padding-inline: 1.25rem; scroll-padding-inline: 1.25rem; }
+  .ev-cards li { scroll-snap-align: start; }
+  .ev-cards a { font-size: .95rem; }
+}
+
+/* Páginas de evento: ilustración arriba del cuadro verde */
+.side-art { display: block; width: calc(100% + 1rem); max-width: none; height: auto; margin: -1.25rem -.5rem 1rem; border-radius: 16px; background: #fbf6ec; rotate: -1.5deg; box-shadow: 0 14px 26px -16px rgba(0,0,0,.5); }
