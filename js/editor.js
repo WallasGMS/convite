@@ -89,9 +89,9 @@ function setEvent(id) {
   if (!sub.value || sub.value === prevSub) sub.value = EVENTS[id].sub;
   st.e = id;
   prevSub = EVENTS[id].sub;
-  // Designs made for this event go first (stable sort keeps the catalog order inside each group).
-  const fits = (b) => (THEMES.find((t) => t.id === b.dataset.id)?.ev || '').split(' ').includes(id);
-  themesBox.append(...[...themesBox.children].sort((a, b) => fits(b) - fits(a)));
+  // Designs made for this event go first, the most specific (fewest events) at the top; stable sort keeps catalog order on ties.
+  const rank = (b) => { const ev = (THEMES.find((t) => t.id === b.dataset.id)?.ev || '').split(' '); return ev.includes(id) ? 10 - ev.length : 0; };
+  themesBox.append(...[...themesBox.children].sort((a, b) => rank(b) - rank(a)));
   sync();
 }
 
