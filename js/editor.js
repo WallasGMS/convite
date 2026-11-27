@@ -481,5 +481,5 @@ prevSub = EVENTS[st.e].sub; // a subtitle the user edited stays; the untouched d
 if (qt && THEMES.some((t) => t.id === qt)) st.t = qt;
 const qe = new URLSearchParams(location.search).get('e');
 setEvent(qe && EVENTS[qe] ? qe : st.e);
-show(qe && EVENTS[qe] || $('h').value.trim() ? 2 : 1, null, true);
+show(1, null, true); // always start at "¿Qué vas a celebrar?"; a draft or ?e= only preselects the event
 if ($('k').value) applyCode(true);
