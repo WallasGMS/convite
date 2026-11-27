@@ -9,7 +9,7 @@ const COUNTRIES = [
   ['502', 'GT +502'], ['52', 'MX +52'], ['503', 'SV +503'], ['504', 'HN +504'], ['505', 'NI +505'],
   ['506', 'CR +506'], ['507', 'PA +507'], ['57', 'CO +57'], ['1', 'US +1'],
 ];
-const DRAFT = 'convite:draft';
+const DRAFT = 'convite:draft'; // only to delete drafts left by older versions
 const TEXT_FIELDS = ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'wn', 'k', 'f', 'n', 'b', 'o', 'gl', 'y', 'z', 'u', 'p', 'q'];
 const MAX_GUESTS = 300;
 // Digits required after the country code.
@@ -125,16 +125,13 @@ function sync() {
   refresh();
 }
 
-// Preview + draft only (used while typing in the guest list, which lives inside the result block).
+// Preview only (used while typing in the guest list, which lives inside the result block).
 function refresh() {
   $('rec-box').hidden = !$('rec').checked;
   // Preview shows a premium theme even without a code; the code gate is at "Generar".
   // With a valid code and the result visible, the first listed guest personalizes the preview.
   const guest = st.unlocked && !$('result').hidden ? guestLines()[0] : null;
   render($('preview'), data(), { premium: st.unlocked || !!needsCode(), preview: true, guest });
-  const d = { e: st.e, t: st.t, cc: st.cc, rec: $('rec').checked, ycus: $('ycus').checked };
-  for (const k of TEXT_FIELDS) d[k] = $(k).value;
-  try { localStorage.setItem(DRAFT, JSON.stringify(d)); } catch { /* private mode: no draft */ }
 }
 
 async function applyCode(quiet) {
@@ -461,10 +458,10 @@ $('copy').onclick = async () => {
 };
 $('share').onclick = () => navigator.share({ title: 'Mi invitación', url: $('link').value }).catch(() => {});
 
-// ---------- fill the form: from the saved draft, or from an invitation link ("Editar mi invitación") ----------
-function fillForm(d, anyTheme) {
+// ---------- fill the form from an invitation link ("Edítala con tu link") ----------
+function fillForm(d) {
   if (EVENTS[d.e]) st.e = d.e;
-  if (THEMES.some((t) => t.id === d.t && (anyTheme || !t.hidden || t.id === qt))) st.t = d.t; // a link proves an exclusive design
+  if (THEMES.some((t) => t.id === d.t)) st.t = d.t; // a link proves an exclusive design
   if (COUNTRIES.some((c) => c[0] === d.cc)) st.cc = d.cc;
   for (const k of TEXT_FIELDS) if (typeof d[k] === 'string') $(k).value = d[k];
   $('rec').checked = d.rec === true;
@@ -494,7 +491,7 @@ $('edit-go').onclick = async () => {
   try { if (raw.includes('#') && hash) x = await decode(hash); } catch { /* not an invitation link */ }
   if (!x?.h) { msg.className = 'ed-msg ed-msg--err'; msg.textContent = 'Ese no parece un link de invitación de Convite. Copia el link completo que compartiste.'; return; }
   for (const k of TEXT_FIELDS) $(k).value = '';
-  fillForm(draftFromLink(x), true);
+  fillForm(draftFromLink(x));
   prevSub = EVENTS[st.e].sub;
   msg.className = 'ed-msg ed-msg--ok'; msg.textContent = '';
   $('edit').open = false; $('edit-url').value = '';
@@ -503,15 +500,12 @@ $('edit-go').onclick = async () => {
   show(2);
 };
 
-// ---------- init: draft, then ?e= ----------
-try {
-  const d = JSON.parse(localStorage.getItem(DRAFT) || 'null');
-  if (d) fillForm(d);
-} catch { /* corrupt draft: start clean */ }
+// ---------- init: every new invitation starts blank (no draft); to change an old one, "Edítala con tu link" ----------
+try { localStorage.removeItem(DRAFT); } catch { /* private mode */ } // drafts saved by older versions
 
 prevSub = EVENTS[st.e].sub; // a subtitle the user edited stays; the untouched default follows the event
 if (qt && THEMES.some((t) => t.id === qt)) st.t = qt;
 const qe = new URLSearchParams(location.search).get('e');
 setEvent(qe && EVENTS[qe] ? qe : st.e);
-show(1, null, true); // always start at "¿Qué vas a celebrar?"; a draft or ?e= only preselects the event
+show(1, null, true); // always start at "¿Qué vas a celebrar?"; ?e= only preselects the event
 if ($('k').value) applyCode(true);

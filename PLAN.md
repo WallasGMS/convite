@@ -86,7 +86,7 @@ body.inv-page > main.inv-root
   (botón WhatsApp al vendedor con texto prellenado; el número del vendedor va en una constante `SELLER_WA` arriba de `editor.js`).
 - Botón “Generar invitación” → `encode()` → link `i.html#...` absoluto → mostrar con: Copiar, Compartir por WhatsApp
   (`https://wa.me/?text=`), Abrir. Usar `navigator.share` si existe.
-- Guardar borrador en `localStorage` en cada cambio y restaurarlo al volver.
+- Sin borrador: cada invitación nueva empieza vacía. Para cambiar una ya hecha, "Edítala con tu link" (paso 1) recarga todo desde el link.
 - Soportar `crear.html?e=xv` para preseleccionar evento (lo usan las páginas SEO).
 
 ### T3 · Landing + SEO → `index.html`, `css/site.css`, `invitaciones/*.html`, `sitemap.xml`, `robots.txt`, `favicon.svg` (agente: sonnet)
