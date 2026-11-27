@@ -340,7 +340,6 @@ section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -
 .closing-art { display: block; width: 180px; height: auto; margin: 0 auto 1rem; border-radius: 22px; rotate: -4deg; box-shadow: 0 14px 26px -18px rgba(17,35,31,.5); }
 @media (max-width: 640px) {
   .eyebrow { font-size: 1.65rem; }
-  .sticker { width: 64px; height: 64px; font-size: 1.05rem; top: -14px; right: 12px; }
-  .plan--pro .price { margin-right: 3.6rem; }
+  .sticker { display: none; }
   .closing-art { width: 130px; }
 }
