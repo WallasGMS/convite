@@ -343,3 +343,16 @@ section.alt::before { content: ""; position: absolute; left: 0; right: 0; top: -
   .sticker { display: none; }
   .closing-art { width: 130px; }
 }
+
+/* Descargar app (PWA) */
+.btn--app { border-color: var(--ink); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+.btn--app:hover { background: var(--ink); color: #fff; }
+.btn--app .ico { width: 1.2em; height: 1.2em; vertical-align: 0; color: currentColor; }
+[data-install][hidden] { display: none !important; }
+.install-dlg { width: min(420px, calc(100vw - 2rem)); border: 0; border-radius: 6px 22px 10px 24px; padding: 1.5rem 1.4rem 1.3rem; background: #fffdf8; color: var(--ink); box-shadow: 0 30px 60px -20px rgba(17,35,31,.5); }
+.install-dlg::backdrop { background: rgba(17,35,31,.45); }
+.install-dlg h2 { font-size: 1.5rem; margin-bottom: .6rem; }
+.install-dlg ol { padding-left: 1.2rem; margin: 0 0 1rem; display: grid; gap: .4rem; }
+.install-dlg p { margin: 0 0 .6rem; }
+.install-note { font: 700 1.25rem/1.2 "Caveat", "Segoe Print", cursive; color: var(--flor); rotate: -1.5deg; }
+.install-dlg .btn { width: 100%; margin-top: .4rem; }

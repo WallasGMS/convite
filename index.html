@@ -18,6 +18,10 @@
 <meta property="og:image" content="https://wallasgms.github.io/convite/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="img/app/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Convite">
 <link rel="stylesheet" href="css/site.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"Convite","url":"https://wallasgms.github.io/convite/","inLanguage":"es"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Los invitados necesitan instalar algo o crear una cuenta?","acceptedAnswer":{"@type":"Answer","text":"No. Reciben un link por WhatsApp, lo abren en el navegador del celular y ven la invitación. Para confirmar, tocan un botón que abre WhatsApp contigo."}},{"@type":"Question","name":"¿Dónde se guardan los datos de mi invitación?","acceptedAnswer":{"@type":"Answer","text":"Dentro del propio link. Convite no tiene base de datos ni cuentas: lo que escribes se comprime y se pone en la dirección. Por eso no hay nada que registrar, y por eso el link es largo."}},{"@type":"Question","name":"¿Puedo cambiar algo después de enviarla?","acceptedAnswer":{"@type":"Answer","text":"El link ya enviado no cambia. Si corriges un dato, generas un link nuevo y lo reenvías. Para editarla desde cualquier teléfono, abre el editor, toca “Edítala con tu link” y pega el link: se carga todo, incluso Premium, sin volver a poner el código."}},{"@type":"Question","name":"¿Cómo recibo las confirmaciones?","acceptedAnswer":{"@type":"Answer","text":"Si pones tu WhatsApp, cada invitado verá el botón “Confirmar asistencia”. Les abre un chat contigo con un mensaje ya escrito y solo completan su nombre y cuántas personas van. Las respuestas las ves en tu WhatsApp; Convite no las cuenta por ti."}},{"@type":"Question","name":"¿Qué es la marca “Hecha con Convite”?","acceptedAnswer":{"@type":"Answer","text":"En el plan gratis aparece una barra abajo de la invitación con ese texto y un enlace para crear una propia. En Premium no aparece."}},{"@type":"Question","name":"¿Cómo funcionan los pases personalizados?","acceptedAnswer":{"@type":"Answer","text":"Es una función Premium. A cada familia o invitado le mandas un link con su nombre y su número de pases; al abrirlo ven “Familia Pérez” y “Pase válido para 4 personas”. Es un aviso claro para el invitado: Convite no controla la entrada ni cuenta quién llegó."}},{"@type":"Question","name":"¿Cómo compro Premium?","acceptedAnswer":{"@type":"Answer","text":"Por ahora se paga por WhatsApp: escríbenos, pagas Q35 (o USD 4.99) y te enviamos un código que pegas en el editor. Cada código sirve para una invitación."}},{"@type":"Question","name":"¿Hasta cuándo funciona el link?","acceptedAnswer":{"@type":"Answer","text":"Mientras el sitio de Convite esté en línea. Aun así, si es una fecha importante, guarda una captura de pantalla de la invitación como respaldo."}},{"@type":"Question","name":"¿Funciona para cualquier evento?","acceptedAnswer":{"@type":"Answer","text":"Tiene diez tipos: cumpleaños, XV años, boda, baby shower, revelación de género, bautizo, primera comunión, graduación, aniversario y “Otro evento” para lo demás."}}]}]}</script>
 </head>
@@ -26,7 +30,7 @@
 <div class="bunting" aria-hidden="true"></div>
 <header class="wrap top">
 <a class="logo" href="index.html" aria-label="Convite, inicio"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0f5a4e"/><path d="M5 11l11 8 11-8v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#f5b318"/><path d="M5 11a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2l-11 8z" fill="#e23d5e"/></svg>Convite</a>
-<nav aria-label="Principal"><a href="index.html#precios">Precios</a><a href="index.html#preguntas">Preguntas</a><a class="btn btn--main" href="crear.html">Crear invitación</a></nav>
+<nav aria-label="Principal"><a href="index.html#precios">Precios</a><a href="index.html#preguntas">Preguntas</a><a href="#" data-install>Descargar app</a><a class="btn btn--main" href="crear.html">Crear invitación</a></nav>
 </header>
 <main id="contenido">
 <section class="hero"><div class="wrap">
@@ -34,7 +38,7 @@
 <p class="eyebrow">Invitaciones digitales</p>
 <h1>Tu invitación, lista para <em class="scribble">WhatsApp</em> en minutos.</h1>
 <p class="lead">Llenas los datos de tu fiesta, eliges un tema y mandas un solo link. Tus invitados ven el mapa, la fecha y confirman con un toque. Sin cuentas, sin descargas.</p>
-<div class="cta"><a class="btn btn--main" href="crear.html">Crear mi invitación gratis</a><a class="btn" href="#precios">Ver precios</a></div>
+<div class="cta"><a class="btn btn--main" href="crear.html">Crear mi invitación gratis</a><a class="btn" href="#precios">Ver precios</a><button type="button" class="btn btn--app" data-install><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v6.2m-2.6-2.6 2.6 2.6 2.6-2.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Descargar app</button></div>
 <p class="note">Para XV años, bodas, baby showers, revelaciones de género, bautizos, primeras comuniones, graduaciones, aniversarios, cumpleaños y cualquier otra celebración.</p>
 </div>
 <div class="phone-stage"><span class="chip chip--a" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#ic-sobre"/></svg>Un solo link</span><span class="chip chip--b" aria-hidden="true"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#ic-check"/></svg>Confirma con un toque</span><div class="phone"><iframe src="i.html#Hc5BSgNBEIXhqzzfuhMmEVF7KyqoWUhCcFtMl0lDz1So7oSAeJgcQbyBuZjo9v82_wcbI9-z1iYMVEYeDwzcMnItRT0LFuZStDKwMnKRK97WkPOX_aXEyHk3v550l5N5t5rdxq5jYGHkUsr5e8STeMqjViQteJGNMVAY-TxgdjO9wp24a1MXCO4LllIOkswDHvfSdJDyN3Zk5Os-qxt6G3biLTt6G1veGIpgtH6rGM6nCq077bMUJMWQcchJpvg5rfRf3C4Y2DPywXyQEqAjmo0GtyowJHNJxs9f" title="Ejemplo de invitación de XV años, con tema Fiesta" loading="lazy"></iframe></div>
@@ -113,10 +117,18 @@
 <div class="cols">
 <div><a class="logo" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0f5a4e"/><path d="M5 11l11 8 11-8v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#f5b318"/><path d="M5 11a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2l-11 8z" fill="#e23d5e"/></svg>Convite</a><p>Invitaciones digitales para compartir por WhatsApp. Sin cuentas y sin instalar nada.</p></div>
 <div><h2>Invitaciones</h2><ul><li><a href="invitaciones/xv-anos.html">XV años</a></li><li><a href="invitaciones/boda.html">Boda</a></li><li><a href="invitaciones/baby-shower.html">Baby shower</a></li><li><a href="invitaciones/revelacion-de-genero.html">Revelación de género</a></li><li><a href="invitaciones/bautizo.html">Bautizo</a></li><li><a href="invitaciones/primera-comunion.html">Primera comunión</a></li><li><a href="invitaciones/graduacion.html">Graduación</a></li><li><a href="invitaciones/aniversario.html">Aniversario</a></li><li><a href="invitaciones/cumpleanos.html">Cumpleaños</a></li></ul></div>
-<div><h2>Convite</h2><ul><li><a href="crear.html">Crear mi invitación</a></li><li><a href="index.html#pases">Pases personalizados</a></li><li><a href="index.html#precios">Precios</a></li><li><a href="index.html#preguntas">Preguntas frecuentes</a></li></ul></div>
+<div><h2>Convite</h2><ul><li><a href="crear.html">Crear mi invitación</a></li><li><a href="index.html#pases">Pases personalizados</a></li><li><a href="index.html#precios">Precios</a></li><li><a href="index.html#preguntas">Preguntas frecuentes</a></li><li><a href="#" data-install>Descargar la app</a></li></ul></div>
 </div>
 <p class="fine">&copy; 2026 Convite. Tus datos viajan solo dentro del link que compartes.</p>
 </div></footer>
+<dialog id="install-dlg" class="install-dlg" aria-labelledby="install-title">
+<h2 id="install-title">Lleva Convite en tu teléfono</h2>
+<div data-ios><p>En iPhone se agrega desde Safari, en dos pasos:</p><ol><li>Toca el botón <strong>Compartir</strong> (el cuadrito con la flecha hacia arriba).</li><li>Elige <strong>Agregar a inicio</strong> y luego <strong>Agregar</strong>.</li></ol></div>
+<div data-other><p>Tu navegador no mostró el botón automático. Hazlo así:</p><ol><li>Abre el menú del navegador (los tres puntitos <strong>⋮</strong>).</li><li>Toca <strong>Instalar app</strong> o <strong>Agregar a pantalla principal</strong>.</li></ol></div>
+<p class="install-note">Queda como una app con su ícono, sin ocupar espacio ni pedir datos.</p>
+<button type="button" id="install-close" class="btn btn--main">Entendido</button>
+</dialog>
+<script type="module" src="js/install.js"></script>
 <script>
 document.documentElement.classList.add('js');
 (function(){var els=document.querySelectorAll('main .head,.steps li,.pases,.plan,.service,.gallery figure,.faq,.closing .wrap');
