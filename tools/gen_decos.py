@@ -2,7 +2,7 @@
 
 Run:  python tools/gen_decos.py                # only missing
       python tools/gen_decos.py religioso boda-elegante --force
-Output: img/deco/<theme>.webp (960 px wide, transparent, trimmed) + img/deco/sm/<theme>.webp (360 px, editor thumbnails).
+Output: img/deco/<theme>.webp (960 px wide, transparent, trimmed) + img/deco/sm/<theme>.webp (240 px, editor thumbnails).
 Prints the aspect ratio of each image; css/invite.css uses it for --deco-top-ratio.
 """
 import base64, io, sys, urllib.error
@@ -67,9 +67,9 @@ def make(key, model, tid):
     if not box:
         raise RuntimeError('empty image')
     img = img.crop(box)
-    for w, dest in ((960, OUT / f'{tid}.webp'), (360, OUT / 'sm' / f'{tid}.webp')):
+    for w, q, dest in ((960, 80, OUT / f'{tid}.webp'), (240, 70, OUT / 'sm' / f'{tid}.webp')):
         im = img.resize((w, round(img.height * w / img.width)), Image.LANCZOS) if img.width > w else img
-        im.save(dest, 'WEBP', quality=80, method=6)
+        im.save(dest, 'WEBP', quality=q, method=6)
     return img.width, img.height, img.getpixel((img.width // 2, img.height - 1))[3]
 
 
