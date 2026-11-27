@@ -27,7 +27,9 @@
     (async () => {
       const data = await decode(location.hash.slice(1));
       if (!data.h) throw new Error('empty');
-      render(app, data, { premium: await isPremium(data.k, { allowDemo: true }), guest: guestFrom(location.search) });
+      const demo = window.self !== window.top; // samples embedded in the home page: visual only
+      render(app, data, { premium: await isPremium(data.k, { allowDemo: true }), guest: guestFrom(location.search), demo });
+      if (demo) document.querySelectorAll('.inv-brand').forEach((a) => a.removeAttribute('href'));
       document.title = [data.s, data.h].filter(Boolean).join(' · ');
     })().catch(() => {
       const p = document.createElement('p');

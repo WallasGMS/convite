@@ -215,7 +215,8 @@ function burst(host, x, y) {
  * opts.preview: editor preview (no envelope intro, links still work).
  * opts.guest: {name, passes} from guestFrom(location.search); shown only when premium.
  */
-export function render(root, data, { premium = false, preview = false, guest = null } = {}) {
+// demo: home page samples (inside an iframe). Buttons look real but go nowhere and carry no phone number.
+export function render(root, data, { premium = false, preview = false, guest = null, demo = false } = {}) {
   const ev = EVENTS[data.e] || EVENTS.otro;
   const picked = themeById(data.t);
   const theme = picked.premium && !premium ? themeById('clasico') : picked;
@@ -277,7 +278,7 @@ export function render(root, data, { premium = false, preview = false, guest = n
   if (data.g) inv.append(block('Mesa de regalos', data.g));
 
   const actions = el('div', 'inv-actions');
-  if (data.w) {
+  if (data.w || demo) {
     const who = guest?.name || '';
     const msg = `¡Hola! Confirmo mi asistencia a ${[data.s || ev.sub, data.h].filter(Boolean).join(' de ')}.\n`
       + `Nombre: ${who}\n${guest?.passes ? `Pases: ${guest.passes}` : 'Personas: '}`;
@@ -293,6 +294,7 @@ export function render(root, data, { premium = false, preview = false, guest = n
   inv.append(el('div', 'inv-deco inv-deco--bottom'));
 
   root.replaceChildren(inv);
+  if (demo) for (const a of inv.querySelectorAll('a')) { a.removeAttribute('href'); a.removeAttribute('target'); a.removeAttribute('download'); }
 
   let custom = {};
   if (premium) {
