@@ -17,9 +17,9 @@ export const EVENTS = {
 // field -> max length. Anything else in the payload is dropped.
 // t theme, e event, h name(s), s subtitle, d date, l/a/m venue, x message, c dress code, g gifts,
 // w host WhatsApp, k premium code, f parents/godparents line, n/b/o second venue (reception) name/address/time,
-// y/z/u premium customizer: accent color (hex, no #), title font id, ornament id (unknown ids are ignored by render),
+// y/z/u/v premium customizer: accent color (hex, no #), title font id, ornament id, background id (unknown ids are ignored by render),
 // p/q map pins "lat,lng" for the venue and the reception (Waze / Google Maps directions).
-const LIMITS = { t: 20, e: 12, h: 60, s: 60, d: 16, l: 80, a: 160, m: 500, x: 400, c: 80, g: 200, w: 15, k: 24, f: 200, n: 80, b: 160, o: 5, y: 6, z: 12, u: 12, p: 24, q: 24 };
+const LIMITS = { t: 20, e: 12, h: 60, s: 60, d: 16, l: 80, a: 160, m: 500, x: 400, c: 80, g: 200, w: 15, k: 24, f: 200, n: 80, b: 160, o: 5, y: 6, z: 12, u: 12, v: 12, p: 24, q: 24 };
 
 const validPin = (s) => {
   const m = /^(-?\d{1,2}\.\d{1,6}),(-?\d{1,3}\.\d{1,6})$/.exec(s);

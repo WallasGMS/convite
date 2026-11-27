@@ -54,11 +54,40 @@ export const FONTS = [
   { id: 'moderna',    name: 'Moderna',    css: "'Poppins', system-ui, sans-serif",   fonts: 'family=Poppins:wght@600', w: 600 },
   { id: 'divertida',  name: 'Divertida',  css: "'Fredoka', system-ui, sans-serif",   fonts: 'family=Fredoka:wght@600', w: 600 },
   { id: 'retro',      name: 'Retro',      css: "'Abril Fatface', Georgia, serif",    fonts: 'family=Abril+Fatface', w: 400 },
+  // Tendencias 2026 (Pinterest/Canva): caligrafía fina, editorial, a mano, retro. Equivalentes libres de Google Fonts.
+  { id: 'nupcial',    name: 'Nupcial',    css: "'Pinyon Script', cursive",           fonts: 'family=Pinyon+Script', w: 400, script: true },
+  { id: 'imperial',   name: 'Imperial',   css: "'Imperial Script', cursive",         fonts: 'family=Imperial+Script', w: 400, script: true },
+  { id: 'lujo',       name: 'Lujo',       css: "'Luxurious Script', cursive",        fonts: 'family=Luxurious+Script', w: 400, script: true },
+  { id: 'firma',      name: 'Firma',      css: "'Mrs Saint Delafield', cursive",     fonts: 'family=Mrs+Saint+Delafield', w: 400, script: true },
+  { id: 'pluma',      name: 'Pluma',      css: "'Alex Brush', cursive",              fonts: 'family=Alex+Brush', w: 400, script: true },
+  { id: 'manuscrita', name: 'Manuscrita', css: "'Sacramento', cursive",              fonts: 'family=Sacramento', w: 400, script: true },
+  { id: 'amano',      name: 'A mano',     css: "'Caveat', cursive",                  fonts: 'family=Caveat:wght@700', w: 700, script: true },
+  { id: 'revista',    name: 'Revista',    css: "'Italiana', Georgia, serif",         fonts: 'family=Italiana', w: 400 },
+  { id: 'vogue',      name: 'Vogue',      css: "'Gloock', Georgia, serif",           fonts: 'family=Gloock', w: 400 },
+  { id: 'fina',       name: 'Fina',       css: "'Cormorant Garamond', Georgia, serif", fonts: 'family=Cormorant+Garamond:ital,wght@1,600', w: 600 },
+  { id: 'corona',     name: 'Corona',     css: "'Cinzel Decorative', Georgia, serif", fonts: 'family=Cinzel+Decorative:wght@700', w: 700 },
+  { id: 'setentas',   name: 'Años 70',    css: "'Shrikhand', Georgia, serif",        fonts: 'family=Shrikhand', w: 400 },
+  { id: 'comic',      name: 'Cómic',      css: "'Bangers', system-ui, sans-serif",   fonts: 'family=Bangers', w: 400 },
+  { id: 'kawaii',     name: 'Kawaii',     css: "'Mochiy Pop One', system-ui, sans-serif", fonts: 'family=Mochiy+Pop+One', w: 400 },
 ];
 // Ornaments replace the theme's top/bottom decoration; drawn as CSS masks painted with --accent (css/invite.css).
 export const ORNAMENTS = [
   { id: 'flores', name: 'Flores' }, { id: 'hojas', name: 'Hojas' }, { id: 'estrellas', name: 'Estrellas' },
-  { id: 'mariposas', name: 'Mariposas' }, { id: 'corazones', name: 'Corazones' }, { id: 'ninguno', name: 'Sin adorno' },
+  { id: 'mariposas', name: 'Mariposas' }, { id: 'corazones', name: 'Corazones' },
+  // Ilustrados (img/orn, tools/gen_orns.py): misma idea, máscara de imagen.
+  { id: 'lazos', name: 'Moños', img: true }, { id: 'eucalipto', name: 'Eucalipto', img: true },
+  { id: 'pampas', name: 'Pampas boho', img: true }, { id: 'limones', name: 'Limones', img: true },
+  { id: 'olivo', name: 'Olivo', img: true }, { id: 'silvestres', name: 'Silvestres', img: true },
+  { id: 'girasoles', name: 'Girasoles', img: true }, { id: 'rosas', name: 'Rosas', img: true },
+  { id: 'cerezas', name: 'Cerezas', img: true }, { id: 'celestial', name: 'Celestial', img: true },
+  { id: 'disco', name: 'Disco', img: true }, { id: 'laurel', name: 'Laurel', img: true },
+  { id: 'ninguno', name: 'Sin adorno' },
+];
+// Fondo del personalizador: patrón suave sobre el color del diseño, teñido con --accent (css/invite.css).
+export const BACKGROUNDS = [
+  { id: 'papel', name: 'Papel' }, { id: 'lino', name: 'Lino' }, { id: 'vichy', name: 'Vichy' },
+  { id: 'rayas', name: 'Rayas' }, { id: 'puntos', name: 'Puntos' }, { id: 'acuarela', name: 'Acuarela' },
+  { id: 'arco', name: 'Arco' },
 ];
 
 export const themeById = (id) => THEMES.find((t) => t.id === id) || THEMES[0];

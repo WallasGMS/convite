@@ -1,5 +1,5 @@
 import { EVENTS } from './codec.js';
-import { themeById, loadThemeFonts, FONTS, ORNAMENTS } from './themes.js';
+import { themeById, loadThemeFonts, FONTS, ORNAMENTS, BACKGROUNDS } from './themes.js';
 
 // Data comes from a URL anyone can craft: build DOM with textContent only, never innerHTML.
 function el(tag, cls, text) {
@@ -211,7 +211,7 @@ function burst(host, x, y) {
 /**
  * Render an invitation into `root` (replaces its content).
  * opts.premium: unlocks premium themes, removes watermark, enables countdown, envelope intro, guest passes
- *   and the customizer (data.y color, data.z font, data.u ornament).
+ *   and the customizer (data.y color, data.z font, data.u ornament, data.v background).
  * opts.preview: editor preview (no envelope intro, links still work).
  * opts.guest: {name, passes} from guestFrom(location.search); shown only when premium.
  */
@@ -301,6 +301,7 @@ export function render(root, data, { premium = false, preview = false, guest = n
     custom = customVars(data, inv); // after insertion: reads the theme's computed --bg
     applyVars(inv, custom);
     if (ORNAMENTS.some((o) => o.id === data.u)) inv.dataset.orn = data.u;
+    if (BACKGROUNDS.some((b) => b.id === data.v)) inv.dataset.bg = data.v;
   }
 
   if (!premium) {

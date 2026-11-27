@@ -1,7 +1,7 @@
 const SELLER_WA = '50230801909';
 
 import { EVENTS, encode, decode } from './codec.js';
-import { THEMES, FONTS, ORNAMENTS } from './themes.js';
+import { THEMES, FONTS, ORNAMENTS, BACKGROUNDS } from './themes.js';
 import { render } from './render.js';
 import { isPremium } from './premium.js';
 
@@ -10,7 +10,7 @@ const COUNTRIES = [
   ['506', 'CR +506'], ['507', 'PA +507'], ['57', 'CO +57'], ['1', 'US +1'],
 ];
 const DRAFT = 'convite:draft'; // only to delete drafts left by older versions
-const TEXT_FIELDS = ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'wn', 'k', 'f', 'n', 'b', 'o', 'gl', 'y', 'z', 'u', 'p', 'q'];
+const TEXT_FIELDS = ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'wn', 'k', 'f', 'n', 'b', 'o', 'gl', 'y', 'z', 'u', 'v', 'p', 'q'];
 const MAX_GUESTS = 300;
 // Digits required after the country code.
 const WA_DIGITS = { 502: 8, 503: 8, 504: 8, 505: 8, 506: 8, 507: 8, 52: 10, 57: 10, 1: 10 };
@@ -61,8 +61,35 @@ for (const [id, ev] of Object.entries(EVENTS)) {
   eventsBox.append(b);
 }
 
-$('z').append(...FONTS.map((f) => new Option(f.name, f.id)));
-$('u').append(...ORNAMENTS.map((o) => new Option(o.name, o.id)));
+// Customizer pickers: the hidden <select> keeps the value (data(), fillForm); each button shows its option.
+function picker(id, items, face) {
+  const sel = $(id), box = mk('div', 'ed-pick');
+  box.setAttribute('role', 'radiogroup'); box.setAttribute('aria-labelledby', id + '-l'); box.dataset.for = id;
+  sel.append(...items.map((i) => new Option(i.name, i.id)));
+  for (const o of sel.options) {
+    const b = mk('button', 'ed-pick-b');
+    b.type = 'button'; b.dataset.id = o.value; b.setAttribute('role', 'radio');
+    b.append(mk('span', '', o.text));
+    if (o.value) face(o.value, b);
+    b.onclick = () => { sel.value = o.value; sel.dispatchEvent(new Event('input', { bubbles: true })); };
+    box.append(b);
+  }
+  sel.after(box);
+}
+picker('z', FONTS, (fid, b) => { b.classList.add('ed-pick-font'); b.lastChild.style.fontFamily = `'pv-${fid}', ${FONTS.find((f) => f.id === fid).css}`; });
+picker('u', ORNAMENTS, (oid, b) => { if (oid !== 'ninguno') { const s = mk('span', 'ed-orn'); s.dataset.orn = oid; b.prepend(s); } });
+picker('v', BACKGROUNDS, (bid, b) => { const s = mk('span', 'ed-bg'); s.dataset.bg = bid; b.prepend(s); });
+
+// Font names drawn in their own letter: tiny text= subsets under an alias family ('pv-<id>'), so they
+// never shadow the full fonts the preview loads for the same family.
+(async () => {
+  const text = encodeURIComponent([...new Set(FONTS.map((f) => f.name).join(''))].join(''));
+  await Promise.all(FONTS.map(async (f) => {
+    const css = await (await fetch(`https://fonts.googleapis.com/css2?${f.fonts}&text=${text}`)).text();
+    const url = /url\((https:[^)]+)\)/.exec(css)?.[1];
+    if (url) document.fonts.add(await new FontFace('pv-' + f.id, `url(${url})`).load());
+  })).catch(() => {}); // offline: names stay in the editor's own font
+})();
 
 // Exclusive (hidden) designs only show up when the seller sends crear.html?t=<id>.
 const qt = new URLSearchParams(location.search).get('t');
@@ -96,7 +123,7 @@ function setEvent(id) {
 }
 
 const themeIsPremium = () => THEMES.find((t) => t.id === st.t)?.premium;
-const customized = () => $('ycus').checked || !!$('z').value || !!$('u').value;
+const customized = () => $('ycus').checked || !!$('z').value || !!$('u').value || !!$('v').value;
 const needsCode = () => themeIsPremium() || customized();
 
 function data() {
@@ -105,7 +132,7 @@ function data() {
   for (const k of ['h', 's', 'd', 'l', 'a', 'm', 'x', 'c', 'g', 'f', 'p']) o[k] = $(k).value;
   if ($('rec').checked) for (const k of ['n', 'b', 'o', 'q']) o[k] = $(k).value;
   if ($('ycus').checked) o.y = $('y').value.slice(1);
-  o.z = $('z').value; o.u = $('u').value;
+  o.z = $('z').value; o.u = $('u').value; o.v = $('v').value;
   if (st.unlocked) o.k = $('k').value.trim().toUpperCase();
   // People paste maps.app.goo.gl/... or http://...: codec only keeps https links.
   if (o.m) o.m = o.m.trim().replace(/^http:\/\//i, 'https://').replace(/^(?!https:\/\/)/i, 'https://');
@@ -120,6 +147,7 @@ function sync() {
   }
   $('cc').value = st.cc;
   $('y-box').hidden = !$('ycus').checked;
+  for (const box of document.querySelectorAll('.ed-pick')) for (const b of box.children) b.setAttribute('aria-checked', b.dataset.id === $(box.dataset.for).value);
   pinUi('p', 'a'); pinUi('q', 'b');
   $('buy').hidden = true;
   $('warn').hidden = true;
@@ -471,6 +499,7 @@ function fillForm(d) {
   $('ycus').checked = d.ycus === true;
   if (!FONTS.some((f) => f.id === $('z').value)) $('z').value = '';
   if (!ORNAMENTS.some((o) => o.id === $('u').value)) $('u').value = '';
+  if (!BACKGROUNDS.some((o) => o.id === $('v').value)) $('v').value = '';
   if (['f', 'c', 'g', 'm'].some((k) => $(k).value)) $('more').open = true;
 }
 
