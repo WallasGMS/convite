@@ -57,7 +57,7 @@ for (const [id, ev] of Object.entries(EVENTS)) {
   const b = mk('button', 'ed-event');
   b.append(evIcon(id), mk('span', '', ev.label));
   b.type = 'button'; b.dataset.id = id; b.setAttribute('role', 'radio');
-  b.onclick = () => { setEvent(id); setTimeout(() => { if (step === 1) goTo(2); }, 250); };
+  b.onclick = () => setEvent(id); // only selects; moving on is the "Siguiente" button's job
   eventsBox.append(b);
 }
 
