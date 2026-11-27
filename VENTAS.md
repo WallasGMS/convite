@@ -7,7 +7,7 @@ Guía práctica para vender las primeras invitaciones. Todo lo que está aquí s
 | Qué | Precio | Qué incluye |
 |---|---|---|
 | Gratis | Q0 | 6 diseños, marca de agua "Hecha con Convite", ceremonia y recepción en lugares distintos, línea "Con la bendición de" (padres o padrinos), tipos de evento nuevos: primera comunión, revelación de género y aniversario |
-| Premium (autoservicio) | Q35 por invitación | 24 diseños, **su propio color, letra del nombre y adorno** (flores, hojas, estrellas, mariposas, corazones), sin marca, cuenta regresiva, sobre animado y **pases personalizados por invitado**: cada familia tiene su link con su nombre y cuántas personas pueden venir ("Familia Pérez · Pase válido para 4 personas"). Se activa con un código `CNV-XXXX-XXXX`. **Un código por evento cubre todos los links de invitados** (hasta 300) |
+| Premium (autoservicio) | Q35 por invitación | 37 diseños (bodas elegantes, superhéroe, cute, graduación formal, anime/otaku…), **su propio color, letra del nombre y adorno** (flores, hojas, estrellas, mariposas, corazones), sin marca, cuenta regresiva, sobre animado y **pases personalizados por invitado**: cada familia tiene su link con su nombre y cuántas personas pueden venir ("Familia Pérez · Pase válido para 4 personas"). Se activa con un código `CNV-XXXX-XXXX`. **Un código por evento cubre todos los links de invitados** (hasta 300) |
 | Te la hago yo | Q75 | Lo hacemos juntos por WhatsApp: tú me das los datos y yo la armo y te la entrego lista |
 | Diseño exclusivo | Q200 | Un diseño hecho solo para el cliente a partir de una foto de referencia. No aparece en el catálogo. Incluye premium y pases. Ver sección 5b |
 

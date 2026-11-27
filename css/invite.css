@@ -996,3 +996,202 @@ body.inv-page:has([data-theme="acuarela"]) { --page: #f4dcd7; }
   background: color-mix(in srgb, var(--accent) 38%, transparent); border-radius: 2px;
 }
 .inv-block:nth-of-type(even)::before { rotate: 4deg; left: 40%; }
+
+
+/* ==========================================================================
+   Diseños con ilustración (la imagen de arriba viene de img/deco, ver final)
+   ========================================================================== */
+/* ---------- Boda elegante: rosas blancas y oro ---------- */
+[data-theme="boda-elegante"] {
+  --bg: #fbf8f2; --ink: #3a3530; --muted: #7a7066;
+  --accent: #b08d57; --accent-d: #8a6a3a; --btn: #8a6a3a; --on-accent: #fff; --line: rgba(176,141,87,.4);
+  --f-display: 'Pinyon Script', cursive; --f-body: 'Cormorant Garamond', Georgia, serif; --f-msg: var(--f-body); --msg-style: italic;
+  --r-btn: 2px; --tw: 400; --ts: clamp(3.2rem, 16vw, 4.6rem); --r-card: 6px; --cell-r: 2px; --env-flap: #efe6d6;
+}
+[data-theme="boda-elegante"] .inv-btn { text-transform: uppercase; letter-spacing: .18em; font-size: .8rem; }
+/* ---------- Jardín: verde botánico ---------- */
+[data-theme="boda-jardin"] {
+  --bg: #f4f6f0; --ink: #2f3d2c; --muted: #5e6d58;
+  --accent: #5f7d5a; --accent-d: #46603f; --btn: #4f6b4a; --on-accent: #fff; --line: rgba(95,125,90,.35);
+  --f-display: 'Allura', cursive; --f-body: 'Lora', Georgia, serif; --f-msg: var(--f-body); --msg-style: italic;
+  --r-btn: 999px; --tw: 400; --ts: clamp(3.3rem, 17vw, 4.8rem); --r-card: 18px; --cell-r: 12px; --env-flap: #e2e9dc;
+}
+/* ---------- Marino y oro (oscuro) ---------- */
+[data-theme="boda-marino"] {
+  --bg: #14213d; --ink: #f1ead8; --muted: #c3b89a;
+  --accent: #c9a45c; --accent-d: #e0c27e; --btn: #c9a45c; --on-accent: #14213d; --line: rgba(201,164,92,.45);
+  --f-display: 'Italiana', Georgia, serif; --f-body: 'Montserrat', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 0; --tw: 400; --ts: clamp(2.6rem, 12vw, 3.6rem); --r-card: 4px; --cell-r: 0; --cell-bg: rgba(201,164,92,.06);
+  --env-flap: #1b2a4a; --title-color: #e0c27e;
+}
+[data-theme="boda-marino"] .inv-btn { text-transform: uppercase; letter-spacing: .2em; font-size: .76rem; }
+body.inv-page:has([data-theme="boda-marino"]) { --page: #0c1428; }
+/* ---------- Superhéroe: cómic ---------- */
+[data-theme="cumple-heroe"] {
+  --bg: #fff4d6; --ink: #1b1b3a; --muted: #4a4a6a;
+  --accent: #e63946; --accent-d: #b8202d; --btn: #1d4ed8; --on-accent: #fff; --line: #1b1b3a;
+  --f-display: 'Bangers', Impact, sans-serif; --f-body: 'Nunito', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 6px; --tw: 400; --ts: clamp(3rem, 15vw, 4.4rem); --r-card: 8px; --cell-r: 6px; --cell-bg: #fff; --cell-bd: #1b1b3a;
+  --card-bg: #fff; --card-bd: #1b1b3a; --card-sh: 5px 5px 0 #1b1b3a; --env-flap: #ffd23f;
+  --title-color: #e63946;
+}
+.inv[data-theme="cumple-heroe"] { background-image: radial-gradient(rgba(29,78,216,.12) 1.4px, transparent 1.6px); background-size: 14px 14px; }
+.inv[data-theme="cumple-heroe"] .inv-title { letter-spacing: .04em; text-shadow: 3px 3px 0 #ffd23f, 5px 5px 0 #1b1b3a; }
+[data-theme="cumple-heroe"] .inv-block { border-width: 3px; }
+[data-theme="cumple-heroe"] .inv-btn { border-width: 3px; box-shadow: 3px 3px 0 #1b1b3a; font-weight: 800; }
+/* ---------- Cumple elegante: esmeralda y oro ---------- */
+[data-theme="cumple-elegante"] {
+  --bg: #0e2a24; --ink: #f3ead2; --muted: #bfb592;
+  --accent: #d8b46a; --accent-d: #e6c886; --btn: #d8b46a; --on-accent: #0e2a24; --line: rgba(216,180,106,.45);
+  --f-display: 'Playfair Display SC', Georgia, serif; --f-body: 'Raleway', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 2px; --tw: 700; --ts: clamp(2.4rem, 11vw, 3.4rem); --r-card: 6px; --cell-r: 2px; --cell-bg: rgba(216,180,106,.07);
+  --env-flap: #143a32; --title-color: #e6c886;
+}
+[data-theme="cumple-elegante"] .inv-btn { text-transform: uppercase; letter-spacing: .18em; font-size: .78rem; }
+body.inv-page:has([data-theme="cumple-elegante"]) { --page: #071a16; }
+/* ---------- Cute: kawaii pastel ---------- */
+[data-theme="cumple-cute"] {
+  --bg: #fff0f6; --ink: #5b3a52; --muted: #8a6680;
+  --accent: #ff7eb6; --accent-d: #c93d7f; --btn: #c93d7f; --on-accent: #fff; --line: rgba(255,126,182,.4);
+  --f-display: 'Sniglet', system-ui, sans-serif; --f-body: 'Nunito', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 999px; --tw: 800; --ts: clamp(2.8rem, 14vw, 4rem); --r-card: 28px; --cell-r: 18px; --cell-bg: #fff; --env-flap: #ffd6e8;
+}
+/* ---------- Graduación formal: marfil, azul marino y oro ---------- */
+[data-theme="grad-formal"] {
+  --bg: #f7f4ec; --ink: #1d2a44; --muted: #55607a;
+  --accent: #b8892a; --accent-d: #8c6a1e; --btn: #1d2a44; --on-accent: #fff; --line: rgba(184,137,42,.4);
+  --f-display: 'Playfair Display', Georgia, serif; --f-body: 'Lato', system-ui, sans-serif; --f-msg: var(--f-display); --msg-style: italic;
+  --r-btn: 2px; --tw: 600; --ts: clamp(2.5rem, 12vw, 3.5rem); --r-card: 4px; --cell-r: 2px; --env-flap: #ebe4d2;
+}
+[data-theme="grad-formal"] .inv-btn { text-transform: uppercase; letter-spacing: .16em; font-size: .8rem; }
+/* ---------- Gala de graduación (oscuro) ---------- */
+[data-theme="grad-noche"] {
+  --bg: #13213c; --ink: #f2ecda; --muted: #c4bb9f;
+  --accent: #e0c068; --accent-d: #ecd28a; --btn: #e0c068; --on-accent: #13213c; --line: rgba(224,192,104,.45);
+  --f-display: 'Cormorant SC', Georgia, serif; --f-body: 'Lato', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 0; --tw: 700; --ts: clamp(2.6rem, 12vw, 3.6rem); --r-card: 4px; --cell-r: 0; --cell-bg: rgba(224,192,104,.06);
+  --env-flap: #1a2c4e; --title-color: #ecd28a;
+}
+[data-theme="grad-noche"] .inv-btn { text-transform: uppercase; letter-spacing: .18em; font-size: .78rem; }
+body.inv-page:has([data-theme="grad-noche"]) { --page: #0b1427; }
+/* ---------- Sakura (otaku) ---------- */
+[data-theme="otaku-sakura"] {
+  --bg: #fff5f7; --ink: #3a2a3f; --muted: #6e5a72;
+  --accent: #e86a92; --accent-d: #b83a6b; --btn: #b83a6b; --on-accent: #fff; --line: rgba(232,106,146,.35);
+  --f-display: 'Mochiy Pop One', system-ui, sans-serif; --f-body: 'Zen Maru Gothic', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 999px; --tw: 400; --ts: clamp(2.4rem, 12vw, 3.4rem); --r-card: 22px; --cell-r: 14px; --cell-bg: #fff; --env-flap: #ffdfe8;
+}
+/* ---------- Manga (otaku): tinta negra y rojo ---------- */
+[data-theme="otaku-manga"] {
+  --bg: #ffffff; --ink: #111111; --muted: #444444;
+  --accent: #ff3b3b; --accent-d: #d11f1f; --btn: #111111; --on-accent: #fff; --line: #111;
+  --f-display: 'Dela Gothic One', Impact, sans-serif; --f-body: 'M PLUS Rounded 1c', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 0; --tw: 400; --ts: clamp(2.4rem, 12vw, 3.4rem); --r-card: 0; --cell-r: 0; --cell-bg: #fff; --cell-bd: #111;
+  --card-bg: #fff; --card-bd: #111; --card-sh: 6px 6px 0 #111; --env-flap: #f2f2f2; --title-color: #111;
+}
+.inv[data-theme="otaku-manga"] { background-image: radial-gradient(rgba(0,0,0,.09) 1.3px, transparent 1.5px); background-size: 10px 10px; }
+.inv[data-theme="otaku-manga"] .inv-title { text-shadow: 3px 3px 0 #ff3b3b; }
+[data-theme="otaku-manga"] .inv-block { border-width: 3px; }
+[data-theme="otaku-manga"] .inv-btn { border-width: 3px; font-weight: 800; }
+/* ---------- Kawaii (otaku) ---------- */
+[data-theme="otaku-kawaii"] {
+  --bg: #f3f0ff; --ink: #3d3566; --muted: #6d6596;
+  --accent: #8b6cff; --accent-d: #6a4be0; --btn: #6a4be0; --on-accent: #fff; --line: rgba(139,108,255,.35);
+  --f-display: 'Mochiy Pop One', system-ui, sans-serif; --f-body: 'Zen Maru Gothic', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 999px; --tw: 400; --ts: clamp(2.4rem, 12vw, 3.4rem); --r-card: 26px; --cell-r: 16px; --cell-bg: #fff; --env-flap: #e4dcff;
+}
+/* ---------- Revelación: rosa y azul ---------- */
+[data-theme="revelacion"] {
+  --bg: #fbf7ff; --ink: #3b3550; --muted: #6b6580;
+  --accent: #f28bb3; --accent-d: #c2457a; --btn: #4a6cc0; --on-accent: #fff; --line: rgba(111,179,232,.45);
+  --f-display: 'Fredoka', system-ui, sans-serif; --f-body: 'Nunito', system-ui, sans-serif; --f-msg: var(--f-body); --msg-style: normal;
+  --r-btn: 999px; --tw: 700; --ts: clamp(2.6rem, 13vw, 3.8rem); --r-card: 24px; --cell-r: 16px; --cell-bg: #fff; --env-flap: #f1e6fb;
+}
+.inv[data-theme="revelacion"] .inv-title { background: linear-gradient(90deg, #e5679c, #8a7bd6 50%, #4f95d6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+/* ---------- Aniversario: vino y oro ---------- */
+[data-theme="aniversario"] {
+  --bg: #fbf4f1; --ink: #4a1f2b; --muted: #7d5560;
+  --accent: #8c1c3b; --accent-d: #8c1c3b; --btn: #8c1c3b; --on-accent: #fff; --line: rgba(140,28,59,.3);
+  --f-display: 'Pinyon Script', cursive; --f-body: 'Cormorant Garamond', Georgia, serif; --f-msg: var(--f-body); --msg-style: italic;
+  --r-btn: 2px; --tw: 400; --ts: clamp(3.2rem, 16vw, 4.6rem); --r-card: 6px; --cell-r: 2px; --env-flap: #f2e1db;
+}
+[data-theme="aniversario"] .inv-btn { text-transform: uppercase; letter-spacing: .16em; font-size: .8rem; }
+
+
+/* @deco:start (tools/gen_decos.py) */
+.inv[data-theme] .inv-deco--top { background-size: contain; background-position: center top; }
+.inv[data-theme="acuarela"] { --deco-top: url("../img/deco/acuarela.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="acuarela"] { --deco-top: url("../img/deco/sm/acuarela.webp"); }
+.inv[data-theme="aniversario"] { --deco-top: url("../img/deco/aniversario.webp"); --deco-top-ratio: 2.200; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="aniversario"] { --deco-top: url("../img/deco/sm/aniversario.webp"); }
+.inv[data-theme="bebe-azul"] { --deco-top: url("../img/deco/bebe-azul.webp"); --deco-top-ratio: 2.526; }
+.ed-thumb .inv[data-theme="bebe-azul"] { --deco-top: url("../img/deco/sm/bebe-azul.webp"); }
+.inv[data-theme="bebe-rosa"] { --deco-top: url("../img/deco/bebe-rosa.webp"); --deco-top-ratio: 2.412; }
+.ed-thumb .inv[data-theme="bebe-rosa"] { --deco-top: url("../img/deco/sm/bebe-rosa.webp"); }
+.inv[data-theme="boda-elegante"] { --deco-top: url("../img/deco/boda-elegante.webp"); --deco-top-ratio: 2.200; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="boda-elegante"] { --deco-top: url("../img/deco/sm/boda-elegante.webp"); }
+.inv[data-theme="boda-jardin"] { --deco-top: url("../img/deco/boda-jardin.webp"); --deco-top-ratio: 2.200; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="boda-jardin"] { --deco-top: url("../img/deco/sm/boda-jardin.webp"); }
+.inv[data-theme="boda-marino"] { --deco-top: url("../img/deco/boda-marino.webp"); --deco-top-ratio: 2.682; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="boda-marino"] { --deco-top: url("../img/deco/sm/boda-marino.webp"); }
+.inv[data-theme="boda-salvia"] { --deco-top: url("../img/deco/boda-salvia.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="boda-salvia"] { --deco-top: url("../img/deco/sm/boda-salvia.webp"); }
+.inv[data-theme="boho"] { --deco-top: url("../img/deco/boho.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="boho"] { --deco-top: url("../img/deco/sm/boho.webp"); }
+.inv[data-theme="cielo"] { --deco-top: url("../img/deco/cielo.webp"); --deco-top-ratio: 3.967; }
+.ed-thumb .inv[data-theme="cielo"] { --deco-top: url("../img/deco/sm/cielo.webp"); }
+.inv[data-theme="clasico"] { --deco-top: url("../img/deco/clasico.webp"); --deco-top-ratio: 2.313; }
+.ed-thumb .inv[data-theme="clasico"] { --deco-top: url("../img/deco/sm/clasico.webp"); }
+.inv[data-theme="cumple-cute"] { --deco-top: url("../img/deco/cumple-cute.webp"); --deco-top-ratio: 3.028; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="cumple-cute"] { --deco-top: url("../img/deco/sm/cumple-cute.webp"); }
+.inv[data-theme="cumple-elegante"] { --deco-top: url("../img/deco/cumple-elegante.webp"); --deco-top-ratio: 2.200; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="cumple-elegante"] { --deco-top: url("../img/deco/sm/cumple-elegante.webp"); }
+.inv[data-theme="cumple-heroe"] { --deco-top: url("../img/deco/cumple-heroe.webp"); --deco-top-ratio: 2.382; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="cumple-heroe"] { --deco-top: url("../img/deco/sm/cumple-heroe.webp"); }
+.inv[data-theme="deportivo"] { --deco-top: url("../img/deco/deportivo.webp"); --deco-top-ratio: 3.478; }
+.ed-thumb .inv[data-theme="deportivo"] { --deco-top: url("../img/deco/sm/deportivo.webp"); }
+.inv[data-theme="dorado"] { --deco-top: url("../img/deco/dorado.webp"); --deco-top-ratio: 2.727; }
+.ed-thumb .inv[data-theme="dorado"] { --deco-top: url("../img/deco/sm/dorado.webp"); }
+.inv[data-theme="fiesta"] { --deco-top: url("../img/deco/fiesta.webp"); --deco-top-ratio: 2.775; }
+.ed-thumb .inv[data-theme="fiesta"] { --deco-top: url("../img/deco/sm/fiesta.webp"); }
+.inv[data-theme="floral"] { --deco-top: url("../img/deco/floral.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="floral"] { --deco-top: url("../img/deco/sm/floral.webp"); }
+.inv[data-theme="globos"] { --deco-top: url("../img/deco/globos.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="globos"] { --deco-top: url("../img/deco/sm/globos.webp"); }
+.inv[data-theme="grad-formal"] { --deco-top: url("../img/deco/grad-formal.webp"); --deco-top-ratio: 3.404; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="grad-formal"] { --deco-top: url("../img/deco/sm/grad-formal.webp"); }
+.inv[data-theme="grad-noche"] { --deco-top: url("../img/deco/grad-noche.webp"); --deco-top-ratio: 2.291; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="grad-noche"] { --deco-top: url("../img/deco/sm/grad-noche.webp"); }
+.inv[data-theme="graduacion"] { --deco-top: url("../img/deco/graduacion.webp"); --deco-top-ratio: 2.743; }
+.ed-thumb .inv[data-theme="graduacion"] { --deco-top: url("../img/deco/sm/graduacion.webp"); }
+.inv[data-theme="mexicana"] { --deco-top: url("../img/deco/mexicana.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="mexicana"] { --deco-top: url("../img/deco/sm/mexicana.webp"); }
+.inv[data-theme="minimal"] { --deco-top: url("../img/deco/minimal.webp"); --deco-top-ratio: 4.000; }
+.ed-thumb .inv[data-theme="minimal"] { --deco-top: url("../img/deco/sm/minimal.webp"); }
+.inv[data-theme="negro-oro"] { --deco-top: url("../img/deco/negro-oro.webp"); --deco-top-ratio: 2.602; }
+.ed-thumb .inv[data-theme="negro-oro"] { --deco-top: url("../img/deco/sm/negro-oro.webp"); }
+.inv[data-theme="noche"] { --deco-top: url("../img/deco/noche.webp"); --deco-top-ratio: 2.832; }
+.ed-thumb .inv[data-theme="noche"] { --deco-top: url("../img/deco/sm/noche.webp"); }
+.inv[data-theme="otaku-kawaii"] { --deco-top: url("../img/deco/otaku-kawaii.webp"); --deco-top-ratio: 3.189; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="otaku-kawaii"] { --deco-top: url("../img/deco/sm/otaku-kawaii.webp"); }
+.inv[data-theme="otaku-manga"] { --deco-top: url("../img/deco/otaku-manga.webp"); --deco-top-ratio: 2.513; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="otaku-manga"] { --deco-top: url("../img/deco/sm/otaku-manga.webp"); }
+.inv[data-theme="otaku-sakura"] { --deco-top: url("../img/deco/otaku-sakura.webp"); --deco-top-ratio: 2.200; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="otaku-sakura"] { --deco-top: url("../img/deco/sm/otaku-sakura.webp"); }
+.inv[data-theme="playa"] { --deco-top: url("../img/deco/playa.webp"); --deco-top-ratio: 2.874; }
+.ed-thumb .inv[data-theme="playa"] { --deco-top: url("../img/deco/sm/playa.webp"); }
+.inv[data-theme="princesa"] { --deco-top: url("../img/deco/princesa.webp"); --deco-top-ratio: 2.560; }
+.ed-thumb .inv[data-theme="princesa"] { --deco-top: url("../img/deco/sm/princesa.webp"); }
+.inv[data-theme="religioso"] { --deco-top: url("../img/deco/religioso.webp"); --deco-top-ratio: 2.815; }
+.ed-thumb .inv[data-theme="religioso"] { --deco-top: url("../img/deco/sm/religioso.webp"); }
+.inv[data-theme="revelacion"] { --deco-top: url("../img/deco/revelacion.webp"); --deco-top-ratio: 2.200; --deco-bottom: none; --deco-bottom-ratio: 12 / 1; }
+.ed-thumb .inv[data-theme="revelacion"] { --deco-top: url("../img/deco/sm/revelacion.webp"); }
+.inv[data-theme="rustico"] { --deco-top: url("../img/deco/rustico.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="rustico"] { --deco-top: url("../img/deco/sm/rustico.webp"); }
+.inv[data-theme="tropical"] { --deco-top: url("../img/deco/tropical.webp"); --deco-top-ratio: 2.400; }
+.ed-thumb .inv[data-theme="tropical"] { --deco-top: url("../img/deco/sm/tropical.webp"); }
+.inv[data-theme="vintage"] { --deco-top: url("../img/deco/vintage.webp"); --deco-top-ratio: 2.280; }
+.ed-thumb .inv[data-theme="vintage"] { --deco-top: url("../img/deco/sm/vintage.webp"); }
+.inv[data-theme="xv-rosa"] { --deco-top: url("../img/deco/xv-rosa.webp"); --deco-top-ratio: 2.200; }
+.ed-thumb .inv[data-theme="xv-rosa"] { --deco-top: url("../img/deco/sm/xv-rosa.webp"); }
+/* @deco:end */

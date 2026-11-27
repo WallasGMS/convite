@@ -45,10 +45,10 @@ def api_key():
     return ''
 
 
-def generate(key, model, prompt):
+def generate(key, model, prompt, **extra):
     req = urllib.request.Request(
         'https://api.openai.com/v1/images/generations',
-        data=json.dumps({'model': model, 'prompt': prompt, 'size': '1024x1024', 'n': 1}).encode(),
+        data=json.dumps({'model': model, 'prompt': prompt, 'size': '1024x1024', 'n': 1, **extra}).encode(),
         headers={'Authorization': f'Bearer {key}', 'Content-Type': 'application/json'})
     with urllib.request.urlopen(req, timeout=180) as r:
         item = json.load(r)['data'][0]
