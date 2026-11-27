@@ -36,6 +36,18 @@
       <section class="ed-step" data-step="1">
         <h2 tabindex="-1"><span class="ed-n">1</span> ¿Qué vas a celebrar?</h2>
         <div id="events" class="ed-events" role="radiogroup" aria-label="Tipo de evento"></div>
+        <details id="edit" class="ed-edit">
+          <summary>¿Ya hiciste tu invitación? Edítala con tu link</summary>
+          <div class="ed-edit-in">
+            <label for="edit-url">Pega el link de tu invitación (el mismo que mandaste por WhatsApp)</label>
+            <div class="ed-code-row">
+              <input id="edit-url" inputmode="url" autocomplete="off" placeholder="https://wallasgms.github.io/convite/i.html#…">
+              <button type="button" id="edit-go" class="ed-btn">Abrir</button>
+            </div>
+            <p id="edit-msg" class="ed-msg" role="status"></p>
+            <p class="ed-msg">Si era Premium, sigue siendo Premium: el código viaja dentro del link. Al terminar se crea un link nuevo para reenviar.</p>
+          </div>
+        </details>
       </section>
 
       <section class="ed-step" data-step="2" hidden>
@@ -175,6 +187,7 @@
         <div id="result" class="ed-card" hidden>
           <h3>¡Tu invitación está lista!</h3>
           <input id="link" readonly aria-label="Enlace de tu invitación">
+          <p class="ed-msg ed-keep">Guarda este link. Con él puedes volver a editarla cuando quieras, desde cualquier teléfono.</p>
           <div class="ed-actions">
             <button type="button" id="copy" class="ed-btn">Copiar enlace</button>
             <a id="share-wa" class="ed-btn ed-btn--main" target="_blank" rel="noopener">Compartir por WhatsApp</a>

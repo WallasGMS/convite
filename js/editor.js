@@ -1,6 +1,6 @@
 const SELLER_WA = '50230801909';
 
-import { EVENTS, encode } from './codec.js';
+import { EVENTS, encode, decode } from './codec.js';
 import { THEMES, FONTS, ORNAMENTS } from './themes.js';
 import { render } from './render.js';
 import { isPremium } from './premium.js';
@@ -461,20 +461,52 @@ $('copy').onclick = async () => {
 };
 $('share').onclick = () => navigator.share({ title: 'Mi invitación', url: $('link').value }).catch(() => {});
 
+// ---------- fill the form: from the saved draft, or from an invitation link ("Editar mi invitación") ----------
+function fillForm(d, anyTheme) {
+  if (EVENTS[d.e]) st.e = d.e;
+  if (THEMES.some((t) => t.id === d.t && (anyTheme || !t.hidden || t.id === qt))) st.t = d.t; // a link proves an exclusive design
+  if (COUNTRIES.some((c) => c[0] === d.cc)) st.cc = d.cc;
+  for (const k of TEXT_FIELDS) if (typeof d[k] === 'string') $(k).value = d[k];
+  $('rec').checked = d.rec === true;
+  $('ycus').checked = d.ycus === true;
+  if (!FONTS.some((f) => f.id === $('z').value)) $('z').value = '';
+  if (!ORNAMENTS.some((o) => o.id === $('u').value)) $('u').value = '';
+  if (['f', 'c', 'g', 'm'].some((k) => $(k).value)) $('more').open = true;
+}
+
+// Invitation data (as in the link) -> draft shape. "50212345678" splits on the longest matching country code.
+function draftFromLink(x) {
+  const d = { e: x.e, t: x.t, rec: !!(x.n || x.b || x.o || x.q), ycus: !!x.y };
+  for (const k of TEXT_FIELDS) d[k] = x[k] || '';
+  if (x.y) d.y = '#' + x.y.toLowerCase();
+  if (x.w) {
+    const c = COUNTRIES.map(([v]) => v).sort((a, b) => b.length - a.length).find((v) => x.w.startsWith(v));
+    d.cc = c || '502'; d.wn = c ? x.w.slice(c.length) : x.w;
+  }
+  d.gl = '';
+  return d;
+}
+
+$('edit-go').onclick = async () => {
+  const raw = $('edit-url').value.trim(), msg = $('edit-msg');
+  const hash = raw.slice(raw.indexOf('#') + 1);
+  let x = null;
+  try { if (raw.includes('#') && hash) x = await decode(hash); } catch { /* not an invitation link */ }
+  if (!x?.h) { msg.className = 'ed-msg ed-msg--err'; msg.textContent = 'Ese no parece un link de invitación de Convite. Copia el link completo que compartiste.'; return; }
+  for (const k of TEXT_FIELDS) $(k).value = '';
+  fillForm(draftFromLink(x), true);
+  prevSub = EVENTS[st.e].sub;
+  msg.className = 'ed-msg ed-msg--ok'; msg.textContent = '';
+  $('edit').open = false; $('edit-url').value = '';
+  if ($('k').value) await applyCode(true); else { st.unlocked = false; sync(); }
+  toast('Listo, cambia lo que quieras');
+  show(2);
+};
+
 // ---------- init: draft, then ?e= ----------
 try {
   const d = JSON.parse(localStorage.getItem(DRAFT) || 'null');
-  if (d) {
-    if (EVENTS[d.e]) st.e = d.e;
-    if (THEMES.some((t) => t.id === d.t && (!t.hidden || t.id === qt))) st.t = d.t;
-    if (COUNTRIES.some((c) => c[0] === d.cc)) st.cc = d.cc;
-    for (const k of TEXT_FIELDS) if (typeof d[k] === 'string') $(k).value = d[k];
-    $('rec').checked = d.rec === true;
-    $('ycus').checked = d.ycus === true;
-    if (!FONTS.some((f) => f.id === $('z').value)) $('z').value = '';
-    if (!ORNAMENTS.some((o) => o.id === $('u').value)) $('u').value = '';
-    if (['f', 'c', 'g', 'm'].some((k) => $(k).value)) $('more').open = true;
-  }
+  if (d) fillForm(d);
 } catch { /* corrupt draft: start clean */ }
 
 prevSub = EVENTS[st.e].sub; // a subtitle the user edited stays; the untouched default follows the event

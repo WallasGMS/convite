@@ -303,3 +303,13 @@ body.ed-page { background: #e6efea url("data:image/svg+xml,%3Csvg xmlns='http://
 #result > h3 { font: 700 2rem/1 var(--hand); color: var(--flor); rotate: -1.5deg; }
 @media (max-width: 899px) { .ed-nav { background: rgba(255,253,248,.97); } }
 @media (max-width: 640px) { .ed-ev-ico { width: 52px; height: 52px; } .ed-event { padding: .45rem .3rem .6rem; } }
+
+/* Editar mi invitación (paso 1) */
+.ed-edit { border-top: 1.5px dashed #e2d8c4; padding-top: .8rem; }
+.ed-edit summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font: 700 1.35rem/1.1 var(--hand); color: var(--flor); list-style: none; }
+.ed-edit summary::-webkit-details-marker { display: none; }
+.ed-edit summary::after { content: "+"; margin-left: .5rem; font: 700 1.3rem/1 var(--body); }
+.ed-edit[open] summary::after { content: "–"; }
+.ed-edit-in { display: grid; gap: .5rem; padding-top: .3rem; }
+.ed-edit-in label { font-weight: 600; font-size: .92rem; }
+.ed-keep { font-weight: 600; color: var(--ink); }
