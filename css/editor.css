@@ -255,3 +255,50 @@ input:focus, select:focus, textarea:focus { border-color: var(--focus); backgrou
 .ed-cmp td:last-child { background: #fff8e6; color: #1c6b3a; font-weight: 700; }
 .ed-buy-actions { display: grid; gap: .5rem; }
 @media (max-width: 360px) { .ed-cmp { font-size: .82rem; } .ed-cmp td { width: 4.2rem; } }
+
+/* ===== Toque hecho a mano (mismo lenguaje que la portada) ===== */
+:root { --hand: "Caveat", "Segoe Print", cursive; --flor: #c22e4d; }
+body.ed-page { background: #e6efea url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .07 0 0 0 0 .14 0 0 0 0 .12 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
+/* papel: tarjetas como notas, sin degradados */
+.ed-step:not(.ed-final) { position: relative; background: #fffdf8; border: 0; border-radius: 6px 20px 10px 22px; box-shadow: 0 1px 0 rgba(20,48,44,.08), 0 18px 30px -22px rgba(20,48,44,.5); }
+.ed-step:not(.ed-final)::before { content: ""; position: absolute; top: -9px; left: 50%; width: 84px; height: 20px; translate: -50% 0; rotate: -2deg; background: rgba(245,179,24,.55); border-radius: 2px; }
+.ed-step[data-step="2"]::before { background: rgba(127,182,217,.6); rotate: 3deg; }
+.ed-step[data-step="3"]::before { background: rgba(226,61,94,.4); }
+.ed-n { width: auto; height: auto; background: none; box-shadow: none; color: var(--flor); font: 700 2.3rem/.8 var(--hand); rotate: -6deg; }
+/* pasos de arriba: número a mano, subrayado en el actual */
+.ed-prog button, .ed-prog button[aria-current="step"] { background: transparent; border: 0; color: var(--mute); min-height: 52px; font-size: .9rem; }
+.ed-pn, .ed-prog button.is-done .ed-pn, .ed-prog button[aria-current="step"] .ed-pn { width: auto; height: auto; background: none; color: inherit; font: 700 1.7rem/.9 var(--hand); }
+.ed-prog button.is-done { color: var(--ink); }
+.ed-prog button.is-done .ed-pn { color: #187a42; }
+.ed-prog button[aria-current="step"] { color: var(--ink); font-weight: 700; }
+.ed-prog button[aria-current="step"] .ed-pn { color: var(--flor); }
+.ed-prog button { position: relative; }
+.ed-prog button[aria-current="step"]::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: 2px; height: 9px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9c30-6 62-7 96-4 30 3 62 2 98-4' fill='none' stroke='%23f5b318' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
+/* eventos con ilustración */
+.ed-events { grid-template-columns: repeat(auto-fill, minmax(min(100%, 118px), 1fr)); gap: .7rem; }
+.ed-event { background: #fff; border: 1.5px solid #e7e0d2; border-radius: 16px; padding: .5rem .4rem .7rem; min-height: 0; font-weight: 600; }
+.ed-ev-ico { width: 64px; height: 64px; border-radius: 12px; }
+.ed-event:hover { border-color: var(--gold); }
+.ed-event[aria-checked="true"] { background: #fff; color: var(--ink); border-color: var(--flor); box-shadow: 0 0 0 2px var(--flor), 0 12px 20px -14px rgba(20,48,44,.6); rotate: -2deg; }
+.ed-event[aria-checked="true"] .ed-ev-ico { color: inherit; }
+.ed-event[aria-checked="true"]::after, .ed-theme[aria-checked="true"]::after { content: ""; width: 26px; height: 26px; border-radius: 0; background: var(--flor); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M3 11c2 1.5 3.4 3 4.6 5C10 10 13 6 17.5 3' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M3 11c2 1.5 3.4 3 4.6 5C10 10 13 6 17.5 3' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+.ed-event[aria-checked="true"]::after { top: -10px; right: -6px; }
+.ed-theme[aria-checked="true"] { border-color: var(--flor); box-shadow: 0 0 0 2px var(--flor), 0 10px 22px -12px rgba(20,48,44,.45); rotate: -1.5deg; }
+.ed-theme[aria-checked="true"]::after { top: -8px; left: -4px; }
+/* botón principal como el de la portada */
+.ed-nav .ed-btn--main { background: var(--flor); border-radius: 999px; box-shadow: 0 6px 0 #8f1f38; }
+.ed-nav .ed-btn--main:hover { background: #a82643; }
+.ed-nav .ed-btn--main:active { transform: translateY(3px); box-shadow: 0 3px 0 #8f1f38; }
+.ed-nav #gen::after { display: none; }
+.ed-btn--main { background: var(--ink); }
+#buy-wa, #share-wa, #guests-buy { background: #187a42; border-color: #187a42; }
+/* notas a mano */
+.ed-side-label { background: none; box-shadow: none; padding: 0; font: 700 1.5rem/1.1 var(--hand); color: var(--ink); rotate: -2deg; display: flex; align-items: flex-end; justify-content: center; gap: .2rem; }
+.ed-hand-arrow { width: 40px; height: 28px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; translate: 0 10px; }
+.ed-hint { font: 700 1.4rem/1.1 var(--hand) !important; color: var(--ink); display: flex !important; justify-content: center; align-items: flex-end; gap: .2rem; rotate: -1.5deg; }
+@media (min-width: 900px) { .ed-hint { display: none !important; } }
+.ed-custom legend { font-weight: 700; }
+.ed-card { background: #fffdf8; border: 0; border-radius: 6px 20px 10px 22px; box-shadow: 0 1px 0 rgba(20,48,44,.08), 0 18px 30px -22px rgba(20,48,44,.5); position: relative; }
+.ed-card::before { content: ""; position: absolute; top: -9px; left: 50%; width: 84px; height: 20px; translate: -50% 0; rotate: 2deg; background: rgba(245,179,24,.55); border-radius: 2px; }
+#result h3:first-child { font: 700 2rem/1 var(--hand); color: var(--flor); rotate: -1.5deg; }
+@media (max-width: 899px) { .ed-nav { background: rgba(255,253,248,.97); } }

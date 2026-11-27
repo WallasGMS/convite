@@ -41,14 +41,11 @@ let prevSub = '';
 // ---------- controls ----------
 $('cc').append(...COUNTRIES.map(([v, l]) => new Option(l, v)));
 
-// Event icons live in img/icons.svg (#ev-<id>), shared with the home page.
-const SVG = 'http://www.w3.org/2000/svg';
+// Event art: small copies of the home page illustrations (img/eventos/sm/<id>.webp, 144px).
 function evIcon(id) {
-  const svg = document.createElementNS(SVG, 'svg'), use = document.createElementNS(SVG, 'use');
-  svg.setAttribute('class', 'ed-ev-ico'); svg.setAttribute('aria-hidden', 'true');
-  use.setAttribute('href', 'img/icons.svg#ev-' + id);
-  svg.append(use);
-  return svg;
+  const img = mk('img', 'ed-ev-ico');
+  img.src = 'img/eventos/sm/' + id + '.webp'; img.alt = ''; img.width = img.height = 72; img.decoding = 'async';
+  return img;
 }
 let toastT;
 function toast(t) {
