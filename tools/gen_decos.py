@@ -89,12 +89,22 @@ def write_css():
         extra = ' --deco-bottom: none; --deco-bottom-ratio: 12 / 1;' if tid in NEW else ''
         lines.append(f'.inv[data-theme="{tid}"] {{ --deco-top: url("../img/deco/{tid}.webp"); --deco-top-ratio: {ratio:.3f};{extra} }}')
         lines.append(f'.ed-thumb .inv[data-theme="{tid}"] {{ --deco-top: url("../img/deco/sm/{tid}.webp"); }}')
+        lines.append(f'.inv-envelope[data-theme="{tid}"] {{ --env-art: url("../img/deco/{tid}.webp"); }}')
+    # Envelope screen: the design's illustration lines the flap; a wax seal image (tools/gen_seals.py) replaces the drawn one.
+    seals = sorted(p.stem for p in (ROOT / 'img' / 'sello').glob('*.webp'))
+    lines.append('.inv-envelope[data-theme]::before { background: var(--env-art, none) center 4% / 100% auto no-repeat, '
+                 'linear-gradient(180deg, var(--env-flap), color-mix(in srgb, var(--env-flap) 90%, #000)); }')
+    if seals:
+        sel = ', '.join(f'.inv-envelope[data-theme="{t}"] .inv-envelope-seal' for t in seals)
+        lines.append(sel + ' { width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; box-shadow: none; '
+                     'background: var(--seal) center / contain no-repeat; filter: drop-shadow(0 8px 12px rgba(0,0,0,.32)); }')
+        lines += [f'.inv-envelope[data-theme="{t}"] {{ --seal: url("../img/sello/{t}.webp"); }}' for t in seals]
     lines.append(end)
     s = css.read_text(encoding='utf-8')
     if start in s:
         s = s[:s.index(start)].rstrip('\n')
     css.write_text(s + '\n\n' + '\n'.join(lines) + '\n', encoding='utf-8', newline='')
-    print('css/invite.css: estilos de', len(lines) // 2 - 1, 'ilustraciones')
+    print('css/invite.css: estilos de', len(list(OUT.glob('*.webp'))), 'ilustraciones y', len(seals), 'sellos')
 
 
 def main(args):
