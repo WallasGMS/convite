@@ -29,4 +29,8 @@ assert.equal((await call('POST', '/api/links', { h: 'no-es-invitacion' })).statu
 assert.equal((await call('POST', '/api/links', { h: await encode({ h: 'Gratis' }) })).status, 200, 'free invitations need no code');
 assert.equal((await call('GET', '/crear.html?t=x')).headers.get('location'), 'https://convitegt.pages.dev/crear.html?t=x');
 assert.equal(await handle(new Request('https://convitegt.pages.dev/invitaciones'), env, 'https://convitegt.pages.dev/'), null, 'site files fall through');
+env.UNLIMITED = 'CNV-DUEN-0000, cnv-otro-1111';
+const own = await encode({ h: 'Del dueño', k: 'CNV-DUEN-0000' });
+for (let i = 0; i < 3; i++) assert.equal((await call('POST', '/api/links', { h: own })).status, 200, 'unlimited code, any number of invitations');
+assert.equal(store.has('c:CNV-DUEN-0000'), false, 'unlimited codes are never bound');
 console.log('ok · worker');

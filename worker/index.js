@@ -23,9 +23,11 @@ async function payload(h) {
 }
 
 // A premium code may live in one invitation only (its own edits are fine).
+// Except the owner's unlimited codes: secret UNLIMITED (comma-separated), never in the repo.
 async function claim(env, p, id) {
   const code = typeof p.k === 'string' ? p.k.trim().toUpperCase() : '';
-  if (!code || code === DEMO) return true;
+  const unlimited = (env.UNLIMITED || '').toUpperCase().split(',').map((s) => s.trim());
+  if (!code || code === DEMO || unlimited.includes(code)) return true;
   const owner = await env.KV.get('c:' + code);
   if (owner && owner !== id) return false;
   if (!owner) await env.KV.put('c:' + code, id);
