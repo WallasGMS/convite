@@ -196,6 +196,13 @@ Cada código es de un solo uso: una venta = una línea del archivo.
 >
 > Para activarlo: abre https://wallasgms.github.io/convite/crear.html, elige tu tema premium y pega el código en el campo "Código premium" y toca "Aplicar". Luego genera tu invitación y compártela. Si algo no funciona, escríbeme y lo revisamos.
 
+### Un código = una invitación
+Desde el 2026-11-28 el código queda amarrado a la primera invitación con la que se genera (servidor en `worker/`, Cloudflare). El cliente puede editar esa misma invitación las veces que quiera con su **link para editar** (se lo da la página al generar). Si intenta usar el código en otra invitación, la página le dice que ya se usó.
+
+Si un cliente perdió su link para editar y necesita usar el código de nuevo, libéralo: en Cloudflare entra a **Workers y Pages → KV → convite-links**, busca la clave `c:CNV-XXXX-XXXX` (su código) y bórrala. Con eso puede generar una invitación nueva con el mismo código.
+
+Límite gratis de Cloudflare: 1,000 escrituras al día (cada invitación generada usa 1 o 2). Si un día se pasa, la página sigue funcionando con el link largo.
+
 ### Si se acaban los códigos
 Genera más desde la carpeta del proyecto con este comando:
 

@@ -1,0 +1,9 @@
+# Convite API: short links + one invitation per premium code. Deploy: cd worker && npx wrangler deploy
+name = "convite"
+main = "index.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "KV"
+id = "0a6d7a54611240c09e39a47445271e02"

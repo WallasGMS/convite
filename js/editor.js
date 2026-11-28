@@ -1,4 +1,7 @@
 const SELLER_WA = '50230801909';
+// Short links and one invitation per code (worker/index.js). If it is down, the long link still works.
+const API = 'https://convite.convitegt.workers.dev';
+const MINE = 'convite:mine'; // {shortId: ownerKey} of invitations made on this phone
 
 import { EVENTS, encode, decode } from './codec.js';
 import { THEMES, FONTS, ORNAMENTS, BACKGROUNDS } from './themes.js';
@@ -35,7 +38,7 @@ const mk = (tag, cls, text) => {
   return n;
 };
 
-const st = { e: 'xv', t: 'clasico', cc: '502', unlocked: false, link: '' };
+const st = { e: 'xv', t: 'clasico', cc: '502', unlocked: false, link: '', edit: null }; // edit: {id, key} of the short link being updated
 let prevSub = '';
 
 // ---------- controls ----------
@@ -312,8 +315,42 @@ $('free').onclick = () => {
 };
 $('force').onclick = () => { $('warn').hidden = true; generate(); };
 
+const mine = () => { try { return JSON.parse(localStorage.getItem(MINE)) || {}; } catch { return {}; } };
+const editUrl = () => new URL(`crear.html#editar=${st.edit.id}.${st.edit.key}`, location.href).href;
+
+function codeUsed() {
+  const msg = $('code-msg');
+  msg.className = 'ed-msg ed-msg--err';
+  msg.textContent = 'Este código ya se usó en otra invitación. Si es tuya, ábrela con tu link para editar. ¿Lo perdiste? Escríbenos por WhatsApp y te ayudamos.';
+  msg.scrollIntoView({ behavior: smooth(), block: 'center' });
+}
+
+// Saves the invitation as a short link: new one (POST) or the same link updated (PUT, owner key).
+async function save(h) {
+  const res = await fetch(API + '/api/links' + (st.edit ? '/' + st.edit.id : ''), {
+    method: st.edit ? 'PUT' : 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ h, key: st.edit?.key }),
+  });
+  if (res.status === 409) return 'used';
+  if ((res.status === 403 || res.status === 404) && st.edit) { st.edit = null; return save(h); }
+  if (!res.ok) throw new Error(res.status);
+  const j = await res.json();
+  st.edit = { id: j.id, key: j.key || st.edit.key };
+  try { localStorage.setItem(MINE, JSON.stringify({ ...mine(), [st.edit.id]: st.edit.key })); } catch { /* private mode */ }
+  return API + '/' + st.edit.id;
+}
+
 async function generate() {
-  const link = new URL('i.html#' + await encode(data()), location.href).href;
+  const h = await encode(data());
+  let link = new URL('i.html#' + h, location.href).href;
+  try {
+    const short = await save(h);
+    if (short === 'used') return codeUsed();
+    link = short;
+  } catch { st.edit = null; } // offline or API down: the long link still works
+  $('keep-long').hidden = !!st.edit;
+  $('keep-short').hidden = !st.edit;
+  if (st.edit) $('edit-link').href = editUrl();
   st.link = link;
   $('link').value = link;
   $('open').href = link;
@@ -487,6 +524,9 @@ $('copy').onclick = async () => {
   b.textContent = 'Enlace copiado'; toast('Enlace copiado');
   setTimeout(() => (b.textContent = 'Copiar enlace'), 2000);
 };
+$('copy-edit').onclick = async () => {
+  try { await navigator.clipboard.writeText(editUrl()); toast('Link para editar copiado'); } catch { prompt('Copia tu link para editar:', editUrl()); }
+};
 $('share').onclick = () => navigator.share({ title: 'Mi invitación', url: $('link').value }).catch(() => {});
 
 // ---------- fill the form from an invitation link ("Edítala con tu link") ----------
@@ -516,20 +556,39 @@ function draftFromLink(x) {
   return d;
 }
 
-$('edit-go').onclick = async () => {
-  const raw = $('edit-url').value.trim(), msg = $('edit-msg');
-  const hash = raw.slice(raw.indexOf('#') + 1);
-  let x = null;
-  try { if (raw.includes('#') && hash) x = await decode(hash); } catch { /* not an invitation link */ }
-  if (!x?.h) { msg.className = 'ed-msg ed-msg--err'; msg.textContent = 'Ese no parece un link de invitación de Convite. Copia el link completo que compartiste.'; return; }
+// Accepts the private edit link (crear.html#editar=<id>.<key>), the short link (<API>/<id>) or an old long link (i.html#<hash>).
+async function openLink(raw) {
+  const ed = /#editar=([A-Za-z0-9]+)\.([A-Za-z0-9]+)/.exec(raw);
+  const short = ed ? ed[1] : raw.startsWith(API + '/') && raw.slice(API.length + 1).split(/[?#/]/)[0];
+  let hash = raw.includes('#') && !ed ? raw.slice(raw.indexOf('#') + 1) : '';
+  if (short) {
+    const res = await fetch(API + '/api/links/' + short).catch(() => null);
+    if (!res?.ok) return null;
+    hash = (await res.json()).h;
+  }
+  const x = hash ? await decode(hash).catch(() => null) : null;
+  if (!x?.h) return null;
+  const key = ed ? ed[2] : short && mine()[short];
+  return { x, edit: key ? { id: short, key } : null };
+}
+
+async function loadInvitation({ x, edit }) {
   for (const k of TEXT_FIELDS) $(k).value = '';
   fillForm(draftFromLink(x));
   prevSub = EVENTS[st.e].sub;
-  msg.className = 'ed-msg ed-msg--ok'; msg.textContent = '';
-  $('edit').open = false; $('edit-url').value = '';
+  st.edit = edit; // with the owner key, "Generar" updates the same link
   if ($('k').value) await applyCode(true); else { st.unlocked = false; sync(); }
   toast('Listo, cambia lo que quieras');
   show(2);
+}
+
+$('edit-go').onclick = async () => {
+  const msg = $('edit-msg');
+  const got = await openLink($('edit-url').value.trim());
+  if (!got) { msg.className = 'ed-msg ed-msg--err'; msg.textContent = 'Ese no parece un link de Convite. Copia el link completo.'; return; }
+  msg.className = 'ed-msg ed-msg--ok'; msg.textContent = '';
+  $('edit').open = false; $('edit-url').value = '';
+  loadInvitation(got);
 };
 
 // ---------- init: every new invitation starts blank (no draft); to change an old one, "Edítala con tu link" ----------
@@ -541,3 +600,4 @@ const qe = new URLSearchParams(location.search).get('e');
 setEvent(qe && EVENTS[qe] ? qe : st.e);
 show(1, null, true); // always start at "¿Qué vas a celebrar?"; ?e= only preselects the event
 if ($('k').value) applyCode(true);
+if (location.hash.startsWith('#editar=')) openLink(location.href).then((got) => got ? loadInvitation(got) : toast('No encontramos esa invitación'));

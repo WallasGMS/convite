@@ -44,9 +44,9 @@
         <details id="edit" class="ed-edit">
           <summary>¿Ya hiciste tu invitación? Edítala con tu link</summary>
           <div class="ed-edit-in">
-            <label for="edit-url">Pega el link de tu invitación (el mismo que mandaste por WhatsApp)</label>
+            <label for="edit-url">Pega tu link para editar, o el link de tu invitación</label>
             <div class="ed-code-row">
-              <input id="edit-url" inputmode="url" autocomplete="off" placeholder="https://wallasgms.github.io/convite/i.html#…">
+              <input id="edit-url" inputmode="url" autocomplete="off" placeholder="Pega aquí el link">
               <button type="button" id="edit-go" class="ed-btn">Abrir</button>
             </div>
             <p id="edit-msg" class="ed-msg" role="status"></p>
@@ -195,7 +195,9 @@
         <div id="result" class="ed-card" hidden>
           <h3>¡Tu invitación está lista!</h3>
           <input id="link" readonly aria-label="Enlace de tu invitación">
-          <p class="ed-msg ed-keep">Guarda este link. Con él puedes volver a editarla cuando quieras, desde cualquier teléfono.</p>
+          <p class="ed-msg ed-keep" id="keep-long">Guarda este link. Con él puedes volver a editarla cuando quieras, desde cualquier teléfono.</p>
+          <p class="ed-msg ed-keep" id="keep-short" hidden>Para cambiarla después usa tu <a id="edit-link" target="_blank" rel="noopener">link para editar</a>: es solo para ti, no lo compartas. Si cambias algo, tus invitados verán la versión nueva con el mismo link.
+            <button type="button" id="copy-edit" class="ed-linkbtn">Copiar link para editar</button></p>
           <div class="ed-actions">
             <button type="button" id="copy" class="ed-btn">Copiar enlace</button>
             <a id="share-wa" class="ed-btn ed-btn--main" target="_blank" rel="noopener">Compartir por WhatsApp</a>
