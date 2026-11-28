@@ -1,8 +1,10 @@
-// Convite API (Cloudflare Worker + KV): short invitation links and one invitation per premium code.
-// KV: "l:<id>" -> {h, key, t}   the invitation hash; `key` is the owner's secret to update it
-//     "c:<CODE>" -> <id>         the invitation a premium code belongs to
-// GET /<id> redirects to the static site (i.html#<hash>), keeping ?para=&pases= for guest links.
-const SITE = 'https://wallasgms.github.io/convite/';
+// Convite API: short invitation links and one invitation per premium code. KV:
+//   "l:<id>" -> {h, key, t}   the invitation hash; `key` is the owner's secret to update it
+//   "c:<CODE>" -> <id>         the invitation a premium code belongs to
+// Runs in two places with the same KV:
+//   - the site itself on Cloudflare Pages (worker/pages.js -> _worker.js): convitegt.pages.dev/<id>
+//   - this Worker, convite.convitegt.workers.dev: the first links were made here; it sends everything to the site.
+export const SITE = 'https://convitegt.pages.dev/';
 const DEMO = 'CNV-DEMO-GALERIA';
 const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS', 'Access-Control-Allow-Headers': 'content-type' };
 const ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789'; // no 0/O, 1/l/I: easy to read aloud
@@ -30,43 +32,51 @@ async function claim(env, p, id) {
   return true;
 }
 
+// The API and short links. Returns null for anything else (the site's own files).
+export async function handle(req, env, site) {
+  const url = new URL(req.url);
+  const [, a, b, c] = url.pathname.split('/');
+  if (a === 'api' && req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+
+  if (a === 'api' && b === 'links') {
+    if (req.method === 'GET' && c) {
+      const rec = await env.KV.get('l:' + c, 'json');
+      return rec ? json({ id: c, h: rec.h }) : json({ error: 'not_found' }, 404);
+    }
+    const body = await req.json().catch(() => ({}));
+    const p = await payload(body.h);
+    if (!p) return json({ error: 'bad_invitation' }, 400);
+    if (req.method === 'POST' && !c) {
+      let id = rand(7);
+      while (await env.KV.get('l:' + id)) id = rand(7);
+      if (!(await claim(env, p, id))) return json({ error: 'code_used' }, 409);
+      const key = rand(24);
+      await env.KV.put('l:' + id, JSON.stringify({ h: body.h, key, t: Date.now() }));
+      return json({ id, key });
+    }
+    if (req.method === 'PUT' && c) {
+      const rec = await env.KV.get('l:' + c, 'json');
+      if (!rec) return json({ error: 'not_found' }, 404);
+      if (rec.key !== body.key) return json({ error: 'forbidden' }, 403);
+      if (!(await claim(env, p, c))) return json({ error: 'code_used' }, 409);
+      await env.KV.put('l:' + c, JSON.stringify({ ...rec, h: body.h, t: Date.now() }));
+      return json({ id: c });
+    }
+    return json({ error: 'method' }, 405);
+  }
+
+  // Short link: /<id> (no dot, so never a file). Unknown ids fall through to the site.
+  if (req.method === 'GET' && a && !b && /^[A-Za-z0-9]{4,12}$/.test(a)) {
+    const rec = await env.KV.get('l:' + a, 'json');
+    if (rec) return Response.redirect(site + 'i' + url.search + '#' + rec.h, 302);
+  }
+  return null;
+}
+
+// convite.convitegt.workers.dev: API + old short links; anything else goes to the same path on the site.
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
-    const [, a, b, c] = url.pathname.split('/');
-    if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
-
-    if (a === 'api' && b === 'links') {
-      if (req.method === 'GET' && c) {
-        const rec = await env.KV.get('l:' + c, 'json');
-        return rec ? json({ id: c, h: rec.h }) : json({ error: 'not_found' }, 404);
-      }
-      const body = await req.json().catch(() => ({}));
-      const p = await payload(body.h);
-      if (!p) return json({ error: 'bad_invitation' }, 400);
-      if (req.method === 'POST' && !c) {
-        let id = rand(7);
-        while (await env.KV.get('l:' + id)) id = rand(7);
-        if (!(await claim(env, p, id))) return json({ error: 'code_used' }, 409);
-        const key = rand(24);
-        await env.KV.put('l:' + id, JSON.stringify({ h: body.h, key, t: Date.now() }));
-        return json({ id, key });
-      }
-      if (req.method === 'PUT' && c) {
-        const rec = await env.KV.get('l:' + c, 'json');
-        if (!rec) return json({ error: 'not_found' }, 404);
-        if (rec.key !== body.key) return json({ error: 'forbidden' }, 403);
-        if (!(await claim(env, p, c))) return json({ error: 'code_used' }, 409);
-        await env.KV.put('l:' + c, JSON.stringify({ ...rec, h: body.h, t: Date.now() }));
-        return json({ id: c });
-      }
-      return json({ error: 'method' }, 405);
-    }
-
-    if (req.method === 'GET' && a && !b && /^[A-Za-z0-9]{4,12}$/.test(a)) {
-      const rec = await env.KV.get('l:' + a, 'json');
-      if (rec) return Response.redirect(SITE + 'i.html' + url.search + '#' + rec.h, 302);
-    }
-    return Response.redirect(SITE, 302);
+    return (await handle(req, env, SITE)) || Response.redirect(SITE + url.pathname.slice(1) + url.search, 301);
   },
 };

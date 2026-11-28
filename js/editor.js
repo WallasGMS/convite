@@ -1,6 +1,6 @@
 const SELLER_WA = '50230801909';
 // Short links and one invitation per code (worker/index.js). If it is down, the long link still works.
-const API = 'https://convite.convitegt.workers.dev';
+const API = 'https://convitegt.pages.dev'; // the site itself (worker/pages.js)
 const MINE = 'convite:mine'; // {shortId: ownerKey} of invitations made on this phone
 
 import { EVENTS, encode, decode } from './codec.js';
@@ -559,7 +559,7 @@ function draftFromLink(x) {
 // Accepts the private edit link (crear.html#editar=<id>.<key>), the short link (<API>/<id>) or an old long link (i.html#<hash>).
 async function openLink(raw) {
   const ed = /#editar=([A-Za-z0-9]+)\.([A-Za-z0-9]+)/.exec(raw);
-  const short = ed ? ed[1] : raw.startsWith(API + '/') && raw.slice(API.length + 1).split(/[?#/]/)[0];
+  const short = ed ? ed[1] : /^https:\/\/(?:convitegt\.pages\.dev|convite\.convitegt\.workers\.dev)\/([A-Za-z0-9]{4,12})(?:[?#]|$)/.exec(raw)?.[1];
   let hash = raw.includes('#') && !ed ? raw.slice(raw.indexOf('#') + 1) : '';
   if (short) {
     const res = await fetch(API + '/api/links/' + short).catch(() => null);

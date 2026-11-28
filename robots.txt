@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wallasgms.github.io/convite/sitemap.xml
+Sitemap: https://convitegt.pages.dev/sitemap.xml

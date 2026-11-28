@@ -11,7 +11,7 @@ Guía práctica para vender las primeras invitaciones. Todo lo que está aquí s
 | Te la hago yo | Q75 | Lo hacemos juntos por WhatsApp: tú me das los datos y yo la armo y te la entrego lista |
 | Diseño exclusivo | Q200 | Un diseño hecho solo para el cliente a partir de una foto de referencia. No aparece en el catálogo. Incluye premium y pases. Ver sección 5b |
 
-Link para compartir: https://wallasgms.github.io/convite/ (editor directo: https://wallasgms.github.io/convite/crear.html)
+Link para compartir: https://convitegt.pages.dev/ (editor directo: https://convitegt.pages.dev/crear.html)
 
 Regla de oro: el cliente siempre empieza gratis. Así prueba, se enamora del resultado y compra el premium cuando ve que quiere quitar la marca.
 
@@ -21,7 +21,7 @@ Regla de oro: el cliente siempre empieza gratis. Así prueba, se enamora del res
 
 Objetivo: primera venta antes de que termine el día. Son pasos concretos, en orden.
 
-- [ ] Abre https://wallasgms.github.io/convite/crear.html y crea una invitación de prueba de cualquier evento. Cronometra cuánto tardas: si pasa de 5 minutos, revisa el paso que te frena.
+- [ ] Abre https://convitegt.pages.dev/crear.html y crea una invitación de prueba de cualquier evento. Cronometra cuánto tardas: si pasa de 5 minutos, revisa el paso que te frena.
 - [ ] Abre el link generado en tu iPhone y en un Android. Revisa que el texto se lea, que la fecha esté bien y que el botón de WhatsApp funcione. No vendas algo que no has probado.
 - [ ] Escribe a 5 personas de tu círculo que tengan evento en los próximos 60 días (XV, boda, bautizo, cumpleaños, graduación). Pregunta: "¿Ya tienes la invitación?" Esa es tu primera lista de prospectos.
 - [ ] Publica 2 de los 13 mensajes de la sección 2 en grupos donde esté permitido (lee primero las reglas del grupo). Un mensaje por grupo, nunca el mismo texto en varios grupos el mismo minuto.
@@ -37,7 +37,7 @@ Objetivo: primera venta antes de que termine el día. Son pasos concretos, en or
 
 ## 2. Trece mensajes para grupos (Facebook y WhatsApp)
 
-Reemplaza `[LINK]` por https://wallasgms.github.io/convite/crear.html. Ajusta el saludo si el grupo es de otra ciudad. Varios grupos no permiten publicidad: si el admin lo prohíbe, pide permiso antes de publicar.
+Reemplaza `[LINK]` por https://convitegt.pages.dev/crear.html. Ajusta el saludo si el grupo es de otra ciudad. Varios grupos no permiten publicidad: si el admin lo prohíbe, pide permiso antes de publicar.
 
 **1. XV años**
 Hola, ¿alguien va a organizar XV años pronto? Hice invitaciones digitales para celular: eliges el tema, escribes los datos y mandas el link por WhatsApp. Puedes probarla gratis aquí: [LINK]
@@ -194,7 +194,7 @@ Cada código es de un solo uso: una venta = una línea del archivo.
 >
 > **[CÓDIGO]**
 >
-> Para activarlo: abre https://wallasgms.github.io/convite/crear.html, elige tu tema premium y pega el código en el campo "Código premium" y toca "Aplicar". Luego genera tu invitación y compártela. Si algo no funciona, escríbeme y lo revisamos.
+> Para activarlo: abre https://convitegt.pages.dev/crear.html, elige tu tema premium y pega el código en el campo "Código premium" y toca "Aplicar". Luego genera tu invitación y compártela. Si algo no funciona, escríbeme y lo revisamos.
 
 ### Un código = una invitación
 Desde el 2026-11-28 el código queda amarrado a la primera invitación con la que se genera (servidor en `worker/`, Cloudflare). El cliente puede editar esa misma invitación las veces que quiera con su **link para editar** (se lo da la página al generar). Si intenta usar el código en otra invitación, la página le dice que ya se usó.
@@ -226,7 +226,7 @@ Antes de cobrar, pregunta: ¿el personalizador premium (color, letra, adorno) ya
    > Crea un tema exclusivo para Convite con id `ex-[apellido]-[mmdd]` (máximo 20 caracteres), `premium: true, hidden: true`, en `js/themes.js` y `css/invite.css`, siguiendo la estructura de los temas existentes. Estilo: [descripción + adjunta la imagen de referencia]. Colores: [...]. Decoraciones SVG planas, no realistas. Contraste AA. Corre `node tools/test_core.mjs`, revísalo en `tools/preview-themes.html`, haz commit y push.
 
 3. Cuando esté publicado (1 a 2 minutos después del push), manda al cliente su link de editor:
-   `https://wallasgms.github.io/convite/crear.html?t=ex-[apellido]-[mmdd]`
+   `https://convitegt.pages.dev/crear.html?t=ex-[apellido]-[mmdd]`
    Solo con ese link aparece su diseño. Cobra el resto, mándale un código premium (sección 5) y que llene sus datos. O llénalos tú si también pagó "Te la hago yo".
 4. Anota en `private/codes.csv`, junto al código, `exclusivo ex-[apellido]-[mmdd]`.
 
