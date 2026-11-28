@@ -600,4 +600,7 @@ const qe = new URLSearchParams(location.search).get('e');
 setEvent(qe && EVENTS[qe] ? qe : st.e);
 show(1, null, true); // always start at "¿Qué vas a celebrar?"; ?e= only preselects the event
 if ($('k').value) applyCode(true);
-if (location.hash.startsWith('#editar=')) openLink(location.href).then((got) => got ? loadInvitation(got) : toast('No encontramos esa invitación'));
+const editFromUrl = () => location.hash.startsWith('#editar=')
+  && openLink(location.href).then((got) => (got ? loadInvitation(got) : toast('No encontramos esa invitación')));
+editFromUrl();
+addEventListener('hashchange', editFromUrl); // edit link pasted into the address bar of an open editor
